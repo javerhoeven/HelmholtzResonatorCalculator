@@ -44,17 +44,27 @@ class Simulation():
         """
         calculates complex, frequency-dependant acoustic radiation impedance ("Schallstrahlungsimpedanz")
         """
+        # TODO: add check if kR < 0.5
+        
+        # but then i need R again 
         ap = self.resonator.aperture
         med = self.sim_params.medium
         rho = med.density
         c = med.c
         r = ap.radius
         k = self.sim_params.k
+        f = self.sim_params.frequencies
+        delta_l_out = ap.outer_end_correction
+
+        # check if requirement for equation is met
+        limit = np.argwhere(k*r < 0.5)[-1]
+        # TODO: move this test to beginning of simulation to immediately truncate all freq-related vectors
+        print(f"k*r < 0.5 condition is met until {f[limit]} Hz.")
 
         if ap.outer_ending == 'open':
-            self.z_radiation = rho * c * (k**2 / (4*np.pi) + 0.6 * 1j * k * r)
+            self.z_radiation = rho * c * (k**2 * r**2 / (4*np.pi) + 1j * k * delta_l_out)
         elif ap.outer_ending == 'flange':
-            self.z_radiation = rho * c * (k**2 / (2*np.pi) + 0.85 * 1j * k * r)
+            self.z_radiation = rho * c * (k**2 * r**2 / (2*np.pi) + 1j * k * delta_l_out)
         else:
             raise ValueError("Invalid outer ending. Choose 'open' or 'flange'.")
         
@@ -68,26 +78,18 @@ class Simulation():
         rho = self.sim_params.medium.density
         c = self.sim_params.medium.c
         omega = self.sim_params.omega
-        r = ap.radius
         volume = self.resonator.geometry.volume
         l_ap = ap.length
-        delta_l = []
-        
-        for ending in [ap.inner_ending, ap.outer_ending]:
-            if ending == 'open':
-                delta_l.append(0.6 * r)
-            elif ending == 'flange':
-                delta_l.append(0.85 * r)
-            else:
-                raise ValueError("Invalid ending. Choose 'open' or 'flange'.")
-    
-        self.z_stiff_mass = rho * c**2 / (1j*omega*volume) + 1j*omega*rho*(l_ap+np.sum(delta_l))
+        delta_l_in_out = ap.inner_end_correction + ap.outer_end_correction
+      
+        self.z_stiff_mass = rho * c**2 / (1j*omega*volume) + 1j*omega*rho*(l_ap+delta_l_in_out)
 
     def calc_z_friction(self):
         """
         calculate the real-valued viscosity loss
         """        
         ap = self.resonator.aperture
+        # TODO: what if no radius is given (slit)? can i just use area / pi instead of r**2?
         r = ap.radius
         rho = self.sim_params.medium.density
         v = self.sim_params.medium.kinematic_viscosity

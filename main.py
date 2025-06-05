@@ -19,7 +19,8 @@ if __name__ == '__main__':
     form = 'cuboid'
 
     geom = Geometry(form, x=l, y=b, z=h)
-    ap = Aperture('round', 0.05, 0.02)
+    # ap = Aperture('tube', 0.05, 0.02)
+    ap = Aperture('slit', 0.001, 0.5, width=0.02, height=0.5)
     resonator = Resonator(geom, ap)
 
     # specify simulation parameters
@@ -27,7 +28,7 @@ if __name__ == '__main__':
     rel_humidity = 0.6
 
     medium = Medium(temp, rel_humidity=rel_humidity)
-    sim_params = SimulationParameters(medium, values_per_octave=50)
+    sim_params = SimulationParameters(medium, values_per_octave=5)
 
     # run simulation
     simulation = Simulation(resonator=resonator, sim_params=sim_params)
