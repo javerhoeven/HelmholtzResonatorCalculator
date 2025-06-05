@@ -125,7 +125,19 @@ class Simulation():
         else:
             # for diffuse sound 
             self.absorbtion_area = 2 * (np.real(z_reso) / (np.abs(z_reso + z_rad)**2) * (2*rho*c / np.cos(0)))
+
+    def resonance_frequency(self) -> float:
+        """returns the resonance frequency
+        calculated as minimum of the absorbtion area
+
+        Returns:
+            float: resonance frequency
+        """
+        # check if absorbtion area exists
+        if self.absorbtion_area is None:
+            self.calc_absorbtion_area()
         
+        return self.sim_params.frequencies[np.argmin(self.absorbtion_area)]
     def plot_absorbtion_area(self):
         """
         Plots the absorbtion area over the frequency
