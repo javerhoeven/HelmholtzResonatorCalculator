@@ -4,17 +4,30 @@ class Medium():
 
     def __init__(self,
                  temperature : float = 20., # in C
-                 rel_humidity : float = 0.5):
+                 rel_humidity : float = 0.5,
+                 density : float = None,
+                 speed_of_sound : float = None):
         
         # TODO: check if rel_humidity is in range, temperature makes sense
         self.temperature_celsius = temperature
         self.temperature_kelvin = self.temperature_celsius + 273.15
         self.rel_humidity = rel_humidity
-        self.calc_density()
-        self.calc_speed_of_sound()
+        
+        # check if optional input parameters are given
+        if density is None:
+            self.calc_density()
+        else:
+            self.density = density
+
+        if speed_of_sound is None:
+            self.calc_speed_of_sound()
+        else:
+            self.c = speed_of_sound
+
         self.calc_kinematic_viscosity()
         
 
+    # TODO: add these to overleaf
 
     def calc_density(self):
         # constants

@@ -44,9 +44,7 @@ class Simulation():
         """
         calculates complex, frequency-dependant acoustic radiation impedance ("Schallstrahlungsimpedanz")
         """
-        # TODO: add check if kR < 0.5
         
-        # but then i need R again 
         ap = self.resonator.aperture
         med = self.sim_params.medium
         rho = med.density

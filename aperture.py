@@ -84,8 +84,3 @@ class Aperture():
         delta_l_a =  2/(3*pi) * (beta + (1- (1+beta**2)**(3/2)) / beta**2 ) + (2/pi) * (1/beta * np.log(beta+np.sqrt(1+beta**2)) + np.log(1/beta*(1+np.sqrt(1+beta**2))))
         delta_l = delta_l_a * a
         return delta_l
-
-
-
-
-
