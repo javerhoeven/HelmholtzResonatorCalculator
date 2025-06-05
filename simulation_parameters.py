@@ -4,7 +4,7 @@ from medium import Medium
 class SimulationParameters():
     def __init__(self,
                  medium : Medium,
-                 freq_range : tuple = (20, 20e3), # (low, high)
+                 freq_range : tuple = (20, 1e3), # (low, high)
                  values_per_octave : int = 100, # frequency resolution
                  angle_of_incidence : float = None):
         

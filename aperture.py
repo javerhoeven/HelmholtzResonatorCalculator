@@ -26,7 +26,6 @@ class Aperture():
             xi (float, optional): length-specific flow resistance of the dampening material . Defaults to None.
             amount (int, optional): number of apertures. all apertures must have same sizes. Defaults to 1.
         """
-        # TODO: does not do anything currently
         self.form = form
         self.length = length
         self.radius = radius

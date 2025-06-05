@@ -12,7 +12,7 @@ class Medium():
         self.temperature_celsius = temperature
         self.temperature_kelvin = self.temperature_celsius + 273.15
         self.rel_humidity = rel_humidity
-        
+
         # check if optional input parameters are given
         if density is None:
             self.calc_density()
@@ -31,15 +31,27 @@ class Medium():
 
     def calc_density(self):
         # constants
-        p = 1013.15 # atmospheric pressure
+        p = 1013.15 * 100 # atmospheric pressure in Pa
         R_s = 287.1 # specific gas constant for dry air
         R_d = 461.5 # specific gas constant for wator vapor
         T = self.temperature_kelvin
         phi = self.rel_humidity
 
-        p_d = 6.112 * np.exp(17.62*T/(243.12 + T)) # vapor pressure according to wikipedia, valid between -45 and 60 °
-        R_f = R_s / (1-phi*(p_d / p) * (1-(R_s/R_d))) # gas constant considering air humidity
-        rho = p / (R_f*T) # density
+        # wiki approach
+        # p_d = 6.112 * np.exp(17.62*T/(243.12 + T)) # vapor pressure according to wikipedia, valid between -45 and 60 °
+        # R_f = R_s / (1-phi*(p_d / p) * (1-(R_s/R_d))) # gas constant considering air humidity
+        # rho = p / (R_f*T) # density
+
+        # TODO: check
+        # GPT approach
+        R_d = 287.05 # specific gas constant for dry air
+        R_v = 461.5 # specific gas constant for water vapor
+
+        p_sat = 6.112 * np.exp(17.62 * T / (243.12 * T)) * 100
+        p_v = phi * p_sat
+
+        rho = (p - p_v) / (R_d * T) + p_v / (R_v * T)
+
         self.density = rho
 
     def calc_speed_of_sound(self):

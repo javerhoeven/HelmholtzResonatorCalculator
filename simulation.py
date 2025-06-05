@@ -19,10 +19,6 @@ class Simulation():
         self.absorbtion_area : np.array = None
 
         
-
-    def run(self):
-        pass
-
     def calc_z_porous(self):
         """
         calculates the real, frequency-invariant porous absorbtion 
@@ -70,17 +66,19 @@ class Simulation():
         """
         calculates impedance based on acoustic stiffness and mass.
         becomes zero at resonance frequency
+
         """
 
         ap = self.resonator.aperture
         rho = self.sim_params.medium.density
         c = self.sim_params.medium.c
+        S = ap.area
         omega = self.sim_params.omega
         volume = self.resonator.geometry.volume
         l_ap = ap.length
         delta_l_in_out = ap.inner_end_correction + ap.outer_end_correction
       
-        self.z_stiff_mass = rho * c**2 / (1j*omega*volume) + 1j*omega*rho*(l_ap+delta_l_in_out)
+        self.z_stiff_mass = rho * c**2 / (1j*omega*volume) + 1j*omega*rho*(l_ap+delta_l_in_out) / S
 
     def calc_z_friction(self):
         """
@@ -128,7 +126,7 @@ class Simulation():
 
     def resonance_frequency(self) -> float:
         """returns the resonance frequency
-        calculated as minimum of the absorbtion area
+        calculated as maximum of the absorbtion area
 
         Returns:
             float: resonance frequency
@@ -137,7 +135,7 @@ class Simulation():
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
         
-        return self.sim_params.frequencies[np.argmin(self.absorbtion_area)]
+        return self.sim_params.frequencies[np.argmax(self.absorbtion_area)]
     def plot_absorbtion_area(self):
         """
         Plots the absorbtion area over the frequency
