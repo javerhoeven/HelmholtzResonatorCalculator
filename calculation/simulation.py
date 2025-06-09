@@ -135,7 +135,9 @@ class Simulation():
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
         
-        return self.sim_params.frequencies[np.argmax(self.absorbtion_area)]
+        f_res = self.sim_params.frequencies[np.argmax(self.absorbtion_area)]
+        print(f'Resonance Frequency at {f_res}')
+        return f_res
     def plot_absorbtion_area(self):
         """
         Plots the absorbtion area over the frequency

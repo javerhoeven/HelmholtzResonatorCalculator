@@ -27,23 +27,17 @@ class Medium():
         self.calc_kinematic_viscosity()
         
 
-    # TODO: add these to overleaf
 
     def calc_density(self):
+        """calculate density based on Magnus equation. 
+        Depends on relative humidity and temperature
+        """
         # constants
         p = 1013.15 * 100 # atmospheric pressure in Pa
-        R_s = 287.1 # specific gas constant for dry air
-        R_d = 461.5 # specific gas constant for wator vapor
+       
         T = self.temperature_kelvin
         phi = self.rel_humidity
 
-        # wiki approach
-        # p_d = 6.112 * np.exp(17.62*T/(243.12 + T)) # vapor pressure according to wikipedia, valid between -45 and 60 °
-        # R_f = R_s / (1-phi*(p_d / p) * (1-(R_s/R_d))) # gas constant considering air humidity
-        # rho = p / (R_f*T) # density
-
-        # TODO: check
-        # GPT approach
         R_d = 287.05 # specific gas constant for dry air
         R_v = 461.5 # specific gas constant for water vapor
 
@@ -58,7 +52,7 @@ class Medium():
         """This is an approximation according to 9613-1:1993"""
         self.c = 331.3 + 0.606 * self.temperature_celsius + 0.0124 * self.rel_humidity
 
-    def calc_kinematic_viscosity(self):
+    def calc_kinematic_viscosity(self): 
         """
         calculation based on sutherland's formula [GPT]
         """

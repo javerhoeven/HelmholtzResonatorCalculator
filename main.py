@@ -1,11 +1,4 @@
-from simulation import Simulation
-from geometry import Geometry
-from aperture import Aperture
-from simulation_parameters import SimulationParameters
-from simulation import Simulation
-from resonator import Resonator
-from medium import Medium
-
+from calculation import Aperture, Geometry, Medium, Resonator, SimulationParameters, Simulation 
 
 if __name__ == '__main__':
     """
