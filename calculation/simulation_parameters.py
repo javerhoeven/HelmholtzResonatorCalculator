@@ -1,5 +1,5 @@
 import numpy as np
-from medium import Medium
+from .medium import Medium
 
 class SimulationParameters():
     def __init__(self,

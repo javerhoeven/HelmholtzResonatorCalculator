@@ -26,7 +26,3 @@ if __name__ == '__main__':
     # run simulation
     simulation = Simulation(resonator=resonator, sim_params=sim_params)
     simulation.plot_absorbtion_area()
-
-
-
-

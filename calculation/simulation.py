@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
-
-from simulation_parameters import SimulationParameters
-from resonator import Resonator
 import numpy as np
+from .simulation_parameters import SimulationParameters
+from .resonator import Resonator
 
 class Simulation():
     def __init__(self,
