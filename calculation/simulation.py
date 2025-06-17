@@ -82,17 +82,22 @@ class Simulation():
     def calc_z_friction(self):
         """
         calculate the real-valued viscosity loss
-        """        
+        """   
         ap = self.resonator.aperture
         # TODO: what if no radius is given (slit)? can i just use area / pi instead of r**2?
+        k = self.k 
         r = ap.radius
         rho = self.sim_params.medium.density
         v = self.sim_params.medium.kinematic_viscosity
         l_ap = ap.length
         S = ap.area
+        # TODO: move this test to a separate validation test
+        limit = np.argwhere(k*r < 0.5)[-1] 
+        print(f"k*r << 1 (k*r < 0.1) condition is met until {f[limit]} Hz.")
+        print("Adjusting z_friction according to the condition. ")
 
         z_friction = 8 * v * rho / r**2 * l_ap / S
-        # TODO: add Z_porous here?
+        z_friction[limit:] = 0 # set to zero for frequencies above kr<0.1
         self.z_friction = z_friction
         
 
@@ -105,6 +110,8 @@ class Simulation():
         self.calc_z_radiation()
         self.calc_z_stiff_mass()
         self.calc_z_friction()
+
+
 
         z_reso = self.z_friction + self.z_porous + self.z_stiff_mass
         z_rad = self.z_radiation
@@ -137,15 +144,102 @@ class Simulation():
         f_res = self.sim_params.frequencies[np.argmax(self.absorbtion_area)]
         print(f'Resonance Frequency at {f_res}')
         return f_res
+    
+    
+    
     def plot_absorbtion_area(self):
         """
         Plots the absorbtion area over the frequency
         """
-        # TODO: make it look nice
 
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
         plt.semilogx(self.sim_params.frequencies, self.absorbtion_area)
+        # plt.axvline(self.resonance_frequency(), linestyle=':')
         plt.grid()
         plt.title("Absorbtion area of Helmholtz Resonator")
-        plt.show()
+        plt.ylabel(f"Absorbtion area / m$^2$")
+        plt.xlabel("Frequency / Hz")
+        # plt.show()
+
+    def plot_volume(self, center=(0, 0, 0), color='cyan', alpha=0.6, edge_color='black'):
+        from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+
+        """
+        plots the volume and the front face with the aperture
+        """
+        form = self.resonator.geometry.form
+
+        fig = plt.figure(figsize=(8, 8))
+        ax = fig.add_subplot(111, projection='3d')
+
+        if form == 'cylinder':
+            print("printing cylinders is not yet available!")
+            pass
+
+            
+        elif form == 'cuboid':
+
+            geom = self.resonator.geometry
+            # Calculate half lengths for easier vertex definition
+            hx = geom.x / 2
+            hy = geom.y / 2
+            hz = geom.z / 2
+
+            # Define the 8 vertices of the cuboid relative to its center
+            x_c, y_c, z_c = center
+            vertices = np.array([
+                [x_c - hx, y_c - hy, z_c - hz],  # 0
+                [x_c + hx, y_c - hy, z_c - hz],  # 1
+                [x_c + hx, y_c + hy, z_c - hz],  # 2
+                [x_c - hx, y_c + hy, z_c - hz],  # 3
+                [x_c - hx, y_c - hy, z_c + hz],  # 4
+                [x_c + hx, y_c - hy, z_c + hz],  # 5
+                [x_c + hx, y_c + hy, z_c + hz],  # 6
+                [x_c - hx, y_c + hy, z_c + hz]   # 7
+            ])
+
+            # Define the 6 faces of the cuboid using vertex indices
+            faces = [
+                [vertices[0], vertices[1], vertices[2], vertices[3]], # Bottom face
+                [vertices[4], vertices[5], vertices[6], vertices[7]], # Top face
+                [vertices[0], vertices[1], vertices[5], vertices[4]], # Front face
+                [vertices[2], vertices[3], vertices[7], vertices[6]], # Back face
+                [vertices[0], vertices[3], vertices[7], vertices[4]], # Left face
+                [vertices[1], vertices[2], vertices[6], vertices[5]]  # Right face
+            ]
+
+            ax.add_collection3d(Poly3DCollection(faces, facecolors=color, linewidths=1, edgecolors=edge_color, alpha=alpha))
+            
+            # Set limits for the axes
+            ax.set_xlim([x_c - geom.x, x_c + geom.x])
+            ax.set_ylim([y_c - geom.y, y_c + geom.y])
+            ax.set_zlim([z_c - geom.z, z_c + geom.z])
+            
+            # Add labels
+            ax.set_xlabel('X-axis')
+            ax.set_ylabel('Y-axis')
+            ax.set_zlabel('Z-axis')
+
+            # # Define Apertures
+            # ap = self.resonator.aperture
+            # if ap.form == 'tube':
+
+
+            #     ap_pos = (x_c + hx, y_c, z_c) # shift x coordinate
+
+            #     phi = np.linspace(0, 2*np.pi, 100)
+            #     r = ap.radius
+            #     x = np.full_like(phi, ap_pos[0])
+            #     y = r * np.cos(phi) + ap_pos[1]
+            #     z = r * np.sin(phi) + ap_pos[2]
+
+            #     ax.plot(x, y, z, linewidth=1, color=edge_color)
+
+
+                
+            # else:
+            #     print("currently, only tubes can be drawn!")
+
+            
+            plt.show()

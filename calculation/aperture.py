@@ -23,8 +23,10 @@ class Aperture():
             inner_ending (str, optional): can be flange or open. Defaults to 'open'.
             outer_ending (str, optional): can be flange or open. Defaults to 'open'.
             additional_dampening (bool, optional): If additional dampening material is used in the aperture. Defaults to False.
-            xi (float, optional): length-specific flow resistance of the dampening material . Defaults to None.
+            xi (float, optional): length-specific flow resistance of the dampening material in Pas / m^2. Defaults to None.
             amount (int, optional): number of apertures. all apertures must have same sizes. Defaults to 1.
+            width (float, optional): slit width
+            height (float, optional): slit height
         """
         self.form = form
         self.length = length
@@ -34,15 +36,19 @@ class Aperture():
         self.additional_dampening = additional_dampening
         self.amount = amount
         self.xi = xi
+        self.width = width
+        self.height = height
 
         if form == 'slit':
             # TODO: check if all values are available
-            self.area = width*height*amount
+            self.area = self.width*self.height*self.amount
             self.radius = np.sqrt(self.area/pi)
             
             end_correction = self.get_slit_end_correction(width, height)
             self.inner_end_correction = end_correction
             self.outer_end_correction = end_correction
+            self.radius = 0.5 * width 
+
 
         elif form == 'tube':
             self.area = pi * self.radius**2 * amount
@@ -64,7 +70,8 @@ class Aperture():
 
     
     def get_slit_end_correction(self, x : float, y : float) -> float:
-        """Calculates the end correction after the 
+        """
+        Calculates the end correction after the 
         equation given in Mechel's "Formulas of Acoustics", p. 319 
 
         Args:
