@@ -13,9 +13,11 @@ class Simulation():
         self.z_porous : float
         self.z_radiation : np.array
         self.z_stiff_mass : np.array
-        self.z_friction : float
+        self.z_friction : np.array
         self.k = self.sim_params.omega / self.sim_params.medium.c
         self.absorbtion_area : np.array = None
+        self.absorbtion_area_diffuse : np.array = None
+        self.max_absorbtion_area : np.array = None
 
         
     def calc_z_porous(self):
@@ -84,21 +86,22 @@ class Simulation():
         calculate the real-valued viscosity loss
         """   
         ap = self.resonator.aperture
-        # TODO: what if no radius is given (slit)? can i just use area / pi instead of r**2?
         k = self.k 
         r = ap.radius
         rho = self.sim_params.medium.density
         v = self.sim_params.medium.kinematic_viscosity
+        f = self.sim_params.frequencies
         l_ap = ap.length
         S = ap.area
         # TODO: move this test to a separate validation test
-        limit = np.argwhere(k*r < 0.5)[-1] 
+        limit = np.argwhere(k*r < 0.5)[-1, -1] 
         print(f"k*r << 1 (k*r < 0.1) condition is met until {f[limit]} Hz.")
         print("Adjusting z_friction according to the condition. ")
 
         z_friction = 8 * v * rho / r**2 * l_ap / S
-        z_friction[limit:] = 0 # set to zero for frequencies above kr<0.1
-        self.z_friction = z_friction
+        z_friction_arr = np.full_like(f, z_friction)
+        z_friction_arr[limit+1:] = 0 # set to zero for frequencies above kr<0.1
+        self.z_friction = z_friction_arr
         
 
     def calc_absorbtion_area(self):
@@ -122,11 +125,12 @@ class Simulation():
 
         diffuse = self.sim_params.assume_diffuse
 
+        # TODO: fix that logic --> should be two separate attributes for theta and diffuse
         if diffuse is False:
             # for specific angle of incidence theta
             self.absorbtion_area = np.real(z_reso) / (np.abs(z_reso + z_rad)**2) * (2*rho*c / np.cos(theta))
-
         else:
+        
             # for diffuse sound 
             self.absorbtion_area = 2 * (np.real(z_reso) / (np.abs(z_reso + z_rad)**2) * (2*rho*c / np.cos(0)))
 
@@ -145,8 +149,14 @@ class Simulation():
         print(f'Resonance Frequency at {f_res}')
         return f_res
     
-    
-    
+    def calc_max_absorbtion_area(self, plot : bool = True):
+        max_absorbtion_area = self.sim_params._lambda**2/(2*np.pi)
+        self.max_absorbtion_area = max_absorbtion_area
+        if plot:
+            plt.semilogx(self.sim_params.frequencies, max_absorbtion_area, linestyle=':')
+            plt.grid()
+            plt.title("maximum absorbtion area")
+            plt.show()
     def plot_absorbtion_area(self):
         """
         Plots the absorbtion area over the frequency
@@ -154,13 +164,14 @@ class Simulation():
 
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
+
         plt.semilogx(self.sim_params.frequencies, self.absorbtion_area)
         # plt.axvline(self.resonance_frequency(), linestyle=':')
         plt.grid()
         plt.title("Absorbtion area of Helmholtz Resonator")
         plt.ylabel(f"Absorbtion area / m$^2$")
         plt.xlabel("Frequency / Hz")
-        # plt.show()
+        plt.show()
 
     def plot_volume(self, center=(0, 0, 0), color='cyan', alpha=0.6, edge_color='black'):
         from mpl_toolkits.mplot3d.art3d import Poly3DCollection

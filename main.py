@@ -30,9 +30,9 @@ if __name__ == '__main__':
 
     # generate resonator
     geom = Geometry('cuboid', x=.5, y=.3, z=.2)
-    geom = Geometry('cuboid', x=1., y=.6, z=.4)
+    # geom = Geometry('cuboid', x=1., y=.6, z=.4)
 
-    ap = Aperture('tube', 0.05, 0.02)
+    ap = Aperture('tube', 0.05, 0.05)
     # ap = Aperture('tube', 0.05, 0.02, additional_dampening=True, xi=12)
     # ap = Aperture('slit', 0.01, 0.5, width=0.02, height=0.5)
     resonator = Resonator(geom, ap)
@@ -48,6 +48,8 @@ if __name__ == '__main__':
     simulation = Simulation(resonator=resonator, sim_params=sim_params)
     simulation.plot_absorbtion_area()
     print(simulation.resonance_frequency())
+    simulation.calc_max_absorbtion_area(plot=True)
+
     # simulation.plot_volume()
 
 
