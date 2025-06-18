@@ -157,6 +157,7 @@ class Simulation():
             plt.grid()
             plt.title("maximum absorbtion area")
             plt.show()
+            
     def plot_absorbtion_area(self):
         """
         Plots the absorbtion area over the frequency
