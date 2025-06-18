@@ -18,6 +18,7 @@ class Simulation():
         self.absorbtion_area : np.array = None
         self.absorbtion_area_diffuse : np.array = None
         self.max_absorbtion_area : np.array = None
+        self.q_factor : float = None
 
         
     def calc_z_porous(self):
@@ -149,6 +150,52 @@ class Simulation():
         print(f'Resonance Frequency at {f_res}')
         return f_res
     
+    def calc_q_factor(self) -> float:
+        """
+        calculates absorbtion area's Q factor
+
+        Returns:
+            float: Q-Factor
+        """
+        from scipy.signal import find_peaks
+        from scipy.interpolate import interp1d
+
+        # check if absorbtion area exists
+        if self.absorbtion_area is None:
+            self.calc_absorbtion_area()
+
+        curve = self.absorbtion_area
+        freqs = self.sim_params.frequencies
+        peak_idx = np.argmax(curve)
+        f_res = freqs[peak_idx]
+        peak = curve[peak_idx]
+
+        half_peak = peak / 2
+        # even with with resolution interpolation is needed
+        diff = curve - half_peak
+        sign_change_idc = np.where(np.diff(np.sign(diff)))[0]
+        i1 = sign_change_idc[0]
+        i2 = sign_change_idc[1]
+
+        # f1
+        x0, x1 = freqs[i1], freqs[i1+1]
+        y0, y1 = diff[i1], diff[i1+1]
+        f1 = x0 - y0 * (x1 - x0) / (y1 - y0) # linear interpolation
+
+        # f2
+        x0, x1 = freqs[i2], freqs[i2+1]
+        y0, y1 = diff[i2], diff[i2+1]
+        f2 = x0 - y0 * (x1 - x0) / (y1 - y0) # linear interpolation
+
+        bandwidth = f2-f1
+        q_factor = f_res / bandwidth
+
+        self.q_factor = q_factor
+        return q_factor
+
+
+
+    
     def calc_max_absorbtion_area(self, plot : bool = True):
         max_absorbtion_area = self.sim_params._lambda**2/(2*np.pi)
         self.max_absorbtion_area = max_absorbtion_area
@@ -157,7 +204,7 @@ class Simulation():
             plt.grid()
             plt.title("maximum absorbtion area")
             plt.show()
-            
+
     def plot_absorbtion_area(self):
         """
         Plots the absorbtion area over the frequency
