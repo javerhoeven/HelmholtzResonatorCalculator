@@ -19,6 +19,7 @@ class Simulation():
         self.absorbtion_area_diffuse : np.array = None
         self.max_absorbtion_area : np.array = None
         self.q_factor : float = None
+        self.peak_absorbtion_area : float = None
 
         
     def calc_z_porous(self):
@@ -115,8 +116,6 @@ class Simulation():
         self.calc_z_stiff_mass()
         self.calc_z_friction()
 
-
-
         z_reso = self.z_friction + self.z_porous + self.z_stiff_mass
         z_rad = self.z_radiation
 
@@ -146,7 +145,9 @@ class Simulation():
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
         
-        f_res = self.sim_params.frequencies[np.argmax(self.absorbtion_area)]
+        peak_idx = np.argmax(self.absorbtion_area)
+        self.peak_absorbtion_area = self.absorbtion_area[peak_idx]
+        f_res = self.sim_params.frequencies[peak_idx]
         print(f'Resonance Frequency at {f_res}')
         return f_res
     
@@ -176,7 +177,8 @@ class Simulation():
             i1 = sign_change_idc[0]
             i2 = sign_change_idc[1]
         except IndexError:
-            raise ValueError("-3 dB point out of frequency range. Cannot calculate Q factor.")
+            print("-3 dB point out of frequency range. Cannot calculate Q factor.")
+            return None
 
         # f1
         x0, x1 = freqs[i1], freqs[i1+1]
@@ -210,16 +212,18 @@ class Simulation():
         """
         Plots the absorbtion area over the frequency
         """
+        from matplotlib.ticker import MultipleLocator
 
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
-
-        plt.semilogx(self.sim_params.frequencies, self.absorbtion_area)
-        # plt.axvline(self.resonance_frequency(), linestyle=':')
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.semilogx(self.sim_params.frequencies, self.absorbtion_area)
+        # xticks = list(range(20, 101, 10)) + list(range(200, 1001, 100))
+        # ax.set_xticks(xticks)
         plt.grid()
         plt.title("Absorbtion area of Helmholtz Resonator")
-        plt.ylabel(f"Absorbtion area / m$^2$")
-        plt.xlabel("Frequency / Hz")
+        ax.set_ylabel(f"Absorbtion area / m$^2$")
+        ax.set_xlabel("Frequency / Hz")
         plt.show()
 
     def to_dict(self):
