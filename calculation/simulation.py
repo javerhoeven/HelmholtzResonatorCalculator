@@ -172,8 +172,11 @@ class Simulation():
         # even with with resolution interpolation is needed
         diff = curve - half_peak
         sign_change_idc = np.where(np.diff(np.sign(diff)))[0]
-        i1 = sign_change_idc[0]
-        i2 = sign_change_idc[1]
+        try:
+            i1 = sign_change_idc[0]
+            i2 = sign_change_idc[1]
+        except IndexError:
+            raise ValueError("-3 dB point out of frequency range. Cannot calculate Q factor.")
 
         # f1
         x0, x1 = freqs[i1], freqs[i1+1]
