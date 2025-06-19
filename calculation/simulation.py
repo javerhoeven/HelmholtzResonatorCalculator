@@ -157,8 +157,6 @@ class Simulation():
         Returns:
             float: Q-Factor
         """
-        from scipy.signal import find_peaks
-        from scipy.interpolate import interp1d
 
         # check if absorbtion area exists
         if self.absorbtion_area is None:
@@ -220,6 +218,41 @@ class Simulation():
         plt.ylabel(f"Absorbtion area / m$^2$")
         plt.xlabel("Frequency / Hz")
         plt.show()
+
+    def to_dict(self):
+        """Convert the simulation results to a dictionary representation."""
+        return {
+            "resonator": self.resonator.to_dict(),
+            "simulation_parameters": self.sim_params.to_dict(),
+            "z_porous": self.z_porous,
+            "z_radiation_real": np.real(self.z_radiation).tolist(),
+            "z_radiation_imag": np.imag(self.z_radiation).tolist(),
+            "z_stiff_mass_real": np.real(self.z_stiff_mass).tolist(),
+            "z_stiff_mass_imag": np.imag(self.z_stiff_mass).tolist(),
+            "z_friction_real": np.real(self.z_friction).tolist(),
+            "z_friction_imag": np.imag(self.z_friction).tolist(),
+
+            "absorbtion_area": self.absorbtion_area.tolist() if self.absorbtion_area is not None else None,
+            "max_absorbtion_area": self.max_absorbtion_area.tolist() if self.max_absorbtion_area is not None else None,
+            "q_factor": self.q_factor
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        """Creates a Simulation instance from a dictionary"""
+        resonator = Resonator.from_dict(data['resonator'])
+        sim_params = SimulationParameters.from_dict(data['simulation_parameters'])
+        
+        sim = cls(resonator=resonator, sim_params=sim_params)
+        sim.z_porous = data['z_porous']
+        sim.z_radiation = np.array(data['z_radiation_real']) + 1j * np.array(data['z_radiation_imag'])
+        sim.z_stiff_mass = np.array(data['z_stiff_mass_real']) + 1j * np.array(data['z_stiff_mass_imag'])
+        sim.z_friction = np.array(data['z_friction_real']) + 1j * np.array(data['z_friction_imag'])
+        sim.absorbtion_area = np.array(data['absorbtion_area']) if data['absorbtion_area'] is not None else None
+        sim.max_absorbtion_area = np.array(data['max_absorbtion_area']) if data['max_absorbtion_area'] is not None else None
+        sim.q_factor = data.get('q_factor', None)
+
+        return sim
 
     def plot_volume(self, center=(0, 0, 0), color='cyan', alpha=0.6, edge_color='black'):
         from mpl_toolkits.mplot3d.art3d import Poly3DCollection

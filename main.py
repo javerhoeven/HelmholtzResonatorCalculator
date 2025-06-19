@@ -1,10 +1,11 @@
-from calculation import Aperture, Geometry, Medium, Resonator, SimulationParameters, Simulation 
 from app_control import forward
-import numpy as np
-
+from io_tools import load_from_json
 
 
 if __name__ == '__main__':
    
-    forward({})
+    # forward({})
+
+    sim = load_from_json('simulation_result.json')
+    sim.plot_absorbtion_area()
 

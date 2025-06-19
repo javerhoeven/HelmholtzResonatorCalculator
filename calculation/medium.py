@@ -63,3 +63,23 @@ class Medium():
         mu = mu0 * ((T/T0) ** 1.5) * ((T0 + C) / (T + C))
         self.kinematic_viscosity = mu / self.density
 
+    def to_dict(self):
+        """Convert the medium properties to a dictionary representation."""
+        return {
+            "temperature_celsius": self.temperature_celsius,
+            "temperature_kelvin": self.temperature_kelvin,
+            "rel_humidity": self.rel_humidity,
+            "density": self.density,
+            "speed_of_sound": self.c,
+            "kinematic_viscosity": self.kinematic_viscosity
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        """Creates a Medium instance from a dictionary"""
+        return cls(
+            temperature=data['temperature_celsius'],
+            rel_humidity=data['rel_humidity'],
+            density=data.get('density'),
+            speed_of_sound=data.get('speed_of_sound')
+        )

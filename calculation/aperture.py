@@ -90,3 +90,34 @@ class Aperture():
         delta_l_a =  2/(3*pi) * (beta + (1- (1+beta**2)**(3/2)) / beta**2 ) + (2/pi) * (1/beta * np.log(beta+np.sqrt(1+beta**2)) + np.log(1/beta*(1+np.sqrt(1+beta**2))))
         delta_l = delta_l_a * a
         return delta_l
+    
+    def to_dict(self):
+        """Returns the aperture as a dictionary"""
+        return {
+            'form': self.form,
+            'length': self.length,
+            'radius': self.radius,
+            'inner_ending': self.inner_ending,
+            'outer_ending': self.outer_ending,
+            'additional_dampening': self.additional_dampening,
+            'xi': self.xi,
+            'amount': self.amount,
+            'width': self.width,
+            'height': self.height
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        """Creates an Aperture instance from a dictionary"""
+        return cls(
+            form=data['form'],
+            length=data['length'],
+            radius=data['radius'],
+            inner_ending=data.get('inner_ending', 'open'),
+            outer_ending=data.get('outer_ending', 'flange'),
+            additional_dampening=data.get('additional_dampening', False),
+            xi=data.get('xi', None),
+            amount=data.get('amount', 1),
+            width=data.get('width', None),
+            height=data.get('height', None)
+        )

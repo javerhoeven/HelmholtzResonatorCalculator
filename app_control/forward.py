@@ -1,4 +1,5 @@
 from calculation import Aperture, Geometry, Medium, Resonator, SimulationParameters, Simulation 
+from io_tools import save_to_json
 
 def forward(parameters : dict):
     """    
@@ -34,3 +35,5 @@ def forward(parameters : dict):
     # print(simulation.resonance_frequency())
     # simulation.calc_max_absorbtion_area(plot=True)
     simulation.calc_q_factor()
+    save_to_json(simulation, 'simulation_result.json')
+    
