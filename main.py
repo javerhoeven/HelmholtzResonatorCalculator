@@ -50,11 +50,11 @@ class MainWindow(QMainWindow):
 
 # --- Hauptprogramm ---
 if __name__ == '__main__':
-    import sys 
-    app = QApplication(sys.argv) 
-    win = MainWindow()
-    win.show()
-    sys.exit(app.exec())
+    # import sys 
+    # app = QApplication(sys.argv) 
+    # win = MainWindow()
+    # win.show()
+    # sys.exit(app.exec())
 #    for example in examples:
 #        print(f"Running example {example}")
 #        simulation = load_example(example)
@@ -62,4 +62,4 @@ if __name__ == '__main__':
 #        simulation.calc_q_factor()
 
 
-    inverse(83, 100)
+    inverse(141, 2)

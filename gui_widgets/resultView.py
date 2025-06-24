@@ -1,5 +1,4 @@
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-                             QPushButton, QLabel, QDoubleSpinBox, QComboBox, QFileDialog, QMessageBox)
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel,  QComboBox
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
@@ -13,10 +12,13 @@ class ResultView(QWidget):
         super().__init__()
         layout = QVBoxLayout()
         self.label_f0 = QLabel("Resonanzfrequenz: - Hz")
-        self.canvas = FigureCanvas(Figure()); self.ax = self.canvas.figure.add_subplot(111)
+        self.canvas = FigureCanvas(Figure())
+        self.ax = self.canvas.figure.add_subplot(111)
         self.toolbar = NavigationToolbar(self.canvas, self)
-        self.combo_x = QComboBox(); self.combo_x.addItems(["Frequenz [Hz]", "Temperatur [°C]"])
-        self.combo_y = QComboBox(); self.combo_y.addItems(["Absorptionsgrad", "Impedanz", "Schallgeschwindigkeit"])
+        self.combo_x = QComboBox()
+        self.combo_x.addItems(["Frequenz [Hz]", "Temperatur [°C]"])
+        self.combo_y = QComboBox()
+        self.combo_y.addItems(["Absorptionsgrad", "Impedanz", "Schallgeschwindigkeit"])
 
         layout.addWidget(QLabel("X-Achse:")); layout.addWidget(self.combo_x)
         layout.addWidget(QLabel("Y-Achse:")); layout.addWidget(self.combo_y)

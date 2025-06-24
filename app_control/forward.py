@@ -35,5 +35,5 @@ def forward(parameters : dict):
     # print(simulation.resonance_frequency())
     # simulation.calc_max_absorbtion_area(plot=True)
     simulation.calc_q_factor()
-    save_to_json(simulation, 'simulation_result.json')
+    # save_to_json(simulation, 'simulation_result.json')
     

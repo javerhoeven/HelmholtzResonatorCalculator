@@ -19,6 +19,8 @@ class Simulation():
         self.absorbtion_area_diffuse : np.array = None
         self.max_absorbtion_area : np.array = None
         self.q_factor : float = None
+        self.f_q_low : float = None
+        self.f_q_high : float = None
         self.peak_absorbtion_area : float = None
 
         
@@ -96,13 +98,13 @@ class Simulation():
         l_ap = ap.length
         S = ap.area
         # TODO: move this test to a separate validation test
-        limit = np.argwhere(k*r < 0.5)[-1, -1] 
-        print(f"k*r << 1 (k*r < 0.1) condition is met until {f[limit]} Hz.")
+        limit = np.argwhere(k*r < 0.2)[-1, -1] 
+        print(f"k*r << 1 (k*r < 0.2) condition is met until {f[limit]} Hz.")
         print("Adjusting z_friction according to the condition. ")
 
         z_friction = 8 * v * rho / r**2 * l_ap / S
         z_friction_arr = np.full_like(f, z_friction)
-        z_friction_arr[limit+1:] = 0 # set to zero for frequencies above kr<0.1
+        z_friction_arr[limit+1:] = 0 # set to zero for frequencies above kr<0.2
         self.z_friction = z_friction_arr
         
 
@@ -193,10 +195,10 @@ class Simulation():
         bandwidth = f2-f1
         q_factor = f_res / bandwidth
 
+        self.f_q_low = f1
+        self.f_q_high = f2
         self.q_factor = q_factor
         return q_factor
-
-
 
     
     def calc_max_absorbtion_area(self, plot : bool = True):
@@ -216,14 +218,30 @@ class Simulation():
 
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
+        if self.q_factor is None:
+            self.calc_q_factor()
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.semilogx(self.sim_params.frequencies, self.absorbtion_area)
+        ax.axvline(self.f_q_low, linestyle=':') # -3 dB point left
+        ax.axvline(self.f_q_high, linestyle=':') # -3 dB point right
         # xticks = list(range(20, 101, 10)) + list(range(200, 1001, 100))
         # ax.set_xticks(xticks)
-        plt.grid()
         plt.title("Absorbtion area of Helmholtz Resonator")
         ax.set_ylabel(f"Absorbtion area / m$^2$")
         ax.set_xlabel("Frequency / Hz")
+
+        # ticks
+        # Define custom tick locations at 20, 30, ..., 100, 200, ...
+        custom_ticks = list(range(20, 101, 10)) + list(range(200, 501, 100))
+        ax.set_xticks(custom_ticks)
+
+        # Format ticks as plain numbers
+        # from matplotlib.ticker import ScalarFormatter
+        # ax.get_xaxis().set_major_formatter(ScalarFormatter())
+        # ax.tick_params(axis='x', which='major', labelrotation=45)
+
+        # Enable grid on both major and minor ticks
+        ax.grid(True, which='both', linestyle='--')
         plt.show()
 
     def to_dict(self):
