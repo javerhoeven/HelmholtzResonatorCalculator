@@ -1,2 +1,2 @@
 from .forward import forward
-from .inverse import inverse
+from .search_optimal import search_optimal
