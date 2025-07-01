@@ -1,38 +1,39 @@
+from traits.api import HasTraits, Instance, Tuple, Int, Float, Bool, Property, Array, cached_property
+from traitsui.api import View, Item, Group
 import numpy as np
-from .medium import Medium
+from medium import Medium  # Passe den Import ggf. an deinen Projekt-Ordner an!
 
-class SimulationParameters():
-    def __init__(self,
-                 medium : Medium,
-                 freq_range : tuple = (20, 500), # (low, high)
-                 values_per_octave : int = 100, # frequency resolution
-                 angle_of_incidence : float = None):
-        
-        # if angle is given, set to that angle
-        # else: assume diffus incidence
-        if angle_of_incidence is None:
-            self.assume_diffuse = True
-            self.angle_of_incidence = 0
-        else:
-            self.assume_diffuse = False
-            self.angle_of_incidence = angle_of_incidence
+class SimulationParameters(HasTraits):
+    medium = Instance(Medium)
+    freq_range = Tuple(Float(20.0), Float(500.0))
+    values_per_octave = Int(100)
+    angle_of_incidence = Float(0.0)
+    assume_diffuse = Bool(True)
 
-        self.medium = medium
+    frequencies = Array(dtype=float)
+    omega = Array(dtype=float)
+    k = Array(dtype=float)
+    wavelength = Array(dtype=float)
 
-        # calculate frequency vector with log spacing
-        self.f_min = freq_range[0]
-        self.f_max = freq_range[1]
-        n_octaves = np.log2(self.f_max / self.f_min)
-        n_freq_values = int(n_octaves * values_per_octave)
-        self.frequencies = np.logspace(np.log10(self.f_min), np.log10(self.f_max), num=n_freq_values)
-        
-        
-        
+    def __init__(self, **traits):
+        super().__init__(**traits)
+        self.update()
+
+    def update(self):
+        """Recalculate frequency vector and dependent parameters"""
+        if self.assume_diffuse:
+            self.angle_of_incidence = 0.0
+
+        self.calculate_frequencies()
         self.omega = self.calc_omega(self.frequencies)
-
-        # calculate wave number and wavelength
         self.k = self.calc_k(self.omega, self.medium.c)
-        self._lambda = self.calc_lambda(self.omega, self.medium.c)
+        self.wavelength = self.calc_lambda(self.omega, self.medium.c)
+
+    def calculate_frequencies(self):
+        f_min, f_max = self.freq_range
+        n_octaves = np.log2(f_max / f_min)
+        n_freq_values = int(n_octaves * self.values_per_octave)
+        self.frequencies = np.logspace(np.log10(f_min), np.log10(f_max), num=n_freq_values)
 
     def calc_omega(self, frequencies):
             """Calculate angular frequency from frequency vector."""
@@ -77,3 +78,24 @@ class SimulationParameters():
         params.assume_diffuse = assume_diffuse
         
         return params
+        
+        # TraitsUI View
+    traits_view = View(
+        Group(
+            Item('freq_range', label="Frequenzbereich (Hz)"),
+            Item('values_per_octave', label="Werte pro Oktave"),
+            Item('assume_diffuse', label="Diffuser Einfall?"),
+            Item('angle_of_incidence', label="Einfallswinkel (°)", enabled_when='not assume_diffuse'),
+        ),
+        title="Simulation Parameters",
+        buttons=['OK', 'Cancel'],
+        resizable=True
+    )
+
+# Beispiel GUI starten
+if __name__ == "__main__":
+    # Beispiel-Medium
+    air = Medium()
+    sim_params = SimulationParameters(medium=air)
+    sim_params.configure_traits()
+    sim_params.update()
