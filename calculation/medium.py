@@ -1,4 +1,4 @@
-from traits.api import HasTraits, Float, Range, TraitError
+from traits.api import HasTraits, Float, Range, TraitError, Union
 from traitsui.api import View, Item, Group
 import numpy as np
 
@@ -7,8 +7,8 @@ class Medium(HasTraits):
     temperature_celsius = Range(-50.0, 60.0, 20.0)  # Raumtemperaturbereich
     rel_humidity = Range(0.0, 1.0, 0.5)  # Prozent als Dezimalwert (0 bis 1)
 
-    density = Float(None, allow_none=True)  # kg/m³
-    speed_of_sound = Float(None, allow_none=True)  # m/s
+    density = Union(None, Float(min=0.0), value=None)  # kg/m³
+    speed_of_sound = Union(None, Float(min=0.0)) # m/s
 
     # --- Automatisch berechnete Eigenschaften ---
     temperature_kelvin = Float

@@ -147,8 +147,8 @@ class InputForm(QWidget):
         if self.combo_shape.currentText() == "Cylinder":
             geometry = {
                 'shape': 'cylinder',
-                'r': self.spin_r.value(),
-                'h': self.spin_h.value()
+                'radius': self.spin_r.value(),
+                'height': self.spin_h.value()
             }
         else:
             geometry = {
@@ -185,7 +185,7 @@ class InputForm(QWidget):
         # --- Environmental Conditions ---
         conditions = {
             'temperature': self.spin_T.value(),
-            'humidity': self.spin_H.value()
+            'humidity': self.spin_H.value() / 100.0  # Umwandlung von Prozent in Dezimalwert
         }
 
         # --- Plot Settings ---

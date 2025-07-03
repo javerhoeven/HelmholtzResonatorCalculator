@@ -21,10 +21,16 @@ class Simulation():
         self.q_factor : float = None
         self.f_q_low : float = None
         self.f_q_high : float = None
+        self.f_resonance : float = None
         self.peak_absorbtion_area : float = None
 
+    def calc_all(self):
+        self.calc_absorbtion_area()
+        self.calc_resonance_frequency_and_peak_area()
+        self.calc_q_factor()
+
         
-    def calc_z_porous(self):
+    def calc_z_porous(self) -> np.array:
         """
         calculates the real, frequency-invariant porous absorbtion 
         in case additional dampening material is used
@@ -36,12 +42,13 @@ class Simulation():
             l_ap = ap.length
             xi = ap.xi
             self.z_porous = xi * l_ap / S
+            return self.z_porous
         else:
             self.z_porous = 0
             # TODO: raise Error without crashing the program
             # raise ValueError("Dampening is not enabled.")
 
-    def calc_z_radiation(self):
+    def calc_z_radiation(self) -> np.array:
         """
         calculates complex, frequency-dependant acoustic radiation impedance ("Schallstrahlungsimpedanz")
         """
@@ -62,12 +69,14 @@ class Simulation():
 
         if ap.outer_ending == 'open':
             self.z_radiation = rho * c * (k**2 * r**2 / (4*np.pi) + 1j * k * delta_l_out)
+            return self.z_radiation
         elif ap.outer_ending == 'flange':
             self.z_radiation = rho * c * (k**2 * r**2 / (2*np.pi) + 1j * k * delta_l_out)
+            return self.z_radiation
         else:
             raise ValueError("Invalid outer ending. Choose 'open' or 'flange'.")
         
-    def calc_z_stiff_mass(self):
+    def calc_z_stiff_mass(self) -> np.array:
         """
         calculates impedance based on acoustic stiffness and mass.
         becomes zero at resonance frequency
@@ -83,9 +92,11 @@ class Simulation():
         l_ap = ap.length
         delta_l_in_out = ap.inner_end_correction + ap.outer_end_correction
       
-        self.z_stiff_mass = rho * c**2 / (1j*omega*volume) + 1j*omega*rho*(l_ap+delta_l_in_out) / S
+        z_stiff_mass = rho * c**2 / (1j*omega*volume) + 1j*omega*rho*(l_ap+delta_l_in_out) / S
+        self.z_stiff_mass = z_stiff_mass
+        return z_stiff_mass
 
-    def calc_z_friction(self):
+    def calc_z_friction(self) -> np.array:
         """
         calculate the real-valued viscosity loss
         """   
@@ -106,9 +117,10 @@ class Simulation():
         z_friction_arr = np.full_like(f, z_friction)
         z_friction_arr[limit+1:] = 0 # set to zero for frequencies above kr<0.2
         self.z_friction = z_friction_arr
+        return z_friction_arr
         
 
-    def calc_absorbtion_area(self):
+    def calc_absorbtion_area(self) -> np.array:
         """
         calculates the absorbtion area over a frequency vector
         """
@@ -136,7 +148,9 @@ class Simulation():
             # for diffuse sound 
             self.absorbtion_area = 2 * (np.real(z_reso) / (np.abs(z_reso + z_rad)**2) * (2*rho*c / np.cos(0)))
 
-    def resonance_frequency(self) -> float:
+        return self.absorbtion_area
+
+    def calc_resonance_frequency_and_peak_area(self) -> float:
         """returns the resonance frequency
         calculated as maximum of the absorbtion area
 
@@ -150,8 +164,9 @@ class Simulation():
         peak_idx = np.argmax(self.absorbtion_area)
         self.peak_absorbtion_area = self.absorbtion_area[peak_idx]
         f_res = self.sim_params.frequencies[peak_idx]
+        self.f_resonance = f_res
         # print(f'Resonance Frequency at {f_res:.3f}')
-        return f_res
+        return (f_res, self.peak_absorbtion_area)
     
     def calc_q_factor(self) -> float:
         """

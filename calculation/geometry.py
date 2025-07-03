@@ -1,4 +1,4 @@
-from traits.api import HasTraits, Enum, Range, Float, TraitError
+from traits.api import HasTraits, Enum, Range, Float, TraitError, Union
 from traitsui.api import View, Item, Group
 import numpy as np
 
@@ -6,11 +6,14 @@ class Geometry(HasTraits):
     form = Enum('cylinder', 'cuboid')  # Muss entweder 'cylinder' oder 'cuboid' sein
 
     # Optional je nach Form
-    x = Range(0.001, 2.0, value=None, allow_none=True)
-    y = Range(0.001, 2.0, value=None, allow_none=True)
-    z = Range(0.001, 2.0, value=None, allow_none=True)
-    radius = Range(0.001, 1.0, None, allow_none=True)
-    height = Range(0.001, 1.0, None, allow_none=True)
+
+    x = Union(None, Float(min=0.001, max=2.0), value=None)
+    y = Union(None, Float(min=0.001, max=2.0), value=None)
+    z = Union(None, Float(min=0.001, max=2.0), value=None)
+
+    # Für Zylinder
+    radius = Union(None, Float(min=0.001, max=1.0), value=None)
+    height = Union(None, Float(min=0.001, max=1.0), value=None)
 
     volume = Float
 

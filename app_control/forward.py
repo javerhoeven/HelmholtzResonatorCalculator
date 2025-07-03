@@ -13,27 +13,43 @@ def forward(parameters : dict):
     
     # TODO: replace all dummy / example values with GUI data, as soo as it's here
 
-    # generate resonator
-    geom = Geometry('cuboid', x=.5, y=.3, z=.2)
-    # geom = Geometry('cuboid', x=1., y=.6, z=.4)
+    # Geometry parameters
 
-    ap = Aperture('tube', 0.1, 0.05, additional_dampening=True, xi=50)
-    # ap = Aperture('tube', 0.05, 0.02, additional_dampening=True, xi=12)
-    # ap = Aperture('slit', 0.01, 0.5, width=0.02, height=0.5)
-    resonator = Resonator(geom, ap)
+    form = parameters['geometry']['shape']
+    
+    # for cuboid
+    x = parameters['geometry'].get('l', None)
+    y = parameters['geometry'].get('b', None)
+    z = parameters['geometry'].get('h', None)
+
+    # for cylinder
+    radius = parameters['geometry'].get('radius', None)
+    height = parameters['geometry'].get('height', None)
+    # create Geometry instance
+    geom = Geometry(form=form, x=x, y=y, z=z, radius=radius, height=height)
+
+    # create Resonator instance
+    resonator = Resonator(geom, parameters['aperture'])
 
     # specify simulation parameters
-    temp = 20
-    rel_humidity = 0.6
+    temp = parameters['conditions']['temperature']
+    rel_humidity = parameters['conditions']['humidity']
 
-    medium = Medium(temp, rel_humidity)
-    sim_params = SimulationParameters(medium, values_per_octave=200)
+    medium = Medium(temp=temp, rel_humidity=rel_humidity)
+    # TODO: add 3 resolutions: low (50), medium (500) and high (5000) values per octave
+    sim_params = SimulationParameters(medium=medium, values_per_octave=500)
 
-    # run simulation
+    # run simulation 
     simulation = Simulation(resonator=resonator, sim_params=sim_params)
-    simulation.plot_absorbtion_area()
+    simulation.calc_all()
+    return simulation
+
+
+    # simulation.calc_absorbtion_area()
+    # simulation.resonance_frequency()
+    # simulation.calc_q_factor()
+
     # print(simulation.resonance_frequency())
     # simulation.calc_max_absorbtion_area(plot=True)
-    simulation.calc_q_factor()
     # save_to_json(simulation, 'simulation_result.json')
     
