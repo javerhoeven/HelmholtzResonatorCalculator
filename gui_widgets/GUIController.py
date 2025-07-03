@@ -14,6 +14,9 @@ class GUIController:
             params = self.input_form.get_inputs()
             print(params)
 
+            aperture_obj = params['aperture']
+            print(aperture_obj.to_dict())
+
             ##hier wird auf das Helmholtzmodel zugegriffen
             #model = HelmholtzModel(*params)
 
