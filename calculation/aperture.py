@@ -1,64 +1,61 @@
-from numpy import pi
+from traits.api import HasTraits, Enum, Range, Float, Bool, TraitError
+from traitsui.api import View, Item, Group
 import numpy as np
-class Aperture():
-    def __init__(self, 
-                form : str,
-                length : float,
-                radius : float,
-                inner_ending : str = 'open',
-                outer_ending : str = 'flange',  # because it is on the outer wall
-                additional_dampening : bool = False,
-                xi : float = None,
-                amount : int = 1,
-                width : float = None, # in case of slit
-                height : float = None, # in case of slit
-                ):
-        """Configures the aperture specs
+from numpy import pi
 
-        Args:
-            form (str): can be 'round' or 'slit'. currently only 'round' supported
-            length (float): length of the aperture
-            radius (float): radius of the aperture (assuming it is round)
-            inner_ending (str, optional): can be flange or open. Defaults to 'open'.
-            outer_ending (str, optional): can be flange or open. Defaults to 'open'.
-            additional_dampening (bool, optional): If additional dampening material is used in the aperture. Defaults to False.
-            xi (float, optional): length-specific flow resistance of the dampening material in Pas / m^2. Defaults to None.
-            amount (int, optional): number of apertures. all apertures must have same sizes. Defaults to 1.
-            width (float, optional): slit width
-            height (float, optional): slit height
-        """
-        self.form = form
-        self.length = length
-        self.radius = radius
-        self.inner_ending = inner_ending
-        self.outer_ending = outer_ending
-        self.additional_dampening = additional_dampening
-        self.amount = amount
-        self.xi = xi
-        self.width = width
-        self.height = height
+class Aperture(HasTraits):
+    form = Enum('tube', 'slit')
 
-        if form == 'slit':
-            # TODO: check if all values are available
-            self.area = self.width*self.height*self.amount
-            self.radius = np.sqrt(self.area/pi)
-            
-            end_correction = self.get_slit_end_correction(width, height)
-            self.inner_end_correction = end_correction
-            self.outer_end_correction = end_correction
-            self.radius = 0.5 * width 
+    length = Range(0.001, 0.5)  # must be positive
+    radius = Range(0.005, 1.0, value=None, allow_none=True)  # only for 'tube'
+    width = Range(0.001, 0.5, value=None, allow_none=True)  # only for 'slit'
+    height = Range(0.001, 0.5, value=None, allow_none=True)  # only for 'slit'
+    amount = Range(1, 100, 1)
 
+    inner_ending = Enum('open', 'flange') # default = 'open'
+    outer_ending = Enum('flange', 'open') # default = 'flange' because it is on the outer wall
 
-        elif form == 'tube':
-            self.area = pi * self.radius**2 * amount
+    additional_dampening = Bool(False)
+    xi = Float(None, allow_none=True)  # required, if additional_dampening=True
 
+    # --- Berechnete Attribute ---
+    area = Float
+    inner_end_correction = Float
+    outer_end_correction = Float
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._validate_logical_dependencies()
+        self._compute_area_and_corrections()
+
+    def _validate_logical_dependencies(self):
+        # Formabhängige Pflichtfelder
+        if self.form == 'tube':
+            if self.radius is None:
+                raise TraitError("Radius required if form='tube'.")
+        elif self.form == 'slit':
+            if self.width is None or self.height is None:
+                raise TraitError("form='slit' requires width and height.")
+
+        # damping vs. xi
+        if self.additional_dampening and self.xi is None:
+            raise TraitError("xi required if additional_dampening=True.")
+
+    def _compute_area_and_corrections(self):
+        if self.form == 'tube':
+            self.area = pi * self.radius**2 * self.amount
             self.inner_end_correction = self.get_tube_correction(self.inner_ending)
             self.outer_end_correction = self.get_tube_correction(self.outer_ending)
 
-        else:
-            raise ValueError("Invalid form. Choose 'round' or 'slit'. ")
-          
-
+        elif self.form == 'slit':
+            self.area = self.width * self.height * self.amount
+            self.radius = np.sqrt(self.area / pi)
+            correction = self.get_slit_end_correction(self.width, self.height)
+            self.inner_end_correction = correction
+            self.outer_end_correction = correction
+            # Optional: set radius as "virtual circle radius"
+            self.radius = 0.5 * self.width
+            
     def get_tube_correction(self, ending):
         if ending == 'open':
             return 0.6 * self.radius
@@ -120,3 +117,22 @@ class Aperture():
             width=data.get('width', None),
             height=data.get('height', None)
         )
+# TraitsUI View
+    traits_view = View(
+        Group(
+            Item('form', label="Form der Öffnung"),
+            Item('length', label="Länge (m)"),
+            Item('radius', label="Radius (m)", enabled_when='form == "tube"'),
+            Item('width', label="Breite (m)", enabled_when='form == "slit"'),
+            Item('height', label="Höhe (m)", enabled_when='form == "slit"'),
+            Item('amount', label="Anzahl Öffnungen"),
+        ),
+        title="Aperture",
+        buttons=['OK', 'Cancel'],
+        resizable=True
+    )
+
+# Beispiel GUI starten
+if __name__ == "__main__":
+    aperture = Aperture(form='tube', length=0.1, radius=0.02, amount=1)
+    aperture.configure_traits()

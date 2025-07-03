@@ -1,28 +1,37 @@
+from traits.api import HasTraits, Float, Range, TraitError
+from traitsui.api import View, Item, Group
 import numpy as np
 
-class Medium():
+class Medium(HasTraits):
+    # --- Input Parameter mit Traits Validierung ---
+    temperature_celsius = Range(-50.0, 60.0, 20.0)  # Raumtemperaturbereich
+    rel_humidity = Range(0.0, 1.0, 0.5)  # Prozent als Dezimalwert (0 bis 1)
 
-    def __init__(self,
-                 temperature : float = 20., # in C
-                 rel_humidity : float = 0.5,
-                 density : float = None,
-                 speed_of_sound : float = None):
-        
-        # TODO: check if rel_humidity is in range, temperature makes sense
-        self.temperature_celsius = temperature
+    density = Float(None, allow_none=True)  # kg/m³
+    speed_of_sound = Float(None, allow_none=True)  # m/s
+
+    # --- Automatisch berechnete Eigenschaften ---
+    temperature_kelvin = Float
+    kinematic_viscosity = Float
+
+    c = Float  # Für interne Konsistenz (speed of sound, berechnet oder übergeben)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.temperature_kelvin = self.temperature_celsius + 273.15
-        self.rel_humidity = rel_humidity
 
-        # check if optional input parameters are given
-        if density is None:
+        if self.density is None:
             self.calc_density()
         else:
-            self.density = density
+            if self.density <= 0:
+                raise TraitError("Density must be positive.")
 
-        if speed_of_sound is None:
+        if self.speed_of_sound is None:
             self.calc_speed_of_sound()
         else:
-            self.c = speed_of_sound
+            if self.speed_of_sound <= 0:
+                raise TraitError("speed of sound must be positive.")
+            self.c = self.speed_of_sound
 
         self.calc_kinematic_viscosity()
         
@@ -45,11 +54,13 @@ class Medium():
         p_v = phi * p_sat
 
         rho = (p - p_v) / (R_d * T) + p_v / (R_v * T)
-
+        if rho <= 0:
+            raise TraitError("Calculated density must be > 0.")
+        
         self.density = rho
 
     def calc_speed_of_sound(self):
-        """This is an approximation according to 9613-1:1993"""
+        """This is an approximation according to DIN ISO 9613-1:1993"""
         self.c = 331.3 + 0.606 * self.temperature_celsius + 0.0124 * self.rel_humidity
 
     def calc_kinematic_viscosity(self): 
@@ -83,3 +94,21 @@ class Medium():
             density=data.get('density'),
             speed_of_sound=data.get('speed_of_sound')
         )
+        # TraitsUI View
+    traits_view = View(
+        Group(
+            Item('temperature_celsius', label="Temperatur (°C)"),
+            Item('rel_humidity', label="Relative Luftfeuchtigkeit"),
+            Item('density', label="Dichte (kg/m³)", style='readonly'),
+            Item('speed_of_sound', label="Schallgeschwindigkeit (m/s)", style='readonly'),
+            Item('kinematic_viscosity', label="Kinematische Viskosität (m²/s)", style='readonly'),
+        ),
+        title="Medium Eigenschaften",
+        buttons=['OK', 'Cancel'],
+        resizable=True
+    )
+
+
+if __name__ == "__main__":
+    medium = Medium()
+    medium.configure_traits()
