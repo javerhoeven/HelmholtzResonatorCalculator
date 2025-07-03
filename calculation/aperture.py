@@ -1,7 +1,6 @@
 from numpy import pi
 import numpy as np
 class Aperture():
-    # TODO: use kwargs for all except form
     def __init__(self, 
                 form : str,
                 length : float,

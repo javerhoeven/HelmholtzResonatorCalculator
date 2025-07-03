@@ -9,7 +9,7 @@ This function optimizes the geometry and aperture to achieve a target resonance 
 """
 # TODO: make this into class
 
-# wrapper function to optimize
+# function to optimize
 def objective(vars, f_target, q_target):
     x, y, z, radius, length, xi = vars
 
@@ -29,11 +29,16 @@ def objective(vars, f_target, q_target):
     
     try:
         # Penalize deviation from target f_res and Q
-        penalty = 100 * abs(f_res - f_target) + 50 * abs(q_factor - q_target)
+        f_weight = 1000 # weight of penalty
+        f_penalty = np.abs(np.log10(f_res / f_target)) * f_weight
+
+        q_weight = 500
+        q_penalty = np.abs(np.log10(q_factor / q_target)) * q_weight
+        
     except TypeError:
         return np.inf  # If Q factor is None, return a large penalty
     
-    return -peak_area + penalty
+    return -peak_area + f_penalty + q_penalty
 
 def run_single_optimization(x0, bounds, f_target, q_target):
     """tries to optimize the target parameters within the objective function
@@ -107,9 +112,35 @@ def generate_initial_set(f_target, bounds):
     return [x, y, z, radius, length, xi]
     
     
+def display_results(best_result, f_target, q_target):
+    x, y, z, radius, length, xi = best_result.x
+
+    # reapply simulation
+    medium = Medium()
+    freq_range = [f_target*0.001, f_target*100] # automatically set frequency range
+    sim = Simulation(
+        Resonator(Geometry('cuboid', x=x, y=y, z=z), 
+                    Aperture('tube', radius=radius, length=length, additional_dampening=True, xi=xi)),
+        SimulationParameters(medium, freq_range=freq_range, values_per_octave=500) 
+    )
+
+    f_res, peak_area, q_factor = sim.resonance_frequency(), sim.peak_absorbtion_area, sim.calc_q_factor()
+
+    print("Optimal dimensions and aperture:")
+    print(f"x={x:.3f} m, y={y:.3f} m, z={z:.3f} m")
+    print(f"Aperture radius={radius:.3f} m, aperture length={length:.3f} m, damping with xi={xi:.3f}")
+    print(f"Peak absorption at f_res = {f_res:.3f} Hz (target: {f_target}): {peak_area:.3f} m²")
+    print(f"achieved Q-Factor: {q_factor:.3f} (target: {q_target})")
+    print(f"achieved optimization value: {best_result.fun:.3f}")
+    print(f"freq vector has {len(sim.sim_params.frequencies)} values")
+
+    # plotting the result
+    sim.plot_absorbtion_area()
+
 
 def search_optimal(f_target, q_target):
 
+    # TODO: adjust according to Tobis 
     # Bounds: [(min, max), ...] per parameter
     bounds = [
         (0.1, 1.0),  # x
@@ -124,10 +155,8 @@ def search_optimal(f_target, q_target):
 
 
     results = []
-    num_trials = 1000
-    
-    # initial_guesses = [np.array([np.random.uniform(low, high) for (low, high) in initial_bounds]) for _ in range(num_trials)]
-         
+    num_trials = 100
+    # create initial guesses, half informed, half random         
     initial_guesses = [generate_initial_set(f_target, bounds) for _ in range(num_trials//2)] # generate estimations for good results
     initial_guesses.extend([list([np.random.uniform(low, high) for (low, high) in bounds]) for _ in range(num_trials//2)]) # append completely random guesses
 
@@ -148,28 +177,6 @@ def search_optimal(f_target, q_target):
     
     print(f"{num_fails} of {num_trials} inital guesses failed")
     
-    
-    
     # Result
-    x, y, z, radius, length, xi = best_result.x
-
-    # reapply simulation
-    medium = Medium()
-    freq_range = [f_target*0.001, f_target*100] # automatically set frequency range
-    sim = Simulation(
-        Resonator(Geometry('cuboid', x=x, y=y, z=z), 
-                    Aperture('tube', radius=radius, length=length, additional_dampening=True, xi=xi)),
-        SimulationParameters(medium, freq_range=freq_range, values_per_octave=500) 
-    )
-    f_res, peak_area, q_factor = sim.resonance_frequency(), sim.peak_absorbtion_area, sim.calc_q_factor()
-
-    print("Optimal dimensions and aperture:")
-    print(f"x={x:.3f} m, y={y:.3f} m, z={z:.3f} m")
-    print(f"Aperture radius={radius:.3f} m, aperture length={length:.3f} m, damping with xi={xi:.3f}")
-    print(f"Peak absorption at f_res = {f_res:.3f} Hz (target: {f_target}): {peak_area:.3f} m²")
-    print(f"achieved Q-Factor: {q_factor:.3f} (target: {q_target})")
-    print(f"achieved optimization value: {best_result.fun:.3f}")
-    print(f"freq vector has {len(sim.sim_params.frequencies)} values")
-
-    # plotting the result
-    sim.plot_absorbtion_area()
+    display_results(best_result, f_target, q_target)
+    

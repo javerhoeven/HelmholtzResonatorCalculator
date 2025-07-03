@@ -1,5 +1,4 @@
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-                             QPushButton, QLabel, QDoubleSpinBox, QComboBox, QFileDialog, QMessageBox)
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QDoubleSpinBox, QComboBox, QFileDialog, QMessageBox)
 
 from gui_widgets.inputForm import InputForm
 from gui_widgets.resultView import ResultView
@@ -63,4 +62,4 @@ if __name__ == '__main__':
 
 
     
-    search_optimal(20, 1)
+    search_optimal(120, 2)

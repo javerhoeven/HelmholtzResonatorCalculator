@@ -150,7 +150,7 @@ class Simulation():
         peak_idx = np.argmax(self.absorbtion_area)
         self.peak_absorbtion_area = self.absorbtion_area[peak_idx]
         f_res = self.sim_params.frequencies[peak_idx]
-        print(f'Resonance Frequency at {f_res}')
+        # print(f'Resonance Frequency at {f_res:.3f}')
         return f_res
     
     def calc_q_factor(self) -> float:
