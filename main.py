@@ -16,8 +16,10 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Helmholtz-Resonator Tool")
+
         self.input_form = InputForm()
         self.result_view = ResultView()
+        self.input_form.result_view = self.result_view  # <--- Direkter Zugriff
         self.controller = GUIController(self.input_form, self.result_view)
         
         self.button_calc = QPushButton("Calculate / Plot")

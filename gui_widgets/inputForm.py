@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QLabel, QDoubleSpinBox, QComboBox, QGroupBox, QFormLayout, QMessageBox
+    QWidget, QVBoxLayout, QLabel, QDoubleSpinBox, QComboBox, QGroupBox, QFormLayout, QMessageBox, QCheckBox
 )
 from traits.api import HasTraits, Enum, Range, Float, Bool, TraitError
 from calculation.aperture import Aperture
@@ -20,17 +20,17 @@ class InputForm(QWidget):
         geo_layout.addRow("Form:", self.combo_shape)
 
 
-        self.spin_r = QDoubleSpinBox(); self.spin_r.setPrefix("r="); self.spin_r.setValue(0.1); self.spin_r.setSuffix("m")
-        self.spin_h = QDoubleSpinBox(); self.spin_h.setPrefix("h="); self.spin_h.setValue(0.2); self.spin_h.setSuffix("m")
-        self.spin_l = QDoubleSpinBox(); self.spin_l.setPrefix("l="); self.spin_l.setValue(0.2); self.spin_l.setSuffix("m")
-        self.spin_b = QDoubleSpinBox(); self.spin_b.setPrefix("b="); self.spin_b.setValue(0.1); self.spin_b.setSuffix("m")
-        self.spin_t = QDoubleSpinBox(); self.spin_t.setPrefix("h="); self.spin_t.setValue(0.05); self.spin_t.setSuffix("m")
+        self.spin_r = QDoubleSpinBox(); self.spin_r.setPrefix("r = "); self.spin_r.setValue(0.1); self.spin_r.setSuffix(" m")
+        self.spin_h = QDoubleSpinBox(); self.spin_h.setPrefix("h = "); self.spin_h.setValue(0.2); self.spin_h.setSuffix(" m")
+        self.spin_l = QDoubleSpinBox(); self.spin_l.setPrefix("l = "); self.spin_l.setValue(0.2); self.spin_l.setSuffix(" m")
+        self.spin_b = QDoubleSpinBox(); self.spin_b.setPrefix("b = "); self.spin_b.setValue(0.1); self.spin_b.setSuffix(" m")
+        self.spin_t = QDoubleSpinBox(); self.spin_t.setPrefix("h = "); self.spin_t.setValue(0.05); self.spin_t.setSuffix(" m")
         # Tool-Tipps:
-        self.spin_r.setToolTip("Radius of the cylindrical resonator [m].")
-        self.spin_h.setToolTip("Height of the cylindrical resonator [m].")
-        self.spin_l.setToolTip("Length of the cuboid resonator [m].")
-        self.spin_b.setToolTip("Width of the cuboid resonator [m].")
-        self.spin_t.setToolTip("Height (or thickness) of the cuboid resonator [m].")
+        self.spin_r.setToolTip("Radius of the cylindrical resonator (m).")
+        self.spin_h.setToolTip("Height of the cylindrical resonator (m).")
+        self.spin_l.setToolTip("Length of the cuboid resonator (m).")
+        self.spin_b.setToolTip("Width of the cuboid resonator (m).")
+        self.spin_t.setToolTip("Height (or thickness) of the cuboid resonator (m).")
 
         geo_layout.addRow(self.spin_r)
         geo_layout.addRow(self.spin_h)
@@ -44,21 +44,32 @@ class InputForm(QWidget):
         self.group_opening = QGroupBox("Aperture Properties")
         opening_layout = QFormLayout()
 
+        self.add_damping_cb = QCheckBox("additional damping")
+        self.spin_xi = QDoubleSpinBox(); self.spin_xi.setPrefix("xi = "); self.spin_xi.setValue(0); self.spin_xi.setSuffix(" Pa·s/m")
+        self.spin_xi.setDisabled(True)
+        self.add_damping_cb.stateChanged.connect(self.toggle_damping_input)
+
+        opening_layout.addRow(self.add_damping_cb)
+        opening_layout.addRow(self.spin_xi)
+
+
         self.combo_aperture_form = self.add_enum_combobox("Aperture form:", "form", opening_layout)
         self.combo_aperture_form.currentTextChanged.connect(self.update_opening)    
 
-        self.spin_n = QDoubleSpinBox(); self.spin_n.setPrefix("n="); self.spin_n.setValue(1); self.spin_n.setDecimals(0)
-        self.spin_L = QDoubleSpinBox(); self.spin_L.setPrefix("L="); self.spin_L.setValue(0.02); self.spin_L.setSuffix("m")
-        self.spin_r_open = QDoubleSpinBox(); self.spin_r_open.setPrefix("r_open="); self.spin_r_open.setValue(0.005); self.spin_r_open.setSuffix("m")
-        self.spin_b_slit = QDoubleSpinBox(); self.spin_b_slit.setPrefix("b_slit="); self.spin_b_slit.setValue(0.01); self.spin_b_slit.setSuffix("m")
-        self.spin_l_slit = QDoubleSpinBox(); self.spin_l_slit.setPrefix("l_slit="); self.spin_l_slit.setValue(0.05); self.spin_l_slit.setSuffix("m")
+        self.spin_n = QDoubleSpinBox(); self.spin_n.setPrefix("n = "); self.spin_n.setValue(1); self.spin_n.setDecimals(0)
+        self.spin_L = QDoubleSpinBox(); self.spin_L.setPrefix("L = "); self.spin_L.setValue(0.02); self.spin_L.setSuffix(" m")
+        self.spin_r_open = QDoubleSpinBox(); self.spin_r_open.setPrefix("r_open = "); self.spin_r_open.setValue(0.005); self.spin_r_open.setSuffix(" m")
+        self.spin_b_slit = QDoubleSpinBox(); self.spin_b_slit.setPrefix("b_slit = "); self.spin_b_slit.setValue(0.01); self.spin_b_slit.setSuffix(" m")
+        self.spin_l_slit = QDoubleSpinBox(); self.spin_l_slit.setPrefix("l_slit = "); self.spin_l_slit.setValue(0.05); self.spin_l_slit.setSuffix(" m")
         # Tool-Tipps:
+        self.add_damping_cb.setToolTip("Enable additional acoustic damping in the aperture.")
+        self.spin_xi.setToolTip("Damping coefficient xi (Pa·s/m). Only used if additional damping is active.")
         self.combo_aperture_form.setToolTip("Geometric form of the aperture used in acoustic calculations (e.g. 'tube', 'slit').")
         self.spin_n.setToolTip("Number of openings in the resonator wall.")
-        self.spin_L.setToolTip("Physical length of the aperture, often equal to the wall thickness [m].")
-        self.spin_r_open.setToolTip("Radius of the circular aperture [m].")
-        self.spin_b_slit.setToolTip("Width of the slit aperture [m].")
-        self.spin_l_slit.setToolTip("Length of the slit aperture [m].")
+        self.spin_L.setToolTip("Physical length of the aperture, often equal to the wall thickness (m).")
+        self.spin_r_open.setToolTip("Radius of the circular aperture (m).")
+        self.spin_b_slit.setToolTip("Width of the slit aperture (m).")
+        self.spin_l_slit.setToolTip("Length of the slit aperture (m).")
 
         opening_layout.addRow(self.spin_n)
         opening_layout.addRow(self.spin_L)
@@ -85,15 +96,15 @@ class InputForm(QWidget):
         cond_layout = QFormLayout()
 
         self.spin_T = QDoubleSpinBox()
-        self.spin_T.setPrefix("T="); self.spin_T.setValue(20); self.spin_T.setSuffix("°C")
+        self.spin_T.setPrefix("T = "); self.spin_T.setValue(20); self.spin_T.setSuffix(" °C")
         self.spin_T.setMinimum(-273.15); self.spin_T.setDecimals(2)
 
         self.spin_H = QDoubleSpinBox()
-        self.spin_H.setPrefix("H="); self.spin_H.setValue(50); self.spin_H.setSuffix("%")
+        self.spin_H.setPrefix("H = "); self.spin_H.setValue(50); self.spin_H.setSuffix(" %")
         self.spin_H.setRange(0.0, 100.0); self.spin_H.setDecimals(2)
         # Tool-Tipps:
-        self.spin_T.setToolTip("Ambient temperature [°C].")
-        self.spin_H.setToolTip("Relative humidity [%].")
+        self.spin_T.setToolTip("Ambient temperature (°C).")
+        self.spin_H.setToolTip("Relative humidity (%).")
 
         cond_layout.addRow(self.spin_T)
         cond_layout.addRow(self.spin_H)
@@ -103,6 +114,10 @@ class InputForm(QWidget):
         self.setLayout(self.main_layout)
         self.update_inputs("Cylinder")
         self.update_opening("tube")
+
+
+    def toggle_damping_input(self, state):
+        self.spin_xi.setEnabled(state == 2)  # 2 = Qt.Checked
 
     def add_enum_combobox(self, label: str, trait_name: str, layout):
         combo = QComboBox()
@@ -159,11 +174,26 @@ class InputForm(QWidget):
             aperture_kwargs['width'] = self.spin_b_slit.value()
             aperture_kwargs['height'] = self.spin_l_slit.value()
 
+        aperture_kwargs['additional_dampening'] = self.add_damping_cb.isChecked()
+
+        # Nur setzen, wenn aktiviert
+        if self.add_damping_cb.isChecked():
+            aperture_kwargs['xi'] = self.spin_xi.value()
+
+
+
         # --- Environmental Conditions ---
         conditions = {
             'temperature': self.spin_T.value(),
             'humidity': self.spin_H.value()
         }
+
+        # --- Plot Settings ---
+        plot_settings = {
+            'x_axis': self.result_view.combo_x.currentText(),
+            'y_axis': self.result_view.combo_y.currentText()
+        }
+
 
         # Optional: Aperture-Objekt mit Traits validieren
         try:
@@ -175,6 +205,7 @@ class InputForm(QWidget):
         return {
             'geometry': geometry,
             'aperture': aperture,
-            'conditions': conditions
+            'conditions': conditions,
+            'plot': plot_settings
         }
 
