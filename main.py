@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
         self.button_calc.clicked.connect(self.on_calculate)
         
         self.button_export = QPushButton("Export CSV")
-        self.button_export.clicked.connect(self.on_export)
+        #self.button_export.clicked.connect(self.on_export)
         
         layout = QHBoxLayout()
         layout.addWidget(self.input_form)
