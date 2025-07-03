@@ -113,6 +113,13 @@ def generate_initial_set(f_target, bounds):
     
     
 def display_results(best_result, f_target, q_target):
+    """Displays the best result found by the optimizer. Prints out relevant information. 
+
+    Args:
+        best_result (_type_): best result found
+        f_target (): target frequency
+        q_target (_type_): target q-factor
+    """
     x, y, z, radius, length, xi = best_result.x
 
     # reapply simulation
