@@ -86,21 +86,49 @@ class Aperture(HasTraits):
         delta_l_a =  2/(3*pi) * (beta + (1- (1+beta**2)**(3/2)) / beta**2 ) + (2/pi) * (1/beta * np.log(beta+np.sqrt(1+beta**2)) + np.log(1/beta*(1+np.sqrt(1+beta**2))))
         delta_l = delta_l_a * a
         return delta_l
-    
+
+
     def to_dict(self):
-        """Returns the aperture as a dictionary"""
-        return {
+        """Returns the aperture as a dictionary, including only relevant fields based on form."""
+        base = {
             'form': self.form,
             'length': self.length,
-            'radius': self.radius,
+            'amount': self.amount,
             'inner_ending': self.inner_ending,
             'outer_ending': self.outer_ending,
             'additional_dampening': self.additional_dampening,
-            'xi': self.xi,
-            'amount': self.amount,
-            'width': self.width,
-            'height': self.height
+            'xi': self.xi if self.additional_dampening else None,
+            'area': self.area,
+            'inner_end_correction': self.inner_end_correction,
+            'outer_end_correction': self.outer_end_correction
         }
+
+        if self.form == 'tube':
+            base.update({
+                'radius': self.radius
+            })
+        elif self.form == 'slit':
+            base.update({
+                'width': self.width,
+                'height': self.height
+            })
+
+        return base
+
+    # def to_dict(self):
+    #     """Returns the aperture as a dictionary"""
+    #     return {
+    #         'form': self.form,
+    #         'length': self.length,
+    #         'radius': self.radius,
+    #         'inner_ending': self.inner_ending,
+    #         'outer_ending': self.outer_ending,
+    #         'additional_dampening': self.additional_dampening,
+    #         'xi': self.xi,
+    #         'amount': self.amount,
+    #         'width': self.width,
+    #         'height': self.height
+    #     }
     
     @classmethod
     def from_dict(cls, data):
