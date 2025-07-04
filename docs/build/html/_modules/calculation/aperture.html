@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>calculation.aperture &mdash; Helmholtz Resonator Calculator 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Helmholtz Resonator Calculator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Helmholtz Resonator Calculator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">calculation.aperture</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for calculation.aperture</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">traits.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">TraitError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">traitsui.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">Group</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">pi</span>
+
+<div class="viewcode-block" id="Aperture">
+<a class="viewcode-back" href="../../calculation.html#calculation.aperture.Aperture">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Aperture</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s1">&#39;tube&#39;</span><span class="p">,</span> <span class="s1">&#39;slit&#39;</span><span class="p">)</span>
+
+    <span class="n">length</span> <span class="o">=</span> <span class="n">Range</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># must be positive</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="n">Range</span><span class="p">(</span><span class="mf">0.005</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># only for &#39;tube&#39;</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">Range</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># only for &#39;slit&#39;</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">Range</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># only for &#39;slit&#39;</span>
+    <span class="n">amount</span> <span class="o">=</span> <span class="n">Range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">inner_ending</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="s1">&#39;flange&#39;</span><span class="p">)</span> <span class="c1"># default = &#39;open&#39;</span>
+    <span class="n">outer_ending</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s1">&#39;flange&#39;</span><span class="p">,</span> <span class="s1">&#39;open&#39;</span><span class="p">)</span> <span class="c1"># default = &#39;flange&#39; because it is on the outer wall</span>
+
+    <span class="n">additional_dampening</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># required, if additional_dampening=True</span>
+
+    <span class="c1"># --- Berechnete Attribute ---</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">Float</span>
+    <span class="n">inner_end_correction</span> <span class="o">=</span> <span class="n">Float</span>
+    <span class="n">outer_end_correction</span> <span class="o">=</span> <span class="n">Float</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_logical_dependencies</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compute_area_and_corrections</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_logical_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Formabhängige Pflichtfelder</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span> <span class="o">==</span> <span class="s1">&#39;tube&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="s2">&quot;Radius required if form=&#39;tube&#39;.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span> <span class="o">==</span> <span class="s1">&#39;slit&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="s2">&quot;form=&#39;slit&#39; requires width and height.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># damping vs. xi</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_dampening</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="s2">&quot;xi required if additional_dampening=True.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_area_and_corrections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span> <span class="o">==</span> <span class="s1">&#39;tube&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inner_end_correction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tube_correction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner_ending</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outer_end_correction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tube_correction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outer_ending</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span> <span class="o">==</span> <span class="s1">&#39;slit&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">/</span> <span class="n">pi</span><span class="p">)</span>
+            <span class="n">correction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_slit_end_correction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inner_end_correction</span> <span class="o">=</span> <span class="n">correction</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outer_end_correction</span> <span class="o">=</span> <span class="n">correction</span>
+            <span class="c1"># Optional: set radius as &quot;virtual circle radius&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span>
+            
+<div class="viewcode-block" id="Aperture.get_tube_correction">
+<a class="viewcode-back" href="../../calculation.html#calculation.aperture.Aperture.get_tube_correction">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_tube_correction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ending</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ending</span> <span class="o">==</span> <span class="s1">&#39;open&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
+        <span class="k">elif</span> <span class="n">ending</span> <span class="o">==</span> <span class="s1">&#39;flange&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.85</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid ending. Choose &#39;open&#39; or &#39;flange&#39;. &quot;</span><span class="p">)</span></div>
+
+
+    
+<div class="viewcode-block" id="Aperture.get_slit_end_correction">
+<a class="viewcode-back" href="../../calculation.html#calculation.aperture.Aperture.get_slit_end_correction">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_slit_end_correction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span> <span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the end correction after the </span>
+<span class="sd">        equation given in Mechel&#39;s &quot;Formulas of Acoustics&quot;, p. 319 </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (float): width of slit</span>
+<span class="sd">            y (float): height of slit</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># lower value needs to be a</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">y</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">y</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span>
+
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">a</span><span class="o">/</span><span class="n">b</span>
+        <span class="n">delta_l_a</span> <span class="o">=</span>  <span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">beta</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">beta</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">beta</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">beta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">beta</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">beta</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">beta</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">beta</span><span class="o">**</span><span class="mi">2</span><span class="p">))))</span>
+        <span class="n">delta_l</span> <span class="o">=</span> <span class="n">delta_l_a</span> <span class="o">*</span> <span class="n">a</span>
+        <span class="k">return</span> <span class="n">delta_l</span></div>
+
+
+
+<div class="viewcode-block" id="Aperture.to_dict">
+<a class="viewcode-back" href="../../calculation.html#calculation.aperture.Aperture.to_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the aperture as a dictionary, including only relevant fields based on form.&quot;&quot;&quot;</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="p">,</span>
+            <span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span>
+            <span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span>
+            <span class="s1">&#39;inner_ending&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_ending</span><span class="p">,</span>
+            <span class="s1">&#39;outer_ending&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">outer_ending</span><span class="p">,</span>
+            <span class="s1">&#39;additional_dampening&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_dampening</span><span class="p">,</span>
+            <span class="s1">&#39;xi&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_dampening</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;area&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span>
+            <span class="s1">&#39;inner_end_correction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_end_correction</span><span class="p">,</span>
+            <span class="s1">&#39;outer_end_correction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">outer_end_correction</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span> <span class="o">==</span> <span class="s1">&#39;tube&#39;</span><span class="p">:</span>
+            <span class="n">base</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
+            <span class="p">})</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span> <span class="o">==</span> <span class="s1">&#39;slit&#39;</span><span class="p">:</span>
+            <span class="n">base</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+                <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span>
+            <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">base</span></div>
+
+
+    <span class="c1"># def to_dict(self):</span>
+    <span class="c1">#     &quot;&quot;&quot;Returns the aperture as a dictionary&quot;&quot;&quot;</span>
+    <span class="c1">#     return {</span>
+    <span class="c1">#         &#39;form&#39;: self.form,</span>
+    <span class="c1">#         &#39;length&#39;: self.length,</span>
+    <span class="c1">#         &#39;radius&#39;: self.radius,</span>
+    <span class="c1">#         &#39;inner_ending&#39;: self.inner_ending,</span>
+    <span class="c1">#         &#39;outer_ending&#39;: self.outer_ending,</span>
+    <span class="c1">#         &#39;additional_dampening&#39;: self.additional_dampening,</span>
+    <span class="c1">#         &#39;xi&#39;: self.xi,</span>
+    <span class="c1">#         &#39;amount&#39;: self.amount,</span>
+    <span class="c1">#         &#39;width&#39;: self.width,</span>
+    <span class="c1">#         &#39;height&#39;: self.height</span>
+    <span class="c1">#     }</span>
+    
+<div class="viewcode-block" id="Aperture.from_dict">
+<a class="viewcode-back" href="../../calculation.html#calculation.aperture.Aperture.from_dict">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates an Aperture instance from a dictionary&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">form</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;form&#39;</span><span class="p">],</span>
+            <span class="n">length</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">],</span>
+            <span class="n">radius</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">],</span>
+            <span class="n">inner_ending</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inner_ending&#39;</span><span class="p">,</span> <span class="s1">&#39;open&#39;</span><span class="p">),</span>
+            <span class="n">outer_ending</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;outer_ending&#39;</span><span class="p">,</span> <span class="s1">&#39;flange&#39;</span><span class="p">),</span>
+            <span class="n">additional_dampening</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;additional_dampening&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="n">xi</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;xi&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">amount</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">height</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<span class="c1"># TraitsUI View</span>
+    <span class="n">traits_view</span> <span class="o">=</span> <span class="n">View</span><span class="p">(</span>
+        <span class="n">Group</span><span class="p">(</span>
+            <span class="n">Item</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Form der Öffnung&quot;</span><span class="p">),</span>
+            <span class="n">Item</span><span class="p">(</span><span class="s1">&#39;length&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Länge (m)&quot;</span><span class="p">),</span>
+            <span class="n">Item</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Radius (m)&quot;</span><span class="p">,</span> <span class="n">enabled_when</span><span class="o">=</span><span class="s1">&#39;form == &quot;tube&quot;&#39;</span><span class="p">),</span>
+            <span class="n">Item</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Breite (m)&quot;</span><span class="p">,</span> <span class="n">enabled_when</span><span class="o">=</span><span class="s1">&#39;form == &quot;slit&quot;&#39;</span><span class="p">),</span>
+            <span class="n">Item</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Höhe (m)&quot;</span><span class="p">,</span> <span class="n">enabled_when</span><span class="o">=</span><span class="s1">&#39;form == &quot;slit&quot;&#39;</span><span class="p">),</span>
+            <span class="n">Item</span><span class="p">(</span><span class="s1">&#39;amount&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Anzahl Öffnungen&quot;</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Aperture&quot;</span><span class="p">,</span>
+        <span class="n">buttons</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;OK&#39;</span><span class="p">,</span> <span class="s1">&#39;Cancel&#39;</span><span class="p">],</span>
+        <span class="n">resizable</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span></div>
+
+
+<span class="c1"># Beispiel GUI starten</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">aperture</span> <span class="o">=</span> <span class="n">Aperture</span><span class="p">(</span><span class="n">form</span><span class="o">=</span><span class="s1">&#39;tube&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">aperture</span><span class="o">.</span><span class="n">configure_traits</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rösch F, Schön J, van Dijk T, Verhoeven J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

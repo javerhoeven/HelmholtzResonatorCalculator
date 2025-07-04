@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>calculation.medium &mdash; Helmholtz Resonator Calculator 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Helmholtz Resonator Calculator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Helmholtz Resonator Calculator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">calculation.medium</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for calculation.medium</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">traits.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">TraitError</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">traitsui.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">Group</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<div class="viewcode-block" id="Medium">
+<a class="viewcode-back" href="../../calculation.html#calculation.medium.Medium">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Medium</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+    <span class="c1"># --- Input Parameter mit Traits Validierung ---</span>
+    <span class="n">temperature_celsius</span> <span class="o">=</span> <span class="n">Range</span><span class="p">(</span><span class="o">-</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">)</span>  <span class="c1"># Raumtemperaturbereich</span>
+    <span class="n">rel_humidity</span> <span class="o">=</span> <span class="n">Range</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># Prozent als Dezimalwert (0 bis 1)</span>
+
+    <span class="n">density</span> <span class="o">=</span> <span class="n">Union</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">Float</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># kg/m³</span>
+    <span class="n">speed_of_sound</span> <span class="o">=</span> <span class="n">Union</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">Float</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">))</span> <span class="c1"># m/s</span>
+
+    <span class="c1"># --- Automatisch berechnete Eigenschaften ---</span>
+    <span class="n">temperature_kelvin</span> <span class="o">=</span> <span class="n">Float</span>
+    <span class="n">kinematic_viscosity</span> <span class="o">=</span> <span class="n">Float</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Float</span>  <span class="c1"># Für interne Konsistenz (speed of sound, berechnet oder übergeben)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature_kelvin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_celsius</span> <span class="o">+</span> <span class="mf">273.15</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">calc_density</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="s2">&quot;Density must be positive.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed_of_sound</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">calc_speed_of_sound</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed_of_sound</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="s2">&quot;speed of sound must be positive.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed_of_sound</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">calc_kinematic_viscosity</span><span class="p">()</span>
+        
+
+
+<div class="viewcode-block" id="Medium.calc_density">
+<a class="viewcode-back" href="../../calculation.html#calculation.medium.Medium.calc_density">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_density</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;calculate density based on Magnus equation. </span>
+<span class="sd">        Depends on relative humidity and temperature</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># constants</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="mf">1013.15</span> <span class="o">*</span> <span class="mi">100</span> <span class="c1"># atmospheric pressure in Pa</span>
+       
+        <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_kelvin</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rel_humidity</span>
+
+        <span class="n">R_d</span> <span class="o">=</span> <span class="mf">287.05</span> <span class="c1"># specific gas constant for dry air</span>
+        <span class="n">R_v</span> <span class="o">=</span> <span class="mf">461.5</span> <span class="c1"># specific gas constant for water vapor</span>
+
+        <span class="n">p_sat</span> <span class="o">=</span> <span class="mf">6.112</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">17.62</span> <span class="o">*</span> <span class="n">T</span> <span class="o">/</span> <span class="p">(</span><span class="mf">243.12</span> <span class="o">*</span> <span class="n">T</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="n">p_v</span> <span class="o">=</span> <span class="n">phi</span> <span class="o">*</span> <span class="n">p_sat</span>
+
+        <span class="n">rho</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="n">p_v</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">R_d</span> <span class="o">*</span> <span class="n">T</span><span class="p">)</span> <span class="o">+</span> <span class="n">p_v</span> <span class="o">/</span> <span class="p">(</span><span class="n">R_v</span> <span class="o">*</span> <span class="n">T</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rho</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="s2">&quot;Calculated density must be &gt; 0.&quot;</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">density</span> <span class="o">=</span> <span class="n">rho</span></div>
+
+
+<div class="viewcode-block" id="Medium.calc_speed_of_sound">
+<a class="viewcode-back" href="../../calculation.html#calculation.medium.Medium.calc_speed_of_sound">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_speed_of_sound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is an approximation according to DIN ISO 9613-1:1993&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="mf">331.3</span> <span class="o">+</span> <span class="mf">0.606</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_celsius</span> <span class="o">+</span> <span class="mf">0.0124</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rel_humidity</span></div>
+
+
+<div class="viewcode-block" id="Medium.calc_kinematic_viscosity">
+<a class="viewcode-back" href="../../calculation.html#calculation.medium.Medium.calc_kinematic_viscosity">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calc_kinematic_viscosity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        calculation based on sutherland&#39;s formula [GPT]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_kelvin</span>
+        <span class="n">mu0</span> <span class="o">=</span> <span class="mf">1.716e-5</span>
+        <span class="n">T0</span> <span class="o">=</span> <span class="mf">273.15</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="mi">111</span>     <span class="c1"># Sutherland constant for air</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">mu0</span> <span class="o">*</span> <span class="p">((</span><span class="n">T</span><span class="o">/</span><span class="n">T0</span><span class="p">)</span> <span class="o">**</span> <span class="mf">1.5</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">T0</span> <span class="o">+</span> <span class="n">C</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">T</span> <span class="o">+</span> <span class="n">C</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kinematic_viscosity</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span></div>
+
+
+<div class="viewcode-block" id="Medium.to_dict">
+<a class="viewcode-back" href="../../calculation.html#calculation.medium.Medium.to_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the medium properties to a dictionary representation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;temperature_celsius&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_celsius</span><span class="p">,</span>
+            <span class="s2">&quot;temperature_kelvin&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature_kelvin</span><span class="p">,</span>
+            <span class="s2">&quot;rel_humidity&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rel_humidity</span><span class="p">,</span>
+            <span class="s2">&quot;density&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span><span class="p">,</span>
+            <span class="s2">&quot;speed_of_sound&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span>
+            <span class="s2">&quot;kinematic_viscosity&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">kinematic_viscosity</span>
+        <span class="p">}</span></div>
+
+    
+<div class="viewcode-block" id="Medium.from_dict">
+<a class="viewcode-back" href="../../calculation.html#calculation.medium.Medium.from_dict">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a Medium instance from a dictionary&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature_celsius&#39;</span><span class="p">],</span>
+            <span class="n">rel_humidity</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;rel_humidity&#39;</span><span class="p">],</span>
+            <span class="n">density</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;density&#39;</span><span class="p">),</span>
+            <span class="n">speed_of_sound</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;speed_of_sound&#39;</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+        <span class="c1"># TraitsUI View</span>
+    <span class="n">traits_view</span> <span class="o">=</span> <span class="n">View</span><span class="p">(</span>
+        <span class="n">Group</span><span class="p">(</span>
+            <span class="n">Item</span><span class="p">(</span><span class="s1">&#39;temperature_celsius&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Temperatur (°C)&quot;</span><span class="p">),</span>
+            <span class="n">Item</span><span class="p">(</span><span class="s1">&#39;rel_humidity&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Relative Luftfeuchtigkeit&quot;</span><span class="p">),</span>
+            <span class="n">Item</span><span class="p">(</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Dichte (kg/m³)&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;readonly&#39;</span><span class="p">),</span>
+            <span class="n">Item</span><span class="p">(</span><span class="s1">&#39;speed_of_sound&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Schallgeschwindigkeit (m/s)&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;readonly&#39;</span><span class="p">),</span>
+            <span class="n">Item</span><span class="p">(</span><span class="s1">&#39;kinematic_viscosity&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Kinematische Viskosität (m²/s)&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;readonly&#39;</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Medium Eigenschaften&quot;</span><span class="p">,</span>
+        <span class="n">buttons</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;OK&#39;</span><span class="p">,</span> <span class="s1">&#39;Cancel&#39;</span><span class="p">],</span>
+        <span class="n">resizable</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">medium</span> <span class="o">=</span> <span class="n">Medium</span><span class="p">()</span>
+    <span class="n">medium</span><span class="o">.</span><span class="n">configure_traits</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rösch F, Schön J, van Dijk T, Verhoeven J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

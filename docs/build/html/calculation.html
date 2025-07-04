@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>calculation package &mdash; Helmholtz Resonator Calculator 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=2709fde1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="io_tools package" href="io_tools.html" />
+    <link rel="prev" title="app_control package" href="app_control.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Helmholtz Resonator Calculator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="app_control.html">app_control package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">calculation package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-calculation.aperture">calculation.aperture module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#calculation.aperture.Aperture"><code class="docutils literal notranslate"><span class="pre">Aperture</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-calculation.geometry">calculation.geometry module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#calculation.geometry.Geometry"><code class="docutils literal notranslate"><span class="pre">Geometry</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-calculation.medium">calculation.medium module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#calculation.medium.Medium"><code class="docutils literal notranslate"><span class="pre">Medium</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-calculation.resonator">calculation.resonator module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#calculation.resonator.Resonator"><code class="docutils literal notranslate"><span class="pre">Resonator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-calculation.simulation">calculation.simulation module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#calculation.simulation.Simulation"><code class="docutils literal notranslate"><span class="pre">Simulation</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-calculation.simulation_parameters">calculation.simulation_parameters module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#calculation.simulation_parameters.SimulationParameters"><code class="docutils literal notranslate"><span class="pre">SimulationParameters</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-calculation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="io_tools.html">io_tools package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Helmholtz Resonator Calculator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">src</a></li>
+      <li class="breadcrumb-item active">calculation package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/calculation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="calculation-package">
+<h1>calculation package<a class="headerlink" href="#calculation-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-calculation.aperture">
+<span id="calculation-aperture-module"></span><h2>calculation.aperture module<a class="headerlink" href="#module-calculation.aperture" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="calculation.aperture.Aperture">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">calculation.aperture.</span></span><span class="sig-name descname"><span class="pre">Aperture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/aperture.html#Aperture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.aperture.Aperture" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">HasTraits</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.aperture.Aperture.from_dict">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/aperture.html#Aperture.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.aperture.Aperture.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Creates an Aperture instance from a dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.aperture.Aperture.get_slit_end_correction">
+<span class="sig-name descname"><span class="pre">get_slit_end_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/calculation/aperture.html#Aperture.get_slit_end_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.aperture.Aperture.get_slit_end_correction" title="Link to this definition"></a></dt>
+<dd><p>Calculates the end correction after the 
+equation given in Mechel’s “Formulas of Acoustics”, p. 319</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>x (float): width of slit
+y (float): height of slit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.aperture.Aperture.get_tube_correction">
+<span class="sig-name descname"><span class="pre">get_tube_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ending</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/aperture.html#Aperture.get_tube_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.aperture.Aperture.get_tube_correction" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.aperture.Aperture.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/aperture.html#Aperture.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.aperture.Aperture.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Returns the aperture as a dictionary, including only relevant fields based on form.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-calculation.geometry">
+<span id="calculation-geometry-module"></span><h2>calculation.geometry module<a class="headerlink" href="#module-calculation.geometry" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="calculation.geometry.Geometry">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">calculation.geometry.</span></span><span class="sig-name descname"><span class="pre">Geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/geometry.html#Geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.geometry.Geometry" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">HasTraits</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.geometry.Geometry.from_dict">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/geometry.html#Geometry.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.geometry.Geometry.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Creates a Geometry instance from a dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.geometry.Geometry.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/geometry.html#Geometry.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.geometry.Geometry.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert the geometry to a dictionary representation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.geometry.Geometry.validate_and_calculate">
+<span class="sig-name descname"><span class="pre">validate_and_calculate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/geometry.html#Geometry.validate_and_calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.geometry.Geometry.validate_and_calculate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-calculation.medium">
+<span id="calculation-medium-module"></span><h2>calculation.medium module<a class="headerlink" href="#module-calculation.medium" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="calculation.medium.Medium">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">calculation.medium.</span></span><span class="sig-name descname"><span class="pre">Medium</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/medium.html#Medium"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.medium.Medium" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">HasTraits</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.medium.Medium.calc_density">
+<span class="sig-name descname"><span class="pre">calc_density</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/medium.html#Medium.calc_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.medium.Medium.calc_density" title="Link to this definition"></a></dt>
+<dd><p>calculate density based on Magnus equation. 
+Depends on relative humidity and temperature</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.medium.Medium.calc_kinematic_viscosity">
+<span class="sig-name descname"><span class="pre">calc_kinematic_viscosity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/medium.html#Medium.calc_kinematic_viscosity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.medium.Medium.calc_kinematic_viscosity" title="Link to this definition"></a></dt>
+<dd><p>calculation based on sutherland’s formula [GPT]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.medium.Medium.calc_speed_of_sound">
+<span class="sig-name descname"><span class="pre">calc_speed_of_sound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/medium.html#Medium.calc_speed_of_sound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.medium.Medium.calc_speed_of_sound" title="Link to this definition"></a></dt>
+<dd><p>This is an approximation according to DIN ISO 9613-1:1993</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.medium.Medium.from_dict">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/medium.html#Medium.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.medium.Medium.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Creates a Medium instance from a dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.medium.Medium.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/medium.html#Medium.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.medium.Medium.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert the medium properties to a dictionary representation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-calculation.resonator">
+<span id="calculation-resonator-module"></span><h2>calculation.resonator module<a class="headerlink" href="#module-calculation.resonator" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="calculation.resonator.Resonator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">calculation.resonator.</span></span><span class="sig-name descname"><span class="pre">Resonator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#calculation.geometry.Geometry" title="calculation.geometry.Geometry"><span class="pre">Geometry</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">aperture</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#calculation.aperture.Aperture" title="calculation.aperture.Aperture"><span class="pre">Aperture</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/resonator.html#Resonator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.resonator.Resonator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.resonator.Resonator.from_dict">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/resonator.html#Resonator.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.resonator.Resonator.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Creates a Resonator instance from a dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.resonator.Resonator.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/resonator.html#Resonator.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.resonator.Resonator.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert the resonator to a dictionary representation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-calculation.simulation">
+<span id="calculation-simulation-module"></span><h2>calculation.simulation module<a class="headerlink" href="#module-calculation.simulation" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">calculation.simulation.</span></span><span class="sig-name descname"><span class="pre">Simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resonator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#calculation.resonator.Resonator" title="calculation.resonator.Resonator"><span class="pre">Resonator</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#calculation.simulation_parameters.SimulationParameters" title="calculation.simulation_parameters.SimulationParameters"><span class="pre">SimulationParameters</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.calc_absorbtion_area">
+<span class="sig-name descname"><span class="pre">calc_absorbtion_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.calc_absorbtion_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.calc_absorbtion_area" title="Link to this definition"></a></dt>
+<dd><p>calculates the absorbtion area over a frequency vector</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.calc_all">
+<span class="sig-name descname"><span class="pre">calc_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.calc_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.calc_all" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.calc_max_absorbtion_area">
+<span class="sig-name descname"><span class="pre">calc_max_absorbtion_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.calc_max_absorbtion_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.calc_max_absorbtion_area" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.calc_q_factor">
+<span class="sig-name descname"><span class="pre">calc_q_factor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.calc_q_factor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.calc_q_factor" title="Link to this definition"></a></dt>
+<dd><p>calculates absorbtion area’s Q factor</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: Q-Factor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.calc_resonance_frequency_and_peak_area">
+<span class="sig-name descname"><span class="pre">calc_resonance_frequency_and_peak_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.calc_resonance_frequency_and_peak_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.calc_resonance_frequency_and_peak_area" title="Link to this definition"></a></dt>
+<dd><p>returns the resonance frequency
+calculated as maximum of the absorbtion area</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: resonance frequency</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.calc_z_friction">
+<span class="sig-name descname"><span class="pre">calc_z_friction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.calc_z_friction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.calc_z_friction" title="Link to this definition"></a></dt>
+<dd><p>calculate the real-valued viscosity loss</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.calc_z_porous">
+<span class="sig-name descname"><span class="pre">calc_z_porous</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.calc_z_porous"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.calc_z_porous" title="Link to this definition"></a></dt>
+<dd><p>calculates the real, frequency-invariant porous absorbtion 
+in case additional dampening material is used</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.calc_z_radiation">
+<span class="sig-name descname"><span class="pre">calc_z_radiation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.calc_z_radiation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.calc_z_radiation" title="Link to this definition"></a></dt>
+<dd><p>calculates complex, frequency-dependant acoustic radiation impedance (“Schallstrahlungsimpedanz”)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.calc_z_stiff_mass">
+<span class="sig-name descname"><span class="pre">calc_z_stiff_mass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.calc_z_stiff_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.calc_z_stiff_mass" title="Link to this definition"></a></dt>
+<dd><p>calculates impedance based on acoustic stiffness and mass.
+becomes zero at resonance frequency</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.from_dict">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Creates a Simulation instance from a dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.plot_absorbtion_area">
+<span class="sig-name descname"><span class="pre">plot_absorbtion_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.plot_absorbtion_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.plot_absorbtion_area" title="Link to this definition"></a></dt>
+<dd><p>Plots the absorbtion area over the frequency</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.plot_volume">
+<span class="sig-name descname"><span class="pre">plot_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cyan'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.plot_volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.plot_volume" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation.Simulation.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation.html#Simulation.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation.Simulation.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert the simulation results to a dictionary representation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-calculation.simulation_parameters">
+<span id="calculation-simulation-parameters-module"></span><h2>calculation.simulation_parameters module<a class="headerlink" href="#module-calculation.simulation_parameters" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="calculation.simulation_parameters.SimulationParameters">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">calculation.simulation_parameters.</span></span><span class="sig-name descname"><span class="pre">SimulationParameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">traits</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation_parameters.html#SimulationParameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation_parameters.SimulationParameters" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">HasTraits</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation_parameters.SimulationParameters.calc_k">
+<span class="sig-name descname"><span class="pre">calc_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation_parameters.html#SimulationParameters.calc_k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation_parameters.SimulationParameters.calc_k" title="Link to this definition"></a></dt>
+<dd><p>Calculate wave number from angular frequency and speed of sound.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation_parameters.SimulationParameters.calc_lambda">
+<span class="sig-name descname"><span class="pre">calc_lambda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation_parameters.html#SimulationParameters.calc_lambda"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation_parameters.SimulationParameters.calc_lambda" title="Link to this definition"></a></dt>
+<dd><p>Calculate wavelength from angular frequency and speed of sound.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation_parameters.SimulationParameters.calc_omega">
+<span class="sig-name descname"><span class="pre">calc_omega</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation_parameters.html#SimulationParameters.calc_omega"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation_parameters.SimulationParameters.calc_omega" title="Link to this definition"></a></dt>
+<dd><p>Calculate angular frequency from frequency vector.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation_parameters.SimulationParameters.calculate_frequencies">
+<span class="sig-name descname"><span class="pre">calculate_frequencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation_parameters.html#SimulationParameters.calculate_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation_parameters.SimulationParameters.calculate_frequencies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation_parameters.SimulationParameters.from_dict">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation_parameters.html#SimulationParameters.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation_parameters.SimulationParameters.from_dict" title="Link to this definition"></a></dt>
+<dd><p>Creates a SimulationParameters instance from a dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation_parameters.SimulationParameters.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation_parameters.html#SimulationParameters.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation_parameters.SimulationParameters.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert the simulation parameters to a dictionary representation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="calculation.simulation_parameters.SimulationParameters.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/calculation/simulation_parameters.html#SimulationParameters.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#calculation.simulation_parameters.SimulationParameters.update" title="Link to this definition"></a></dt>
+<dd><p>Recalculate frequency vector and dependent parameters</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-calculation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-calculation" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="app_control.html" class="btn btn-neutral float-left" title="app_control package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="io_tools.html" class="btn btn-neutral float-right" title="io_tools package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rösch F, Schön J, van Dijk T, Verhoeven J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
