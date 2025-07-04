@@ -7,8 +7,8 @@ from gui_widgets.GUIController import GUIController
 
 
 from app_control import forward, search_optimal
-#from io_tools import load_from_json
-#from io_tools.examples import load_example, examples
+from io_tools import load_from_json, save_to_json
+from io_tools.examples import load_example, examples
 
 
 # --- MainWindow ---
@@ -52,11 +52,11 @@ class MainWindow(QMainWindow):
 
 # --- Hauptprogramm ---
 if __name__ == '__main__':
-    import sys 
-    app = QApplication(sys.argv) 
-    win = MainWindow()
-    win.show()
-    sys.exit(app.exec())
+    # import sys 
+    # app = QApplication(sys.argv) 
+    # win = MainWindow()
+    # win.show()
+    # sys.exit(app.exec())
     # for example in examples:
     #    print(f"Running example {example}")
     #    simulation = load_example(example)
@@ -66,3 +66,11 @@ if __name__ == '__main__':
 
     
     # search_optimal(20, 1)
+
+    sim = load_example('01')
+    save_to_json(sim, 'example_01.json')
+    sim2 = load_from_json('example_01.json')
+    sim2.plot_absorbtion_area()
+
+
+

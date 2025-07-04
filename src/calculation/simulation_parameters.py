@@ -51,10 +51,9 @@ class SimulationParameters(HasTraits):
         """Convert the simulation parameters to a dictionary representation."""
         return {
             "medium": self.medium.to_dict(),
-            "frequencies": self.frequencies.tolist(),
-            # "omega": self.omega.tolist(),
-            # "k": self.k.tolist(),
-            # "_lambda": self._lambda.tolist(),
+            # "frequencies": self.frequencies.tolist(),
+            "freq_range": self.freq_range,
+            "values_per_octave": self.values_per_octave,
             "angle_of_incidence": self.angle_of_incidence,
             "assume_diffuse": self.assume_diffuse
         }
@@ -63,7 +62,16 @@ class SimulationParameters(HasTraits):
     def from_dict(cls, data):
         """Creates a SimulationParameters instance from a dictionary"""
         medium = Medium.from_dict(data['medium'])
-        frequencies = np.array(data['frequencies'])
+        if 'frequencies' in data:
+            frequencies = np.array(data['frequencies'])
+        else:
+            # calculate the frequency vector
+            f_min = data.get('freq_range', (20.0, 500.0))[0]
+            f_max = data.get('freq_range', (20.0, 500.0))[1]
+            values_per_octave = data.get('values_per_octave', 100)
+            n_octaves = np.log2(f_max / f_min)
+            n_freq_values = int(n_octaves * values_per_octave)
+            frequencies = np.logspace(np.log10(f_min), np.log10(f_max), num=n_freq_values)
         
         angle_of_incidence = data.get('angle_of_incidence', None)
         assume_diffuse = data.get('assume_diffuse', True)

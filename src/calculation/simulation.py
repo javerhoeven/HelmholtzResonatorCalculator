@@ -10,10 +10,10 @@ class Simulation():
         self.resonator = resonator
         self.sim_params = sim_params
 
-        self.z_porous : float
-        self.z_radiation : np.array
-        self.z_stiff_mass : np.array
-        self.z_friction : np.array
+        self.z_porous : float = None
+        self.z_radiation : np.array = None
+        self.z_stiff_mass : np.array = None
+        self.z_friction : np.array = None
         self.k = self.sim_params.omega / self.sim_params.medium.c
         self.absorbtion_area : np.array = None
         self.absorbtion_area_diffuse : np.array = None
@@ -28,6 +28,7 @@ class Simulation():
         self.calc_absorbtion_area()
         self.calc_resonance_frequency_and_peak_area()
         self.calc_q_factor()
+        
 
         
     def calc_z_porous(self) -> float:
@@ -35,7 +36,6 @@ class Simulation():
         calculates the real, frequency-invariant porous absorbtion 
         in case additional dampening material is used
         """
-        # TODO: delete additional_dampening bool, just check if xi is none
         ap = self.resonator.aperture
         if ap.additional_dampening == True:
             S = ap.area
@@ -233,7 +233,7 @@ class Simulation():
 
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
-        if self.q_factor is None:
+        if self.q_factor is None or self.f_q_low is None or self.f_q_high is None:
             self.calc_q_factor()
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.semilogx(self.sim_params.frequencies, self.absorbtion_area)
@@ -261,20 +261,24 @@ class Simulation():
 
     def to_dict(self):
         """Convert the simulation results to a dictionary representation."""
+   
+        self.calc_all()
         return {
             "resonator": self.resonator.to_dict(),
             "simulation_parameters": self.sim_params.to_dict(),
+            
+            # Impedances
             "z_porous": self.z_porous,
             "z_radiation_real": np.real(self.z_radiation).tolist(),
-            "z_radiation_imag": np.imag(self.z_radiation).tolist(),
+            "z_radiation_imag": np.imag(self.z_radiation).tolist(), 
             "z_stiff_mass_real": np.real(self.z_stiff_mass).tolist(),
-            "z_stiff_mass_imag": np.imag(self.z_stiff_mass).tolist(),
-            "z_friction_real": np.real(self.z_friction).tolist(),
-            "z_friction_imag": np.imag(self.z_friction).tolist(),
+            "z_stiff_mass_imag": np.imag(self.z_stiff_mass).tolist(), 
+            "z_friction_real": np.real(self.z_friction).tolist(), 
+            "z_friction_imag": np.imag(self.z_friction).tolist(), 
 
             "absorbtion_area": self.absorbtion_area.tolist() if self.absorbtion_area is not None else None,
             "max_absorbtion_area": self.max_absorbtion_area.tolist() if self.max_absorbtion_area is not None else None,
-            "q_factor": self.q_factor
+            "q_factor": self.q_factor,
         }
     
     @classmethod
@@ -284,7 +288,7 @@ class Simulation():
         sim_params = SimulationParameters.from_dict(data['simulation_parameters'])
         
         sim = cls(resonator=resonator, sim_params=sim_params)
-        sim.z_porous = data['z_porous']
+        sim.z_porous = data.get('z_porous', 0.0)
         sim.z_radiation = np.array(data['z_radiation_real']) + 1j * np.array(data['z_radiation_imag'])
         sim.z_stiff_mass = np.array(data['z_stiff_mass_real']) + 1j * np.array(data['z_stiff_mass_imag'])
         sim.z_friction = np.array(data['z_friction_real']) + 1j * np.array(data['z_friction_imag'])

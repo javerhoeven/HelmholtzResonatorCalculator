@@ -10,7 +10,7 @@ examples = {
         Aperture(form='tube', length=0.1, radius=0.05, additional_dampening=True, xi=12)),
     '03' : Resonator(
         Geometry(form='cuboid', x=0.8, y=0.5, z=0.3),
-        Aperture(form='slit', length=0.01, radius=0.5, width=0.02, height=0.5)),
+        Aperture(form='slit', length=0.01, radius=0.5, width=0.02, height=0.4)),
     '04' : Resonator(
         Geometry(form='cylinder', radius=0.1, height=0.2),
         Aperture(form='tube', length=0.05, radius=0.02, additional_dampening=True, xi=12)),
@@ -19,7 +19,7 @@ examples = {
         Aperture(form='tube', length=0.07, radius=0.03, additional_dampening=True, xi=20)),
     '06' : Resonator(
         Geometry(form='cuboid', x=0.6, y=0.4, z=0.3),
-        Aperture(form='slit', length=0.02, radius=0.6, width=0.03, height=0.6)),
+        Aperture(form='slit', length=0.02, radius=0.6, width=0.03, height=0.5)),
     '07' : Resonator(
         Geometry(form='cylinder', radius=0.12, height=0.18),
         Aperture(form='tube', length=0.06, radius=0.025, additional_dampening=True, xi=15)),
