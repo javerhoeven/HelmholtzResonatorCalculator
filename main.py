@@ -5,6 +5,7 @@ from gui_widgets.resultView import ResultView
 from gui_widgets.GUIController import GUIController
 
 
+
 from app_control import forward, search_optimal
 #from io_tools import load_from_json
 #from io_tools.examples import load_example, examples

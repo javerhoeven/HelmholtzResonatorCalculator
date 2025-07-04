@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QH
                              QPushButton, QLabel, QDoubleSpinBox, QComboBox, QFileDialog, QMessageBox)
 
 from app_control import forward
+import numpy as np
 
 ## hier muss das entsprechende modul importiert werden, 
 # welches die input parameter verarbeitet
@@ -22,22 +23,28 @@ class GUIController:
             frequencies = sim.sim_params.frequencies    # x-Axis
             absorbtion_area = sim.absorbtion_area       # y-Axis
             z_friction = sim.z_friction                 # y-Axis
-            z_porous = sim.z_porous                     # y-Axis
-            z_porous = sim.z_radiation                  # y-Axis
-            z_porous = sim.z_stiff_mass                 # y-Axis
+            z_porous = np.full_like(frequencies, sim.z_porous)                   # y-Axis
+            z_radiation = sim.z_radiation                  # y-Axis
+            z_stiff_mass = sim.z_stiff_mass                 # y-Axis
             f_res = sim.f_resonance                     # Peak
-            peak_aborbtion_area = sim.peak_absorbtion_area  # Peak value
+            q_factor = sim.q_factor                     # Q-Factor
+            a_max = sim.peak_absorbtion_area                           # Max Absorption Area
+            
+            data = {"Frequency [Hz]" : frequencies,
+                    "Absorption Area" : absorbtion_area,
+                    "Impedance Friction" : z_friction,
+                    "Impedance Porous" : z_porous,
+                    "Impedance Radiation" : z_radiation,
+                    "Impedance Stiff Mass" : z_stiff_mass}
 
-            # TODO: make dependant on dropdown selection
-            y_values = absorbtion_area
 
 
             # hier wird auf die Rückgabeparameter der Berechnung zugegriffen um diese dann ans ResultView zu schicken
             # 
             #f0, data = model.results()
-            # self.result_view.show_results(frequencies, y_values)
+            self.result_view.show_results(f_res, data, q_factor, a_max)
             
-            return y_values
+            
         
         except Exception as e:
             QMessageBox.critical(None, "Fehler", str(e))

@@ -4,6 +4,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 import csv
+import numpy as np
 
 
 # --- ResultView ---
@@ -17,7 +18,9 @@ class ResultView(QWidget):
         self.combo_x = QComboBox()
         self.combo_x.addItems(["Frequency [Hz]"])
         self.combo_y = QComboBox()
-        self.combo_y.addItems(["Absorption Coefficient", "Impedance"])
+        self.combo_y.addItems(["Absorption Area", "Impedance Friction", "Impedance Porous",
+                              "Impedance Radiation", "Impedance Stiff Mass"])
+        
 
         layout.addWidget(QLabel("X-Axis:"))
         layout.addWidget(self.combo_x)
@@ -66,12 +69,17 @@ class ResultView(QWidget):
         x = data.get(self.combo_x.currentText(), [])
         y = data.get(self.combo_y.currentText(), [])
         self.ax.clear()
-        self.ax.plot(x, y, label=f"{self.combo_y.currentText()} vs {self.combo_x.currentText()}")
+        if np.iscomplexobj(y):
+            self.ax.plot(x, np.real(y), label=f"RE({self.combo_y.currentText()}) vs {self.combo_x.currentText()}")
+            self.ax.plot(x, np.imag(y), label=f"IMAG({self.combo_y.currentText()}) vs {self.combo_x.currentText()}")
+        else:
+            self.ax.plot(x, y, label=f"{self.combo_y.currentText()} vs {self.combo_x.currentText()}")
         self.ax.set_xlabel(self.combo_x.currentText())
         self.ax.set_ylabel(self.combo_y.currentText())
         self.ax.grid()
         self.ax.legend()
         self.canvas.draw()
+
 
     def export_csv(self, data, path):
         x_key = self.combo_x.currentText()

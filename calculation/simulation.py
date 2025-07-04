@@ -30,7 +30,7 @@ class Simulation():
         self.calc_q_factor()
 
         
-    def calc_z_porous(self) -> np.array:
+    def calc_z_porous(self) -> float:
         """
         calculates the real, frequency-invariant porous absorbtion 
         in case additional dampening material is used
