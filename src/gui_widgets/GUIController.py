@@ -14,28 +14,22 @@ class GUIController:
         self.input_form = input_form; self.result_view = result_view
     def calculate_and_show(self):
         try:
+            # get simulation parameters from input form
             params = self.input_form.get_inputs()
-            print(params)
 
             # create simulation
             sim = forward(params)
             # get data to display
-            frequencies = sim.sim_params.frequencies    # x-Axis
-            absorbtion_area = sim.absorbtion_area       # y-Axis
-            z_friction = sim.z_friction                 # y-Axis
-            z_porous = np.full_like(frequencies, sim.z_porous)                   # y-Axis
-            z_radiation = sim.z_radiation                  # y-Axis
-            z_stiff_mass = sim.z_stiff_mass                 # y-Axis
             f_res = sim.f_resonance                     # Peak
             q_factor = sim.q_factor                     # Q-Factor
-            a_max = sim.peak_absorbtion_area                           # Max Absorption Area
+            a_max = sim.peak_absorbtion_area            # Max Absorption Area
             
-            data = {"Frequency [Hz]" : frequencies,
-                    "Absorption Area" : absorbtion_area,
-                    "Impedance Friction" : z_friction,
-                    "Impedance Porous" : z_porous,
-                    "Impedance Radiation" : z_radiation,
-                    "Impedance Stiff Mass" : z_stiff_mass}
+            data = {"Frequency [Hz]" : sim.sim_params.frequencies,
+                    "Absorption Area" : sim.absorbtion_area,
+                    "Impedance Friction" : sim.z_friction,
+                    "Impedance Porous" : sim.z_porous,
+                    "Impedance Radiation" : sim.z_radiation,
+                    "Impedance Stiff Mass" : sim.z_stiff_mass}
 
 
 

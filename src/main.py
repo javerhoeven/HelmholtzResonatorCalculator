@@ -7,8 +7,9 @@ from gui_widgets.GUIController import GUIController
 
 
 from app_control import forward, search_optimal
-from io_tools import load_from_json, save_to_json
+from io_tools import load_from_json, save_to_json, export_cad
 from io_tools.examples import load_example, examples
+
 
 
 # --- MainWindow ---
@@ -65,12 +66,10 @@ if __name__ == '__main__':
 
 
     
-    # search_optimal(20, 1)
+    search_optimal(200, 10)
 
-    sim = load_example('01')
-    save_to_json(sim, 'example_01.json')
-    sim2 = load_from_json('example_01.json')
-    sim2.plot_absorbtion_area()
-
-
-
+    # sim = load_example('01')
+    # save_to_json(sim, 'example_01.json')
+    # sim2 = load_from_json('example_01.json')
+    # sim2.plot_absorbtion_area()
+    # export_cad(sim2, 'example_01.stl')

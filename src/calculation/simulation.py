@@ -217,6 +217,12 @@ class Simulation():
 
     
     def calc_max_absorbtion_area(self, plot : bool = True):
+        """
+        calculates to theoretically maximum possible absorbtion area
+
+        Args:
+            plot (bool, optional): decides if the curve is plotted. Defaults to True.
+        """
         max_absorbtion_area = self.sim_params._lambda**2/(2*np.pi)
         self.max_absorbtion_area = max_absorbtion_area
         if plot:
@@ -262,19 +268,19 @@ class Simulation():
     def to_dict(self):
         """Convert the simulation results to a dictionary representation."""
    
-        self.calc_all()
+        # self.calc_all()
         return {
             "resonator": self.resonator.to_dict(),
             "simulation_parameters": self.sim_params.to_dict(),
             
             # Impedances
             "z_porous": self.z_porous,
-            "z_radiation_real": np.real(self.z_radiation).tolist(),
-            "z_radiation_imag": np.imag(self.z_radiation).tolist(), 
-            "z_stiff_mass_real": np.real(self.z_stiff_mass).tolist(),
-            "z_stiff_mass_imag": np.imag(self.z_stiff_mass).tolist(), 
-            "z_friction_real": np.real(self.z_friction).tolist(), 
-            "z_friction_imag": np.imag(self.z_friction).tolist(), 
+            "z_radiation_real": np.real(self.z_radiation).tolist() if self.z_radiation is not None else None,
+            "z_radiation_imag": np.imag(self.z_radiation).tolist() if self.z_radiation is not None else None, 
+            "z_stiff_mass_real": np.real(self.z_stiff_mass).tolist() if self.z_stiff_mass is not None else None,
+            "z_stiff_mass_imag": np.imag(self.z_stiff_mass).tolist() if self.z_stiff_mass is not None else None, 
+            "z_friction_real": np.real(self.z_friction).tolist() if self.z_friction is not None else None, 
+            "z_friction_imag": np.imag(self.z_friction).tolist() if self.z_friction is not None else None, 
 
             "absorbtion_area": self.absorbtion_area.tolist() if self.absorbtion_area is not None else None,
             "max_absorbtion_area": self.max_absorbtion_area.tolist() if self.max_absorbtion_area is not None else None,
@@ -288,12 +294,27 @@ class Simulation():
         sim_params = SimulationParameters.from_dict(data['simulation_parameters'])
         
         sim = cls(resonator=resonator, sim_params=sim_params)
-        sim.z_porous = data.get('z_porous', 0.0)
-        sim.z_radiation = np.array(data['z_radiation_real']) + 1j * np.array(data['z_radiation_imag'])
-        sim.z_stiff_mass = np.array(data['z_stiff_mass_real']) + 1j * np.array(data['z_stiff_mass_imag'])
-        sim.z_friction = np.array(data['z_friction_real']) + 1j * np.array(data['z_friction_imag'])
-        sim.absorbtion_area = np.array(data['absorbtion_area']) if data['absorbtion_area'] is not None else None
-        sim.max_absorbtion_area = np.array(data['max_absorbtion_area']) if data['max_absorbtion_area'] is not None else None
+        sim.z_porous = data.get('z_porous', 0.0) 
+
+        # for complex impedances, check if real and imaginary parts are present
+        if data['z_radiation_real'] is None or data['z_radiation_imag'] is None:
+            sim.z_radiation = None
+        else:
+            sim.z_radiation = np.array(data.get('z_radiation_real', None)) + 1j * np.array(data.get('z_radiation_imag', None))
+
+        if data['z_stiff_mass_real'] is None or data['z_stiff_mass_imag'] is None:
+            sim.z_stiff_mass = None
+        else:
+            sim.z_stiff_mass = np.array(data.get('z_stiff_mass_real', None)) + 1j * np.array(data.get('z_stiff_mass_imag', None))
+
+        if data['z_friction_real'] is None or data['z_friction_imag'] is None:
+            sim.z_friction = None
+        else:
+            sim.z_friction = np.array(data.get('z_friction_real', None)) + 1j * np.array(data.get('z_friction_imag', None))
+
+        sim.absorbtion_area = np.array(data.get('absorbtion_area')) if data['absorbtion_area'] is not None else None
+
+        sim.max_absorbtion_area = np.array(data.get('max_absorbtion_area')) if data['max_absorbtion_area'] is not None else None
         sim.q_factor = data.get('q_factor', None)
 
         return sim

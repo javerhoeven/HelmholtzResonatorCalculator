@@ -115,20 +115,6 @@ class Aperture(HasTraits):
 
         return base
 
-    # def to_dict(self):
-    #     """Returns the aperture as a dictionary"""
-    #     return {
-    #         'form': self.form,
-    #         'length': self.length,
-    #         'radius': self.radius,
-    #         'inner_ending': self.inner_ending,
-    #         'outer_ending': self.outer_ending,
-    #         'additional_dampening': self.additional_dampening,
-    #         'xi': self.xi,
-    #         'amount': self.amount,
-    #         'width': self.width,
-    #         'height': self.height
-    #     }
     
     @classmethod
     def from_dict(cls, data):

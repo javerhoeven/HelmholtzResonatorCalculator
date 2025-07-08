@@ -5,7 +5,7 @@ from .medium import Medium  # Passe den Import ggf. an deinen Projekt-Ordner an!
 
 class SimulationParameters(HasTraits):
     medium = Instance(Medium)
-    freq_range = Tuple(Float(20.0), Float(500.0))
+    freq_range = Tuple(Float(0.01), Float(500.0))
     values_per_octave = Int(100)
     angle_of_incidence = Float(0.0)
     assume_diffuse = Bool(True)
