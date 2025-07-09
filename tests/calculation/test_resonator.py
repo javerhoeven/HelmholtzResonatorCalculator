@@ -61,3 +61,8 @@ class TestResonator(unittest.TestCase):
 #         geometry = Geometry.from_dict(data['geometry'])
 #         aperture = Aperture.from_dict(data['aperture'])
 #         return cls(geometry=geometry, aperture=aperture)
+
+
+
+if __name__ == '__main__':
+    unittest.main()

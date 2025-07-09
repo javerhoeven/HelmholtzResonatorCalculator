@@ -50,5 +50,5 @@ class TestSimulationParameters(unittest.TestCase):
         self.assertEqual(self.sim.angle_of_incidence, 0.0)
 
 
-# if __name__ == '__main__':
-#     unittest.main()
+if __name__ == '__main__':
+    unittest.main()

@@ -7,12 +7,12 @@ class TestGeometry(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         
-        cls.x_min = Geometry.class_traits()['x'].low
-        cls.x_max = Geometry.class_traits()['x'].high
-        cls.y_min = Geometry.class_traits()['y'].low
-        cls.y_max = Geometry.class_traits()['y'].high
-        cls.z_min = Geometry.class_traits()['z'].low
-        cls.z_max = Geometry.class_traits()['z'].high
+        cls.x_min = Geometry.class_traits()['x'].handler._low
+        cls.x_max = Geometry.class_traits()['x'].handler._high
+        cls.y_min = Geometry.class_traits()['y'].handler._low
+        cls.y_max = Geometry.class_traits()['y'].handler._high
+        cls.z_min = Geometry.class_traits()['z'].handler._low
+        cls.z_max = Geometry.class_traits()['z'].handler._high
 
         cls.x_mid = (cls.x_min + cls.x_max) / 2
         cls.y_mid = (cls.y_min + cls.y_max) / 2
@@ -94,5 +94,5 @@ class TestGeometry(unittest.TestCase):
 #TODO: selbe tests nur mit cuboid
 
 
-# if __name__ == '__main__':
-#     unittest.main()
+if __name__ == '__main__':
+    unittest.main()

@@ -177,6 +177,6 @@ class TestMedium(unittest.TestCase):
 import sys
 print("MODUL WIRD GELADEN! Python:", sys.executable)
 
-# if __name__ == "__main__":
-#     print("DEBUG: unittest.main() wird aufgerufen!")
-#     unittest.main()
+if __name__ == "__main__":
+    print("DEBUG: unittest.main() wird aufgerufen!")
+    unittest.main()

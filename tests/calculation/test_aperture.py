@@ -31,20 +31,20 @@ class TestApertureEdgeCases(unittest.TestCase):
            Außerdem werden jeweils die Mittelwerte ermittelt.
         """
         #---Minimal-/Maximalwert length---
-        cls.length_min = Aperture.class_traits()['length'].low
-        cls.length_max = Aperture.class_traits()['length'].high
+        cls.length_min = Aperture.class_traits()['length'].handler._low
+        cls.length_max = Aperture.class_traits()['length'].handler._high
         #---Minimal-/Maximalwert radius---
-        cls.radius_min = Aperture.class_traits()['radius'].low
-        cls.radius_max = Aperture.class_traits()['radius'].high
+        cls.radius_min = Aperture.class_traits()['radius'].handler._low
+        cls.radius_max = Aperture.class_traits()['radius'].handler._high
         #---Minimal-/Maximalwert width---
-        cls.width_min = Aperture.class_traits()['width'].low
-        cls.width_max = Aperture.class_traits()['width'].high
+        cls.width_min = Aperture.class_traits()['width'].handler._low
+        cls.width_max = Aperture.class_traits()['width'].handler._high
         #---Minimal-/Maximalwert heigth---
-        cls.height_min = Aperture.class_traits()['height'].low
-        cls.height_max = Aperture.class_traits()['height'].high
+        cls.height_min = Aperture.class_traits()['height'].handler._low
+        cls.height_max = Aperture.class_traits()['height'].handler._high
         #---Minimal-/Maximalwert amount---
-        cls.amount_min = Aperture.class_traits()['amount'].low
-        cls.amount_max = Aperture.class_traits()['amount'].high
+        cls.amount_min = Aperture.class_traits()['amount'].handler._low
+        cls.amount_max = Aperture.class_traits()['amount'].handler._high
 
         #---Mittelwer length---
         cls.length_mid  = (cls.length_min  + cls.length_max) / 2
@@ -160,5 +160,5 @@ class TestApertureEdgeCases(unittest.TestCase):
     
     
 
-# if __name__ == '__main__':
-#     unittest.main()
+if __name__ == '__main__':
+    unittest.main()
