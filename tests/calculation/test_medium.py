@@ -17,13 +17,13 @@ class TestMedium(unittest.TestCase):
         Liest einmalig die physikalischen Grenzen und Standardwerte aus den Traits der Medium-Klasse aus.
         """
         traits = Medium.class_traits()
-        cls.temp_min = traits['temperature_celsius'].low
-        cls.temp_max = traits['temperature_celsius'].high
-        cls.temp_default = traits['temperature_celsius'].default_value()
+        cls.temp_min = traits['temperature_celsius'].handler._low
+        cls.temp_max = traits['temperature_celsius'].handler._high
+        cls.temp_default = traits['temperature_celsius'].handler.default_value
 
-        cls.humidity_min = traits['rel_humidity'].low
-        cls.humidity_max = traits['rel_humidity'].high
-        cls.humidity_default = traits['rel_humidity'].default_value()
+        cls.humidity_min = traits['rel_humidity'].handler._low
+        cls.humidity_max = traits['rel_humidity'].handler._high
+        cls.humidity_default = traits['rel_humidity'].handler.default_value
 
     def expected_temperature_kelvin(self, temp_celsius):
         """Compute expected temperature in Kelvin."""
@@ -174,9 +174,6 @@ class TestMedium(unittest.TestCase):
             )
 
 
-import sys
-print("MODUL WIRD GELADEN! Python:", sys.executable)
 
 if __name__ == "__main__":
-    print("DEBUG: unittest.main() wird aufgerufen!")
     unittest.main()
