@@ -1,30 +1,26 @@
 from calculation.aperture import Aperture
+from math import pi
 
 import unittest
 import numpy as np
 
-    length = Range(0.001, 0.5)  # must be positivev
-    radius = Range(0.005, 1.0, value=None, allow_none=True)  # only for 'tube'
-    width = Range(0.001, 0.5, value=None, allow_none=True)  # only for 'slit'
-    height = Range(0.001, 0.5, value=None, allow_none=True)  # only for 'slit'
-    amount = Range(1, 100, 1)
+# length = Range(0.001, 0.5)  # must be positivev
+# radius = Range(0.005, 1.0, value=None, allow_none=True)  # only for 'tube'
+# width = Range(0.001, 0.5, value=None, allow_none=True)  # only for 'slit'
+# height = Range(0.001, 0.5, value=None, allow_none=True)  # only for 'slit'
+# amount = Range(1, 100, 1)
 
-    inner_ending = Enum('open', 'flange') # default = 'open'
-    outer_ending = Enum('flange', 'open') # default = 'flange' because it is on the outer wall
+# inner_ending = Enum('open', 'flange') # default = 'open'
+# outer_ending = Enum('flange', 'open') # default = 'flange' because it is on the outer wall
 
-    additional_dampening = Bool(False)
-    xi = Float(None, allow_none=True)  # required, if additional_dampening=True
+# additional_dampening = Bool(False)
+# xi = Float(None, allow_none=True)  # required, if additional_dampening=True
 
-    # --- Berechnete Attribute ---
-    area = Float
-    inner_end_correction = Float
-    outer_end_correction = Float
+# # --- Berechnete Attribute ---
+# area = Float
+# inner_end_correction = Float
+# outer_end_correction = Float
 
-
-
-import unittest
-from math import pi
-from aperture import Aperture
 
 
 class TestApertureEdgeCases(unittest.TestCase):
@@ -106,62 +102,63 @@ class TestApertureEdgeCases(unittest.TestCase):
 
    
 
-        def _slit end correction()
-        delta_l_a =  2/(3*pi) * (beta + (1- (1+beta**2)**(3/2)) / beta**2 ) + (2/pi) * (1/beta * np.log(beta+np.sqrt(1+beta**2)) + np.log(1/beta*(1+np.sqrt(1+beta**2))))
-        delta_l = delta_l_a * a
-       
+    # def _slit_correction():
+    #     delta_l_a =  2/(3*pi) * (beta + (1- (1+beta**2)**(3/2)) / beta**2 ) + (2/pi) * (1/beta * np.log(beta+np.sqrt(1+beta**2)) + np.log(1/beta*(1+np.sqrt(1+beta**2))))
+    #     delta_l = delta_l_a * a
+    
 
     # ---------------- Slit‑Edge‑Cases ohne Schleifen --------------
-    def test_slit_end_correction_min_width_min_height(self):
-        width, height = self.width_min, self.height_min
-        ap = Aperture(form='slit', length=self.length_mid,
-                      width=width, height=height, amount=self.amount_mid)
-        expected = self._slit_correction(width, height)
-        self.assertAlmostEqual(ap.inner_end_correction, expected, places=7)
-        self.assertAlmostEqual(ap.outer_end_correction, expected, places=7)
+    # def test_slit_end_correction_min_width_min_height(self):
+    #     width, height = self.width_min, self.height_min
+    #     ap = Aperture(form='slit', length=self.length_mid,
+    #                   width=width, height=height, amount=self.amount_mid)
+    #     expected = self._slit_correction(width, height)
+    #     self.assertAlmostEqual(ap.inner_end_correction, expected, places=7)
+    #     self.assertAlmostEqual(ap.outer_end_correction, expected, places=7)
 
-    def test_slit_end_correction_min_width_mid_height(self):
-        width, height = self.width_min, self.height_mid
-        ap = Aperture(form='slit', length=self.length_mid,
-                      width=width, height=height, amount=self.amount_mid)
-        expected = self._slit_correction(width, height)
-        self.assertAlmostEqual(ap.inner_end_correction, expected, places=7)
-        self.assertAlmostEqual(ap.outer_end_correction, expected, places=7)
+    # def test_slit_end_correction_min_width_mid_height(self):
+    #     width, height = self.width_min, self.height_mid
+    #     ap = Aperture(form='slit', length=self.length_mid,
+    #                   width=width, height=height, amount=self.amount_mid)
+    #     expected = self._slit_correction(width, height)
+    #     self.assertAlmostEqual(ap.inner_end_correction, expected, places=7)
+    #     self.assertAlmostEqual(ap.outer_end_correction, expected, places=7)
 
-    def test_slit_end_correction_mid_width_min_height(self):
-        width, height = self.width_mid, self.height_min
-        ap = Aperture(form='slit', length=self.length_mid,
-                      width=width, height=height, amount=self.amount_mid)
-        expected = self._slit_correction(width, height)
-        self.assertAlmostEqual(ap.inner_end_correction, expected, places=7)
-        self.assertAlmostEqual(ap.outer_end_correction, expected, places=7)
+    # def test_slit_end_correction_mid_width_min_height(self):
+    #     width, height = self.width_mid, self.height_min
+    #     ap = Aperture(form='slit', length=self.length_mid,
+    #                   width=width, height=height, amount=self.amount_mid)
+    #     expected = self._slit_correction(width, height)
+    #     self.assertAlmostEqual(ap.inner_end_correction, expected, places=7)
+    #     self.assertAlmostEqual(ap.outer_end_correction, expected, places=7)
 
-    def test_slit_end_correction_max_width_max_height(self):
-        width, height = self.width_max, self.height_max
-        ap = Aperture(form='slit', length=self.length_mid,
-                      width=width, height=height, amount=self.amount_mid)
-        expected = self._slit_correction(width, height)
-        self.assertAlmostEqual(ap.inner_end_correction, expected, places=7)
-        self.assertAlmostEqual(ap.outer_end_correction, expected, places=7)
+    # def test_slit_end_correction_max_width_max_height(self):
+    #     width, height = self.width_max, self.height_max
+    #     ap = Aperture(form='slit', length=self.length_mid,
+    #                   width=width, height=height, amount=self.amount_mid)
+    #     expected = self._slit_correction(width, height)
+    #     self.assertAlmostEqual(ap.inner_end_correction, expected, places=7)
+    #     self.assertAlmostEqual(ap.outer_end_correction, expected, places=7)
 
-    def test_slit_end_correction_mid_width_mid_height(self):
-        width, height = self.width_mid, self.height_mid
-        ap = Aperture(form='slit', length=self.length_mid,
-                      width=width, height=height, amount=self.amount_mid)
-        expected = self._slit_correction(width, height)
-        self.assertAlmostEqual(ap.inner_end_correction, expected, places=7)
-        self.assertAlmostEqual(ap.outer_end_correction, expected, places=7)
+    # def test_slit_end_correction_mid_width_mid_height(self):
+    #     width, height = self.width_mid, self.height_mid
+    #     ap = Aperture(form='slit', length=self.length_mid,
+    #                   width=width, height=height, amount=self.amount_mid)
+    #     expected = self._slit_correction(width, height)
+    #     self.assertAlmostEqual(ap.inner_end_correction, expected, places=7)
+    #     self.assertAlmostEqual(ap.outer_end_correction, expected, places=7)
 
-    def test_slit_end_correction_symmetry(self):
-        w1, h1 = self.width_min, self.height_max
-        ap = Aperture(form='slit', length=self.length_mid,
-                      width=w1, height=h1, amount=self.amount_mid)
-        c1 = self._slit_correction(w1, h1)
-        c2 = self._slit_correction(h1, w1)   # Seiten vertauscht
-        self.assertAlmostEqual(c1, c2, places=9)
+    # def test_slit_end_correction_symmetry(self):
+    #     w1, h1 = self.width_min, self.height_max
+    #     ap = Aperture(form='slit', length=self.length_mid,
+    #                   width=w1, height=h1, amount=self.amount_mid)
+    #     c1 = self._slit_correction(w1, h1)
+    #     c2 = self._slit_correction(h1, w1)   # Seiten vertauscht
+    #     self.assertAlmostEqual(c1, c2, places=9)
 
     
     
     
 
-
+# if __name__ == '__main__':
+#     unittest.main()

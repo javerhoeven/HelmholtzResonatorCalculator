@@ -10,7 +10,7 @@ class TestGeometry(unittest.TestCase):
         cls.x_min = Geometry.class_traits()['x'].low
         cls.x_max = Geometry.class_traits()['x'].high
         cls.y_min = Geometry.class_traits()['y'].low
-        cls.y_min = Geometry.class_traits()['y'].high
+        cls.y_max = Geometry.class_traits()['y'].high
         cls.z_min = Geometry.class_traits()['z'].low
         cls.z_max = Geometry.class_traits()['z'].high
 
@@ -21,9 +21,9 @@ class TestGeometry(unittest.TestCase):
 
 
 
-    def test_edge_xlow(self):
+    # def test_edge_xlow(self):
          
-         with self
+    #      with self
 
         
 
@@ -34,7 +34,7 @@ class TestGeometry(unittest.TestCase):
     def test_x_toosmall(self):
 
         with self.assertRaises(TraitError):
-            Geometry(form='cuboid',x=self.xmin-0.001,  y=self.y_min, z=self.z_min)
+            Geometry(form='cuboid',x=self.x_min-0.001,  y=self.y_min, z=self.z_min)
 
     def test_x_too_large_raises(self):
         with self.assertRaises(TraitError):
@@ -43,7 +43,7 @@ class TestGeometry(unittest.TestCase):
     def test_y_toosmall(self):
 
         with self.assertRaises(TraitError):
-            Geometry(form='cuboid',x=self.xmin,y=self.ymin-0.001, , z=self.z_min)
+            Geometry(form='cuboid',x=self.x_min,y=self.y_min-0.001, z=self.z_min)
             
 
     def test_y_too_large_raises(self):
@@ -51,16 +51,16 @@ class TestGeometry(unittest.TestCase):
         with self.assertRaises(TraitError):
             Geometry(form='cuboid',x=self.x_min,y=self.y_max+0.001, z=self.z_min)
     
-        def test_z_toosmall(self):
+    def test_z_toosmall(self):
 
         with self.assertRaises(TraitError):
-            Geometry(form='cuboid', y=self.y_min,x=self.xmin,z=self.zmin-0.001)
-            
+            Geometry(form='cuboid', y=self.y_min,x=self.x_min,z=self.z_min-0.001)
+        
 
     def test_z_too_large_trait_error(self):
        
         with self.assertRaises(TraitError):
-            Geometry(Geometry(form='', x=self.x_max,y=self.y_max,z=self.z_max+0.001))
+            Geometry(form='cuboid', x=self.x_max, y=self.y_max, z=self.z_max+0.001)
 
     def test_false_geometry_trait_error(self):
         with self.assertRaises(TraitError):
@@ -68,27 +68,31 @@ class TestGeometry(unittest.TestCase):
 
     def test_missing_datatype_trait_error(self):
         with self.assertRaises(TraitError):
-            Geometry(x=self.xmin,y=self.xmax,z=self.z_min)
+            Geometry(x=self.x_min,y=self.x_max,z=self.z_min)
     
-    def test_false_datatype_trait_error
+    def test_false_datatype_trait_error(self):
         with self.assertRaises(TraitError):
-            Geometry(form=False,x=self.xmin,y=self.ymax,z=self.z_min)
+            Geometry(form=False,x=self.x_min,y=self.y_max,z=self.z_min)
 
 
     """EDGE_Cases"""
-    def test_edge_xyz-lower(self):
+    def test_edge_xyz_lower(self):
  
-        self.assertAlmostEqual(Geometry(formrm="cylinder",x=self.xmin,y=self.ymin,z=self.zmin).volume,self.x_min * self.y_min * self.z_min)
+        self.assertAlmostEqual(Geometry(form="cylinder",x=self.x_min,y=self.y_min,z=self.z_min).volume,self.x_min * self.y_min * self.z_min)
 
-    def test_edge_xyz-higher(self):
+    def test_edge_xyz_higher(self):
      
-        self.assertAlmostEqual(Geometry(formrm="cylinder",x=self.xmax,y=self.ymax,z=self.zmax).volume,self.x_min * self.y_max * self.z_max)
+        self.assertAlmostEqual(Geometry(form="cylinder",x=self.x_max,y=self.y_max,z=self.z_max).volume,self.x_min * self.y_max * self.z_max)
 
 
     """positive tests with average vallues"""
-    def test_edge_xyz_mid
+    def test_edge_xyz_mid(self):
 
-        self.assertAlmostEqual(Geometry(formrm="cylinder",x=self.xmid,y=self.ymid,z=self.zmid).volume,self.x_min * self.y_max * self.z_max)
+        self.assertAlmostEqual(Geometry(form="cylinder",x=self.x_mid,y=self.y_mid,z=self.z_mid).volume,self.x_min * self.y_max * self.z_max)
 
 
 #TODO: selbe tests nur mit cuboid
+
+
+# if __name__ == '__main__':
+#     unittest.main()

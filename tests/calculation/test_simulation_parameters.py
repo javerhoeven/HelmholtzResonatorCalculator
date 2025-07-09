@@ -11,7 +11,7 @@ class TestSimulationParameters(unittest.TestCase):
         self.sim    = SimulationParameters(medium=self.medium)
 
     def test_freq_mon_increase(self):
-        self.assertTrue(np.all(np.diff(params.frequence))>0,'freq vec not steady increasing')
+        self.assertTrue(np.all(np.diff(self.sim.frequencies))>0,'freq vec not steady increasing')
 
 
     def test_dependent_arrays(self):
@@ -37,7 +37,7 @@ class TestSimulationParameters(unittest.TestCase):
         n_octaves = np.log2(f_max / f_min)
         expected_len = int(n_octaves * self.sim.values_per_octave)
 
-        self.assertEqual(len(self.sim.frequencies),n_octaves*self.sim.values_per_octaves)
+        self.assertEqual(len(self.sim.frequencies),int(n_octaves*self.sim.values_per_octave))
 
     
     # Diffuser Einfall erzwingt Winkel = 0°
@@ -50,5 +50,5 @@ class TestSimulationParameters(unittest.TestCase):
         self.assertEqual(self.sim.angle_of_incidence, 0.0)
 
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()
