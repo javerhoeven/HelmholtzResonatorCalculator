@@ -65,7 +65,7 @@ class Simulation():
         # check if requirement for equation is met
         limit = np.argwhere(k*r < 0.5)[-1]
         # TODO: move this test to beginning of simulation to immediately truncate all freq-related vectors
-        print(f"k*r < 0.5 condition is met until {f[limit]} Hz.")
+        # print(f"k*r < 0.5 condition is met until {f[limit]} Hz.")
 
         if ap.outer_ending == 'open':
             self.z_radiation = rho * c * (k**2 * r**2 / (4*np.pi) + 1j * k * delta_l_out)
@@ -110,8 +110,8 @@ class Simulation():
         S = ap.area
         # TODO: move this test to a separate validation test
         limit = np.argwhere(k*r < 0.2)[-1, -1] 
-        print(f"k*r << 1 (k*r < 0.2) condition is met until {f[limit]} Hz.")
-        print("Adjusting z_friction according to the condition. ")
+        # print(f"k*r << 1 (k*r < 0.2) condition is met until {f[limit]} Hz.")
+        # print("Adjusting z_friction according to the condition. ")
 
         z_friction = 8 * v * rho / r**2 * l_ap / S
         z_friction_arr = np.full_like(f, z_friction)
@@ -194,7 +194,7 @@ class Simulation():
             i1 = sign_change_idc[0]
             i2 = sign_change_idc[1]
         except IndexError:
-            print("-3 dB point out of frequency range. Cannot calculate Q factor.")
+            # print("-3 dB point out of frequency range. Cannot calculate Q factor.")
             return None
 
         # f1
@@ -263,7 +263,7 @@ class Simulation():
 
         # Enable grid on both major and minor ticks
         ax.grid(True, which='both', linestyle='--')
-        plt.show()
+        return ax
 
     def to_dict(self):
         """Convert the simulation results to a dictionary representation."""

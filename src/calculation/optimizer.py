@@ -1,5 +1,7 @@
 from calculation import Simulation, SimulationParameters, Aperture, Geometry, Resonator, Medium
 from scipy.optimize import minimize
+import click
+import matplotlib.pyplot as plt
 import numpy as np
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
@@ -24,7 +26,7 @@ class Optimizer:
         self.best_results = []
         self.best_result = None
 
-        self.bounds = [[]]
+        self.bounds = None
 
     # function to optimize
     def objective(self, vars):
@@ -38,6 +40,8 @@ class Optimizer:
             float: penalized peak value of the simulation result, where a lower value is better.
         """
         x, y, z, radius, length, xi = vars
+        
+        
 
         f_target = self.f_target
         q_target = self.q_target
@@ -56,19 +60,26 @@ class Optimizer:
         # Simulate and extract results
         f_res, peak_area = sim.calc_resonance_frequency_and_peak_area()
         q_factor = sim.calc_q_factor()
-        
+
+        # scale peak_area with theoretically maximum absorbtion area
+        c = medium.c or medium.speed_of_sound
+        _lambda = c / f_res
+        max_area = 2 * _lambda**2/(2*np.pi)
+
+        peak_area_norm = peak_area / max_area # now between 0 and 1
         try:
             # Penalize deviation from target f_res and Q
-            f_weight = 1000 # weight of penalty
-            f_penalty = np.abs(np.log10(f_res / f_target)) * f_weight
+            f_weight = 100. # weight of penalty
+            f_rel_error = np.abs(np.log10(f_res / f_target))
+            f_penalty = f_rel_error  * f_weight 
 
-            q_weight = 500
-            q_penalty = np.abs(np.log10(q_factor / q_target)) * q_weight
+            q_weight = 20.
+            q_rel_error = (q_factor - q_target) / q_target
+            q_penalty = q_rel_error**2 * q_weight
             
         except TypeError:
             return np.inf  # If Q factor is None, return a large penalty
-        
-        return -peak_area + f_penalty + q_penalty
+        return -peak_area_norm + f_penalty + q_penalty
     
     def run_single_optimization(self, x0):
         """tries to optimize the target parameters within the objective function
@@ -87,6 +98,7 @@ class Optimizer:
                 self.objective,
                 x0,
                 method='SLSQP',
+                # method='trust-constr',
                 bounds=self.bounds,
                 options={'maxiter' : 100, 'disp' : False}
             )
@@ -151,15 +163,15 @@ class Optimizer:
             (0.01, 0.3),   # aperture length
             (1, 5000)
         ]
-        # initial_bounds = bounds.copy()
-        # initial_bounds[-1] = [1, 1000]
 
 
         results = []
+        # TODO
         num_trials = 200
-        # create initial guesses, half informed, half random         
-        initial_guesses = [self.generate_initial_set() for _ in range(num_trials//2)] # generate estimations for good results
-        initial_guesses.extend([list([np.random.uniform(low, high) for (low, high) in self.bounds]) for _ in range(num_trials//2)]) # append completely random guesses
+        # create initial guesses, half informed, half random     
+        # initial_guesses = [self.generate_initial_set() for _ in range(num_trials//2)] # generate estimations for good results
+        initial_guesses = []
+        initial_guesses.extend([list([np.random.uniform(low, high) for (low, high) in self.bounds]) for _ in range(num_trials-len(initial_guesses))]) # append completely random guesses
 
         with ProcessPoolExecutor() as executor:
             futures = [executor.submit(self.run_single_optimization, x0) for x0 in initial_guesses]
@@ -179,7 +191,11 @@ class Optimizer:
         print(f"{num_fails} of {num_trials} inital guesses failed")
         
         # Result
-        self.display_results(self.best_result)
+        print_n = 1
+        for res in self.best_results[:print_n]:
+            self.display_results(res)
+        plt.show()
+        
 
 
     def display_results(self, result):
@@ -195,22 +211,22 @@ class Optimizer:
         # reapply simulation
         medium = Medium()
         # freq_range = (self.f_target*0.001, self.f_target*100) # automatically set frequency range
-        freq_range = (20, 1000)
+        freq_range = (20, 2000)
+
+        
         sim = Simulation(
             Resonator(Geometry(form='cuboid', x=x, y=y, z=z), 
                         Aperture(form='tube', radius=radius, length=length, additional_dampening=True, xi=xi)),
-            SimulationParameters(medium=medium, freq_range=freq_range, values_per_octave=1000) 
+            SimulationParameters(medium=medium, freq_range=freq_range, values_per_octave=500) 
         )
 
         (f_res, peak_area), q_factor = sim.calc_resonance_frequency_and_peak_area(),  sim.calc_q_factor()
-
         print("Optimal dimensions and aperture:")
         print(f"x={x:.3f} m, y={y:.3f} m, z={z:.3f} m")
         print(f"Aperture radius={radius:.3f} m, aperture length={length:.3f} m, damping with xi={xi:.3f}")
         print(f"Peak absorption at f_res = {f_res:.3f} Hz (target: {self.f_target}): {peak_area:.3f} m²")
         print(f"achieved Q-Factor: {q_factor:.3f} (target: {self.q_target})")
         print(f"achieved optimization value: {result.fun:.3f}")
-        print(f"freq vector has {len(sim.sim_params.frequencies)} values")
 
         # plotting the result
         sim.plot_absorbtion_area()

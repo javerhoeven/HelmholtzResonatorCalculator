@@ -6,7 +6,7 @@ from gui_widgets.GUIController import GUIController
 
 
 
-from app_control import forward, search_optimal
+from app_control import forward, optimizer
 from io_tools import load_from_json, save_to_json, export_cad
 from io_tools.examples import load_example, examples
 
@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
 
     
-    search_optimal(200, 10)
+    optimizer(250, 5)
 
     # sim = load_example('01')
     # save_to_json(sim, 'example_01.json')
