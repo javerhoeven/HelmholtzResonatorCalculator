@@ -1,0 +1,36 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+
+# Poetry lock backup
+poetry.lock.bak
+
+# Bytecode cache from editors/tools
+*.pyc
+*.pyo
+
+
+# macOS system files
+.DS_Store
+
+# PyCharm project files
+.idea/
+
+# Test cache
+.pytest_cache/
+.coverage
+
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Logs or temporary files
+*.log
+*.tmp
