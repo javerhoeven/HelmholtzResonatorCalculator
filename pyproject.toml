@@ -18,6 +18,8 @@ dependencies = [
     "cadquery (>=2.5.2,<3.0.0)"
 ]
 
+[tool.poetry.scripts]
+hrcalc = "src.helmholtz_resonator_calculator:cli"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

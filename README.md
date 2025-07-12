@@ -64,11 +64,79 @@ On some READMEs, you may see small images that convey metadata, such as whether 
 ## Visuals
 Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+# Helmholtz Resonator Calculator
+
+A command-line tool for performing acoustic calculations related to Helmholtz resonators.
+
+---
+
+## 📦 Installation
+
+To install and run the **Helmholtz Resonator Calculator**, follow these steps:
+
+### 1. Download and Extract the Code
+
+- [Download the ZIP](https://git.tu-berlin.de/tobiast/python-and-akustik-2025-helmholtz) of this repository.
+- Extract the contents to any folder on your computer.
+
+
+### 2. Open a Terminal in the Project Root
+
+Navigate to the extracted folder in your terminal:
+
+```bash
+cd path/to/your/extracted/folder
+```
+To verify, you can type `ls` and should see folders like "src" and "docs". 
+
+### 3. Install Poetry (if not already installed)
+
+```bash
+pip install poetry
+```
+Verify the install:
+```bash
+poetry --version
+```
+
+### 4. Install the Project Environment
+```bash
+poetry install
+```
+This creates the virtual environment and installs all dependencies. 
+
+### 5. Run the Calculator
+```bash
+poetry run hrcalc
+```
+
+### 6. Help
+To get an overview, you can use
+```bash
+poetry run hrcalc --help
+```
+
+
+
+
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+This tool currently provides two major use cases:
+### 1. GUI Mode
+This mode will open up a graphical user interface, which allows the user to enter geometry and aperture information. 
+The GUI provides a graph of the absorbtion area over frequency, as well as some characteristic values like resonance frequency and q-factor. 
+There is also the possibility to save and load parameter sets as .json files. 
+```bash
+poetry run hrcalc gui
+```
+### 2. Optimizer Mode
+This mode will provide a set of parameters for maximum absorbtion at the given frequency with a given Q-factor. 
+Since this mode relies on non-deterministic methods, even with the same input values the results may vary. 
+The positional arguments are target frequency and target Q-factor
+example usage for an ideal Helmholtz Resonator with resonance at 200 Hz and a Q-Factor of 10:
+```bash
+poetry run hrcalc optimizer 200 10
+```
 
 ## Support
 Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.

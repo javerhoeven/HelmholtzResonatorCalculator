@@ -19,8 +19,8 @@ def gui():
 
 
 @cli.command()
-@click.option('--freq', type=float, help="Target frequency where maximum absorbtion is desired.")
-@click.option('--q_factor', type=float, help="Target Q-Factor (Bandwidth)")
+@click.argument('freq', type=float)
+@click.argument('q_factor', type=float)
 def optimize(freq, q_factor):
     """
     Run optimization
