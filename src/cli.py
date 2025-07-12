@@ -1,6 +1,7 @@
 import click
 import warnings
-from app_control import optimizer
+from app_control import optimizer, start_gui
+
 
 @click.group()
 def cli():
@@ -8,6 +9,14 @@ def cli():
     Main CLI entry point of the project
     """
     pass
+
+@cli.command()
+def gui():
+    """
+    Starts the graphical user interface 
+    """
+    start_gui()
+
 
 @cli.command()
 @click.option('--freq', type=float, help="Target frequency where maximum absorbtion is desired.")

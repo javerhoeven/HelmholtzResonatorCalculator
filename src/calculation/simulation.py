@@ -279,8 +279,7 @@ class Simulation():
             "z_radiation_imag": np.imag(self.z_radiation).tolist() if self.z_radiation is not None else None, 
             "z_stiff_mass_real": np.real(self.z_stiff_mass).tolist() if self.z_stiff_mass is not None else None,
             "z_stiff_mass_imag": np.imag(self.z_stiff_mass).tolist() if self.z_stiff_mass is not None else None, 
-            "z_friction_real": np.real(self.z_friction).tolist() if self.z_friction is not None else None, 
-            "z_friction_imag": np.imag(self.z_friction).tolist() if self.z_friction is not None else None, 
+            "z_friction": self.z_friction.tolist() if self.z_friction is not None else None, 
 
             "absorbtion_area": self.absorbtion_area.tolist() if self.absorbtion_area is not None else None,
             "max_absorbtion_area": self.max_absorbtion_area.tolist() if self.max_absorbtion_area is not None else None,
@@ -307,11 +306,7 @@ class Simulation():
         else:
             sim.z_stiff_mass = np.array(data.get('z_stiff_mass_real', None)) + 1j * np.array(data.get('z_stiff_mass_imag', None))
 
-        if data['z_friction_real'] is None or data['z_friction_imag'] is None:
-            sim.z_friction = None
-        else:
-            sim.z_friction = np.array(data.get('z_friction_real', None)) + 1j * np.array(data.get('z_friction_imag', None))
-
+        sim.z_friction = data.get('z_friction', None)
         sim.absorbtion_area = np.array(data.get('absorbtion_area')) if data['absorbtion_area'] is not None else None
 
         sim.max_absorbtion_area = np.array(data.get('max_absorbtion_area')) if data['max_absorbtion_area'] is not None else None

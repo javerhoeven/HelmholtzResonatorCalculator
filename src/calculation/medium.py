@@ -65,7 +65,7 @@ class Medium(HasTraits):
 
     def calc_kinematic_viscosity(self): 
         """
-        calculation based on sutherland's formula [GPT]
+        calculation based on sutherland's formula
         """
         T = self.temperature_kelvin
         mu0 = 1.716e-5
