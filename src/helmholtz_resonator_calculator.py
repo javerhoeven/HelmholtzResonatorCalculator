@@ -33,6 +33,7 @@ def optimize(freq, q_factor, save):
         print("Valid path provided!")
     else:
         print("Please make sure the file extension '.json' is part of your output path. ")
+        
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=RuntimeWarning)
         click.echo("Running optimizer...")

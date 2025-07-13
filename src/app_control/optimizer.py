@@ -13,6 +13,4 @@ def optimizer(f_target, q_target):
         _sim = optimizer.create_default_sim(res)
         optimizer.display_results(_sim)
         
-    
-    
     return optimizer.create_default_sim(best_result)
