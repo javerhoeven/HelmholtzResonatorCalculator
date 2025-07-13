@@ -6,6 +6,9 @@ class TestGeometry(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        print("DEBUG:")
+        a = Geometry.class_traits()['x']
+        print(dir(a))
         
         cls.x_min = Geometry.class_traits()['x'].handler._low
         cls.x_max = Geometry.class_traits()['x'].handler._high
