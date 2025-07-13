@@ -51,14 +51,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#app_control.forward.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-app_control.search_optimal">app_control.search_optimal module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#app_control.search_optimal.display_results"><code class="docutils literal notranslate"><span class="pre">display_results()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#app_control.search_optimal.generate_initial_set"><code class="docutils literal notranslate"><span class="pre">generate_initial_set()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#app_control.search_optimal.objective"><code class="docutils literal notranslate"><span class="pre">objective()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#app_control.search_optimal.run_single_optimization"><code class="docutils literal notranslate"><span class="pre">run_single_optimization()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#app_control.search_optimal.search_optimal"><code class="docutils literal notranslate"><span class="pre">search_optimal()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#app-control-search-optimal-module">app_control.search_optimal module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-app_control">Module contents</a></li>
 </ul>
 </li>
@@ -113,56 +106,8 @@
 </dd></dl>
 
 </section>
-<section id="module-app_control.search_optimal">
-<span id="app-control-search-optimal-module"></span><h2>app_control.search_optimal module<a class="headerlink" href="#module-app_control.search_optimal" title="Link to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="app_control.search_optimal.display_results">
-<span class="sig-prename descclassname"><span class="pre">app_control.search_optimal.</span></span><span class="sig-name descname"><span class="pre">display_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">best_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app_control/search_optimal.html#display_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app_control.search_optimal.display_results" title="Link to this definition"></a></dt>
-<dd><p>Displays the best result found by the optimizer. Prints out relevant information.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>best_result (_type_): best result found
-f_target (): target frequency
-q_target (_type_): target q-factor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app_control.search_optimal.generate_initial_set">
-<span class="sig-prename descclassname"><span class="pre">app_control.search_optimal.</span></span><span class="sig-name descname"><span class="pre">generate_initial_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app_control/search_optimal.html#generate_initial_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app_control.search_optimal.generate_initial_set" title="Link to this definition"></a></dt>
-<dd><p>Uses f_R approximation function to generate a set of plausible initial values.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>f_target (float): target resonance frequency
-bounds (list): boundaries for initial guesses</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app_control.search_optimal.objective">
-<span class="sig-prename descclassname"><span class="pre">app_control.search_optimal.</span></span><span class="sig-name descname"><span class="pre">objective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app_control/search_optimal.html#objective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app_control.search_optimal.objective" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app_control.search_optimal.run_single_optimization">
-<span class="sig-prename descclassname"><span class="pre">app_control.search_optimal.</span></span><span class="sig-name descname"><span class="pre">run_single_optimization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app_control/search_optimal.html#run_single_optimization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app_control.search_optimal.run_single_optimization" title="Link to this definition"></a></dt>
-<dd><p>tries to optimize the target parameters within the objective function</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>x0 (np.array): initial parameters
-bounds (list): value boundaries for each parameter
-f_target (float): target frequency
-q_target (float): target q-factor</p>
-</dd>
-<dt>Returns:</dt><dd><p>np.array: optimal parameters, None when optimization failed</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app_control.search_optimal.search_optimal">
-<span class="sig-prename descclassname"><span class="pre">app_control.search_optimal.</span></span><span class="sig-name descname"><span class="pre">search_optimal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app_control/search_optimal.html#search_optimal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#app_control.search_optimal.search_optimal" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
+<section id="app-control-search-optimal-module">
+<h2>app_control.search_optimal module<a class="headerlink" href="#app-control-search-optimal-module" title="Link to this heading"></a></h2>
 </section>
 <section id="module-app_control">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-app_control" title="Link to this heading"></a></h2>

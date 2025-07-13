@@ -77,9 +77,10 @@
 
 
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">app_control</span><span class="w"> </span><span class="kn">import</span> <span class="n">forward</span><span class="p">,</span> <span class="n">search_optimal</span>
-<span class="c1">#from io_tools import load_from_json</span>
-<span class="c1">#from io_tools.examples import load_example, examples</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app_control</span><span class="w"> </span><span class="kn">import</span> <span class="n">forward</span><span class="p">,</span> <span class="n">optimizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_from_json</span><span class="p">,</span> <span class="n">save_to_json</span><span class="p">,</span> <span class="n">export_cad</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io_tools.examples</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_example</span><span class="p">,</span> <span class="n">examples</span>
+
 
 
 <span class="c1"># --- MainWindow ---</span>
@@ -132,11 +133,11 @@
 
 <span class="c1"># --- Hauptprogramm ---</span>
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span> 
-    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> 
-    <span class="n">win</span> <span class="o">=</span> <span class="n">MainWindow</span><span class="p">()</span>
-    <span class="n">win</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec</span><span class="p">())</span>
+    <span class="c1"># import sys </span>
+    <span class="c1"># app = QApplication(sys.argv) </span>
+    <span class="c1"># win = MainWindow()</span>
+    <span class="c1"># win.show()</span>
+    <span class="c1"># sys.exit(app.exec())</span>
     <span class="c1"># for example in examples:</span>
     <span class="c1">#    print(f&quot;Running example {example}&quot;)</span>
     <span class="c1">#    simulation = load_example(example)</span>
@@ -145,7 +146,13 @@
 
 
     
-    <span class="c1"># search_optimal(20, 1)</span>
+    <span class="n">optimizer</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="c1"># sim = load_example(&#39;01&#39;)</span>
+    <span class="c1"># save_to_json(sim, &#39;example_01.json&#39;)</span>
+    <span class="c1"># sim2 = load_from_json(&#39;example_01.json&#39;)</span>
+    <span class="c1"># sim2.plot_absorbtion_area()</span>
+    <span class="c1"># export_cad(sim2, &#39;example_01.stl&#39;)</span>
 </pre></div>
 
            </div>

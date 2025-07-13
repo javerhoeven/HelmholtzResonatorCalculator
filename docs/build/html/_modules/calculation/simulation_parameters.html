@@ -78,7 +78,7 @@
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation_parameters.SimulationParameters">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SimulationParameters</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
     <span class="n">medium</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">Medium</span><span class="p">)</span>
-    <span class="n">freq_range</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">(</span><span class="n">Float</span><span class="p">(</span><span class="mf">20.0</span><span class="p">),</span> <span class="n">Float</span><span class="p">(</span><span class="mf">500.0</span><span class="p">))</span>
+    <span class="n">freq_range</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">(</span><span class="n">Float</span><span class="p">(</span><span class="mf">0.01</span><span class="p">),</span> <span class="n">Float</span><span class="p">(</span><span class="mf">500.0</span><span class="p">))</span>
     <span class="n">values_per_octave</span> <span class="o">=</span> <span class="n">Int</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
     <span class="n">angle_of_incidence</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
     <span class="n">assume_diffuse</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -141,10 +141,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the simulation parameters to a dictionary representation.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;medium&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
-            <span class="s2">&quot;frequencies&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-            <span class="c1"># &quot;omega&quot;: self.omega.tolist(),</span>
-            <span class="c1"># &quot;k&quot;: self.k.tolist(),</span>
-            <span class="c1"># &quot;_lambda&quot;: self._lambda.tolist(),</span>
+            <span class="c1"># &quot;frequencies&quot;: self.frequencies.tolist(),</span>
+            <span class="s2">&quot;freq_range&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq_range</span><span class="p">,</span>
+            <span class="s2">&quot;values_per_octave&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">values_per_octave</span><span class="p">,</span>
             <span class="s2">&quot;angle_of_incidence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle_of_incidence</span><span class="p">,</span>
             <span class="s2">&quot;assume_diffuse&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">assume_diffuse</span>
         <span class="p">}</span></div>
@@ -156,7 +155,16 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a SimulationParameters instance from a dictionary&quot;&quot;&quot;</span>
         <span class="n">medium</span> <span class="o">=</span> <span class="n">Medium</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;medium&#39;</span><span class="p">])</span>
-        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;frequencies&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s1">&#39;frequencies&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;frequencies&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># calculate the frequency vector</span>
+            <span class="n">f_min</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;freq_range&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">500.0</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">f_max</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;freq_range&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">500.0</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">values_per_octave</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;values_per_octave&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+            <span class="n">n_octaves</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">f_max</span> <span class="o">/</span> <span class="n">f_min</span><span class="p">)</span>
+            <span class="n">n_freq_values</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_octaves</span> <span class="o">*</span> <span class="n">values_per_octave</span><span class="p">)</span>
+            <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">f_min</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">f_max</span><span class="p">),</span> <span class="n">num</span><span class="o">=</span><span class="n">n_freq_values</span><span class="p">)</span>
         
         <span class="n">angle_of_incidence</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;angle_of_incidence&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">assume_diffuse</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;assume_diffuse&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>

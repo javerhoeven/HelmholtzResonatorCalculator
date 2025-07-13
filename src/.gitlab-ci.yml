@@ -1,0 +1,15 @@
+pages:
+  image: python:3.12
+  stage: deploy
+  before_script:
+    - pip install sphinx
+  script:
+    - cd docs
+    - make html
+    - mkdir -p public
+    - cp -r _build/html/* ../public
+  artifacts:
+    paths:
+      - public
+  only:
+    - cli
