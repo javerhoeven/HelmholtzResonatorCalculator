@@ -1,5 +1,6 @@
 from calculation import Simulation, SimulationParameters, Aperture, Geometry, Resonator, Medium
 from scipy.optimize import minimize
+import threading
 import click
 import matplotlib.pyplot as plt
 import numpy as np
@@ -189,29 +190,22 @@ class Optimizer:
 
         
         print(f"{num_fails} of {num_trials} inital guesses failed")
-        
-        # Result
-        print_n = 1
-        for res in self.best_results[:print_n]:
-            self.display_results(res)
-        plt.show()
-        
-
-
-    def display_results(self, result):
-        """Displays the best result found by the optimizer. Prints out relevant information. 
+        return self.best_result
+    
+    def create_default_sim(self, result) -> Simulation:
+        """Generates a simulation object from the return value of scipy.optimize.minimize
 
         Args:
-            best_result (_type_): best result found
-            f_target (): target frequency
-            q_target (_type_): target q-factor
+            result (_type_): result object from minimize
+
+        Returns:
+            Simulation: Simulation object with given parameters and defaults for rest. 
         """
         x, y, z, radius, length, xi = result.x
 
         # reapply simulation
         medium = Medium()
-        # freq_range = (self.f_target*0.001, self.f_target*100) # automatically set frequency range
-        freq_range = (20, 2000)
+        freq_range = (20, 2000) # set const freq range for result
 
         
         sim = Simulation(
@@ -219,14 +213,40 @@ class Optimizer:
                         Aperture(form='tube', radius=radius, length=length, additional_dampening=True, xi=xi)),
             SimulationParameters(medium=medium, freq_range=freq_range, values_per_octave=500) 
         )
+        return sim
 
+
+
+    def display_results(self, sim):
+        """Displays data regarding a given simulation in regards to the target values. 
+
+        Args:
+            sim (Simulation) : simulation object whose data is to display
+            
+        """
+        x, y, z = sim.resonator.geometry.x, sim.resonator.geometry.y, sim.resonator.geometry.z
+        radius, length, xi = sim.resonator.aperture.radius, sim.resonator.aperture.length, sim.resonator.aperture.xi  
         (f_res, peak_area), q_factor = sim.calc_resonance_frequency_and_peak_area(),  sim.calc_q_factor()
-        print("Optimal dimensions and aperture:")
-        print(f"x={x:.3f} m, y={y:.3f} m, z={z:.3f} m")
-        print(f"Aperture radius={radius:.3f} m, aperture length={length:.3f} m, damping with xi={xi:.3f}")
-        print(f"Peak absorption at f_res = {f_res:.3f} Hz (target: {self.f_target}): {peak_area:.3f} m²")
-        print(f"achieved Q-Factor: {q_factor:.3f} (target: {self.q_target})")
-        print(f"achieved optimization value: {result.fun:.3f}")
+       
+        print("\n" + "="*50)
+        print("Optimization Result Summary")
+        print("="*50)
+
+        print("\n Dimensions:")
+        print(f"  - Width (x):       {x:.3f} m")
+        print(f"  - Height (y):      {y:.3f} m")
+        print(f"  - Depth (z):       {z:.3f} m")
+
+        print("\n Aperture:")
+        print(f"  - Radius:          {radius:.3f} m")
+        print(f"  - Length:          {length:.3f} m")
+        print(f"  - Damping (xi):    {xi:.3f}")
+
+        print("\n Absorbtion:")
+        print(f"  - Peak Absorption: {peak_area:.3f} m² at {f_res:.3f} Hz (target: {self.f_target} Hz)")
+        print(f"  - Q-Factor:        {q_factor:.3f} (target: {self.q_target})")
+
+        print("="*50 + "\n")
 
         # plotting the result
-        sim.plot_absorbtion_area()
+        sim.plot_absorbtion_area(ion=True)

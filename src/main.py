@@ -4,7 +4,7 @@ from gui_widgets.inputForm import InputForm
 from gui_widgets.resultView import ResultView
 from gui_widgets.GUIController import GUIController
 
-
+import warnings
 
 from app_control import forward, optimizer
 from io_tools import load_from_json, save_to_json, export_cad
@@ -66,10 +66,16 @@ if __name__ == '__main__':
 
 
     
-    optimizer(250, 5)
+    # with warnings.catch_warnings():
+    #     warnings.simplefilter("ignore", category=RuntimeWarning)
+    #     save = 'TESTESTEST.json'
+    #     best_sim = optimizer(200, 10)
+    #     save_to_json(best_sim, save)
 
     # sim = load_example('01')
     # save_to_json(sim, 'example_01.json')
     # sim2 = load_from_json('example_01.json')
     # sim2.plot_absorbtion_area()
     # export_cad(sim2, 'example_01.stl')
+
+    pass

@@ -1,6 +1,7 @@
 import click
 import warnings
 from app_control import optimizer, start_gui
+from io_tools import save_to_json
 
 
 @click.group()
@@ -21,14 +22,24 @@ def gui():
 @cli.command()
 @click.argument('freq', type=float)
 @click.argument('q_factor', type=float)
-def optimize(freq, q_factor):
+@click.option('--save', type=str, help="If a path (string) is given, the results will be saved as a .json file.")
+def optimize(freq, q_factor, save):
     """
     Run optimization
     """
+
+    # check string
+    if save.endswith(".json"):
+        print("Valid path provided!")
+    else:
+        print("Please make sure the file extension '.json' is part of your output path. ")
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=RuntimeWarning)
-    click.echo("Running optimizer...")
-    optimizer(freq, q_factor)
+        click.echo("Running optimizer...")
+        best_sim = optimizer(freq, q_factor)
+        save_to_json(best_sim, save)
+
+    
 
 
 if __name__ == "__main__":
