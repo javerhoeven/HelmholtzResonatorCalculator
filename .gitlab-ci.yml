@@ -2,10 +2,11 @@ pages:
   image: python:3.12
   stage: deploy
   before_script:
-    - pip install sphinx
+    - pip install poetry
+    - poetry install
   script:
     - cd docs
-    - make html
+    - poetry run make html
     - mkdir -p public
     - cp -r _build/html/* ../public
   artifacts:
