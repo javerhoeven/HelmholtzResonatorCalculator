@@ -1,7 +1,7 @@
 from traits.api import HasTraits, Instance, Tuple, Int, Float, Bool, Property, Array, cached_property
 from traitsui.api import View, Item, Group
 import numpy as np
-from .medium import Medium  # Passe den Import ggf. an deinen Projekt-Ordner an!
+from .medium import Medium  
 
 class SimulationParameters(HasTraits):
     medium = Instance(Medium)
