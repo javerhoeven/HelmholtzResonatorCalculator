@@ -25,6 +25,9 @@ class Simulation():
         self.peak_absorbtion_area : float = None
 
     def calc_all(self):
+        """
+        Calculates all relevant simulation attributes: absorbtion area, resonance frequency, peak_absorbtion_area, Q-factor
+        """
         self.calc_absorbtion_area()
         self.calc_resonance_frequency_and_peak_area()
         self.calc_q_factor()
