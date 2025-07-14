@@ -1,27 +1,27 @@
-app\_control package
+gui\_widgets
 ====================
 
 
-app\_control.forward
+gui\_widgets.GUIController
 ---------------------------
 
-.. automodule:: app_control.forward
+.. automodule:: gui_widgets.GUIController
    :members:
    :show-inheritance:
    :undoc-members:
 
-app\_control.optimizer
+gui\_widgets.inputForm
 -----------------------------------
 
-.. automodule:: app_control.optimizer
+.. automodule:: gui_widgets.inputForm
    :members:
    :show-inheritance:
    :undoc-members:
 
-app\_control.start_gui
+gui\_widgets.resultView
 -----------------------------------
 
-.. automodule:: app_control.start_gui
+.. automodule:: gui_widgets.resultView
    :members:
    :show-inheritance:
    :undoc-members:
@@ -31,7 +31,7 @@ app\_control.start_gui
 Module contents
 ---------------
 
-.. automodule:: app_control
+.. automodule:: gui_widgets
    :members:
    :show-inheritance:
    :undoc-members:

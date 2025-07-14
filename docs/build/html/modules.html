@@ -47,9 +47,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">src</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="app_control.html">app_control package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="calculation.html">calculation package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_widgets.html">gui_widgets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io_tools.html">io_tools package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
 </ul>
 </li>
 </ul>
@@ -83,18 +83,23 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="app_control.html">app_control package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="app_control.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="app_control.html#module-app_control.forward">app_control.forward module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="app_control.html#module-app_control.forward">app_control.forward</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="app_control.html#app_control.forward.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="app_control.html#app-control-search-optimal-module">app_control.search_optimal module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="app_control.html#module-app_control.optimizer">app_control.optimizer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="app_control.html#app_control.optimizer.optimizer"><code class="docutils literal notranslate"><span class="pre">optimizer()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="app_control.html#module-app_control.start_gui">app_control.start_gui</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="app_control.html#app_control.start_gui.start_gui"><code class="docutils literal notranslate"><span class="pre">start_gui()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="app_control.html#module-app_control">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="calculation.html">calculation package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="calculation.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.aperture">calculation.aperture module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.aperture">calculation.aperture</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="calculation.html#calculation.aperture.Aperture"><code class="docutils literal notranslate"><span class="pre">Aperture</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.aperture.Aperture.from_dict"><code class="docutils literal notranslate"><span class="pre">Aperture.from_dict()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.aperture.Aperture.get_slit_end_correction"><code class="docutils literal notranslate"><span class="pre">Aperture.get_slit_end_correction()</span></code></a></li>
@@ -104,7 +109,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.geometry">calculation.geometry module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.geometry">calculation.geometry</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="calculation.html#calculation.geometry.Geometry"><code class="docutils literal notranslate"><span class="pre">Geometry</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.geometry.Geometry.from_dict"><code class="docutils literal notranslate"><span class="pre">Geometry.from_dict()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.geometry.Geometry.to_dict"><code class="docutils literal notranslate"><span class="pre">Geometry.to_dict()</span></code></a></li>
@@ -113,7 +118,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.medium">calculation.medium module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.medium">calculation.medium</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="calculation.html#calculation.medium.Medium"><code class="docutils literal notranslate"><span class="pre">Medium</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.medium.Medium.calc_density"><code class="docutils literal notranslate"><span class="pre">Medium.calc_density()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.medium.Medium.calc_kinematic_viscosity"><code class="docutils literal notranslate"><span class="pre">Medium.calc_kinematic_viscosity()</span></code></a></li>
@@ -124,7 +129,18 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.resonator">calculation.resonator module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.optimizer">calculation.optimizer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="calculation.html#calculation.optimizer.Optimizer"><code class="docutils literal notranslate"><span class="pre">Optimizer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.optimizer.Optimizer.display_results"><code class="docutils literal notranslate"><span class="pre">Optimizer.display_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.optimizer.Optimizer.generate_initial_set"><code class="docutils literal notranslate"><span class="pre">Optimizer.generate_initial_set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.optimizer.Optimizer.objective"><code class="docutils literal notranslate"><span class="pre">Optimizer.objective()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.optimizer.Optimizer.run_single_optimization"><code class="docutils literal notranslate"><span class="pre">Optimizer.run_single_optimization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.optimizer.Optimizer.search_optimal"><code class="docutils literal notranslate"><span class="pre">Optimizer.search_optimal()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.resonator">calculation.resonator</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="calculation.html#calculation.resonator.Resonator"><code class="docutils literal notranslate"><span class="pre">Resonator</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.resonator.Resonator.from_dict"><code class="docutils literal notranslate"><span class="pre">Resonator.from_dict()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.resonator.Resonator.to_dict"><code class="docutils literal notranslate"><span class="pre">Resonator.to_dict()</span></code></a></li>
@@ -132,7 +148,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.simulation">calculation.simulation module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.simulation">calculation.simulation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="calculation.html#calculation.simulation.Simulation"><code class="docutils literal notranslate"><span class="pre">Simulation</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.simulation.Simulation.calc_absorbtion_area"><code class="docutils literal notranslate"><span class="pre">Simulation.calc_absorbtion_area()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.simulation.Simulation.calc_all"><code class="docutils literal notranslate"><span class="pre">Simulation.calc_all()</span></code></a></li>
@@ -151,7 +167,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.simulation_parameters">calculation.simulation_parameters module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation.simulation_parameters">calculation.simulation_parameters</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="calculation.html#calculation.simulation_parameters.SimulationParameters"><code class="docutils literal notranslate"><span class="pre">SimulationParameters</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.simulation_parameters.SimulationParameters.calc_k"><code class="docutils literal notranslate"><span class="pre">SimulationParameters.calc_k()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="calculation.html#calculation.simulation_parameters.SimulationParameters.calc_lambda"><code class="docutils literal notranslate"><span class="pre">SimulationParameters.calc_lambda()</span></code></a></li>
@@ -167,17 +183,50 @@
 <li class="toctree-l2"><a class="reference internal" href="calculation.html#module-calculation">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="gui_widgets.html">gui_widgets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gui_widgets.html#module-gui_widgets.GUIController">gui_widgets.GUIController</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gui_widgets.html#gui_widgets.GUIController.GUIController"><code class="docutils literal notranslate"><span class="pre">GUIController</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gui_widgets.html#gui_widgets.GUIController.GUIController.calculate_and_show"><code class="docutils literal notranslate"><span class="pre">GUIController.calculate_and_show()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gui_widgets.html#module-gui_widgets.inputForm">gui_widgets.inputForm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gui_widgets.html#gui_widgets.inputForm.InputForm"><code class="docutils literal notranslate"><span class="pre">InputForm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gui_widgets.html#gui_widgets.inputForm.InputForm.add_enum_combobox"><code class="docutils literal notranslate"><span class="pre">InputForm.add_enum_combobox()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gui_widgets.html#gui_widgets.inputForm.InputForm.get_inputs"><code class="docutils literal notranslate"><span class="pre">InputForm.get_inputs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gui_widgets.html#gui_widgets.inputForm.InputForm.toggle_damping_input"><code class="docutils literal notranslate"><span class="pre">InputForm.toggle_damping_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gui_widgets.html#gui_widgets.inputForm.InputForm.update_inputs"><code class="docutils literal notranslate"><span class="pre">InputForm.update_inputs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gui_widgets.html#gui_widgets.inputForm.InputForm.update_opening"><code class="docutils literal notranslate"><span class="pre">InputForm.update_opening()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gui_widgets.html#module-gui_widgets.resultView">gui_widgets.resultView</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gui_widgets.html#gui_widgets.resultView.ResultView"><code class="docutils literal notranslate"><span class="pre">ResultView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gui_widgets.html#gui_widgets.resultView.ResultView.export_csv"><code class="docutils literal notranslate"><span class="pre">ResultView.export_csv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="gui_widgets.html#gui_widgets.resultView.ResultView.show_results"><code class="docutils literal notranslate"><span class="pre">ResultView.show_results()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gui_widgets.html#module-gui_widgets">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="io_tools.html">io_tools package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="io_tools.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="io_tools.html#module-io_tools.examples">io_tools.examples module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="io_tools.html#module-io_tools.examples">io_tools.examples</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="io_tools.html#io_tools.examples.load_example"><code class="docutils literal notranslate"><span class="pre">load_example()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="io_tools.html#module-io_tools.load_from_json">io_tools.load_from_json module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="io_tools.html#module-io_tools.export_cad">io_tools.expot_cad</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="io_tools.html#io_tools.export_cad.export_cad"><code class="docutils literal notranslate"><span class="pre">export_cad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="io_tools.html#module-io_tools.load_from_json">io_tools.load_from_json</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="io_tools.html#io_tools.load_from_json.load_from_json"><code class="docutils literal notranslate"><span class="pre">load_from_json()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="io_tools.html#module-io_tools.save_to_json">io_tools.save_to_json module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="io_tools.html#module-io_tools.save_to_json">io_tools.save_to_json</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="io_tools.html#io_tools.save_to_json.save_to_json"><code class="docutils literal notranslate"><span class="pre">save_to_json()</span></code></a></li>
 </ul>
 </li>
@@ -190,20 +239,6 @@
 <li class="toctree-l3"><a class="reference internal" href="main.html#main.MainWindow.on_export"><code class="docutils literal notranslate"><span class="pre">MainWindow.on_export()</span></code></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tests.html">tests package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tests.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tests.calcuation.html">tests.calcuation package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tests.calcuation.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tests.calcuation.html#module-tests.calcuation.test_aperture">tests.calcuation.test_aperture module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tests.calcuation.html#module-tests.calcuation.test_geometry">tests.calcuation.test_geometry module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tests.calcuation.html#module-tests.calcuation">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tests.html#module-tests">Module contents</a></li>
 </ul>
 </li>
 </ul>

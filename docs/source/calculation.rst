@@ -1,10 +1,8 @@
 calculation package
 ===================
 
-Submodules
-----------
 
-calculation.aperture module
+calculation.aperture 
 ---------------------------
 
 .. automodule:: calculation.aperture
@@ -12,7 +10,7 @@ calculation.aperture module
    :show-inheritance:
    :undoc-members:
 
-calculation.geometry module
+calculation.geometry 
 ---------------------------
 
 .. automodule:: calculation.geometry
@@ -20,7 +18,7 @@ calculation.geometry module
    :show-inheritance:
    :undoc-members:
 
-calculation.medium module
+calculation.medium 
 -------------------------
 
 .. automodule:: calculation.medium
@@ -28,7 +26,15 @@ calculation.medium module
    :show-inheritance:
    :undoc-members:
 
-calculation.resonator module
+calculation.optimizer 
+-------------------------
+
+.. automodule:: calculation.optimizer
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+calculation.resonator 
 ----------------------------
 
 .. automodule:: calculation.resonator
@@ -36,7 +42,7 @@ calculation.resonator module
    :show-inheritance:
    :undoc-members:
 
-calculation.simulation module
+calculation.simulation 
 -----------------------------
 
 .. automodule:: calculation.simulation
@@ -44,7 +50,7 @@ calculation.simulation module
    :show-inheritance:
    :undoc-members:
 
-calculation.simulation\_parameters module
+calculation.simulation\_parameters 
 -----------------------------------------
 
 .. automodule:: calculation.simulation_parameters

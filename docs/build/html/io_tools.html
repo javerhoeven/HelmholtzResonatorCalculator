@@ -48,16 +48,19 @@
 <li class="toctree-l2"><a class="reference internal" href="app_control.html">app_control package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="calculation.html">calculation package</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">io_tools package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-io_tools.examples">io_tools.examples module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-io_tools.examples">io_tools.examples</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#io_tools.examples.load_example"><code class="docutils literal notranslate"><span class="pre">load_example()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-io_tools.load_from_json">io_tools.load_from_json module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-io_tools.export_cad">io_tools.expot_cad</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#io_tools.export_cad.export_cad"><code class="docutils literal notranslate"><span class="pre">export_cad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-io_tools.load_from_json">io_tools.load_from_json</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#io_tools.load_from_json.load_from_json"><code class="docutils literal notranslate"><span class="pre">load_from_json()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-io_tools.save_to_json">io_tools.save_to_json module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-io_tools.save_to_json">io_tools.save_to_json</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#io_tools.save_to_json.save_to_json"><code class="docutils literal notranslate"><span class="pre">save_to_json()</span></code></a></li>
 </ul>
 </li>
@@ -65,7 +68,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
 </ul>
 </li>
 </ul>
@@ -97,11 +99,8 @@
              
   <section id="io-tools-package">
 <h1>io_tools package<a class="headerlink" href="#io-tools-package" title="Link to this heading"></a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
-</section>
 <section id="module-io_tools.examples">
-<span id="io-tools-examples-module"></span><h2>io_tools.examples module<a class="headerlink" href="#module-io_tools.examples" title="Link to this heading"></a></h2>
+<span id="io-tools-examples"></span><h2>io_tools.examples<a class="headerlink" href="#module-io_tools.examples" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="io_tools.examples.load_example">
 <span class="sig-prename descclassname"><span class="pre">io_tools.examples.</span></span><span class="sig-name descname"><span class="pre">load_example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">example</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="calculation.html#calculation.simulation.Simulation" title="calculation.simulation.Simulation"><span class="pre">Simulation</span></a></span></span><a class="reference internal" href="_modules/io_tools/examples.html#load_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#io_tools.examples.load_example" title="Link to this definition"></a></dt>
@@ -115,8 +114,16 @@
 </dd></dl>
 
 </section>
+<section id="module-io_tools.export_cad">
+<span id="io-tools-expot-cad"></span><h2>io_tools.expot_cad<a class="headerlink" href="#module-io_tools.export_cad" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="io_tools.export_cad.export_cad">
+<span class="sig-prename descclassname"><span class="pre">io_tools.export_cad.</span></span><span class="sig-name descname"><span class="pre">export_cad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="calculation.html#calculation.simulation.Simulation" title="calculation.simulation.Simulation"><span class="pre">Simulation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/io_tools/export_cad.html#export_cad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#io_tools.export_cad.export_cad" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
 <section id="module-io_tools.load_from_json">
-<span id="io-tools-load-from-json-module"></span><h2>io_tools.load_from_json module<a class="headerlink" href="#module-io_tools.load_from_json" title="Link to this heading"></a></h2>
+<span id="io-tools-load-from-json"></span><h2>io_tools.load_from_json<a class="headerlink" href="#module-io_tools.load_from_json" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="io_tools.load_from_json.load_from_json">
 <span class="sig-prename descclassname"><span class="pre">io_tools.load_from_json.</span></span><span class="sig-name descname"><span class="pre">load_from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="calculation.html#calculation.simulation.Simulation" title="calculation.simulation.Simulation"><span class="pre">Simulation</span></a></span></span><a class="reference internal" href="_modules/io_tools/load_from_json.html#load_from_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#io_tools.load_from_json.load_from_json" title="Link to this definition"></a></dt>
@@ -131,7 +138,7 @@
 
 </section>
 <section id="module-io_tools.save_to_json">
-<span id="io-tools-save-to-json-module"></span><h2>io_tools.save_to_json module<a class="headerlink" href="#module-io_tools.save_to_json" title="Link to this heading"></a></h2>
+<span id="io-tools-save-to-json"></span><h2>io_tools.save_to_json<a class="headerlink" href="#module-io_tools.save_to_json" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="io_tools.save_to_json.save_to_json">
 <span class="sig-prename descclassname"><span class="pre">io_tools.save_to_json.</span></span><span class="sig-name descname"><span class="pre">save_to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="calculation.html#calculation.simulation.Simulation" title="calculation.simulation.Simulation"><span class="pre">Simulation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/io_tools/save_to_json.html#save_to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#io_tools.save_to_json.save_to_json" title="Link to this definition"></a></dt>
