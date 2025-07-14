@@ -35,7 +35,7 @@ def forward(parameters : dict):
     temp = parameters['conditions']['temperature']
     rel_humidity = parameters['conditions']['humidity']
 
-    medium = Medium(temp=temp, rel_humidity=rel_humidity)
+    medium = Medium(temperature_celsius=temp, rel_humidity=rel_humidity)
     # TODO: add 3 resolutions: low (50), medium (500) and high (5000) values per octave
     sim_params = SimulationParameters(medium=medium, values_per_octave=500)
 

@@ -89,7 +89,7 @@ class Medium(HasTraits):
     def from_dict(cls, data):
         """Creates a Medium instance from a dictionary"""
         return cls(
-            temperature=data['temperature_celsius'],
+            temperature_celsius=data['temperature_celsius'],
             rel_humidity=data['rel_humidity'],
             density=data.get('density'),
             speed_of_sound=data.get('speed_of_sound')

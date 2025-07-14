@@ -1,25 +1,60 @@
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-                             QPushButton, QLabel, QDoubleSpinBox, QComboBox, QFileDialog, QMessageBox)
-
+from PyQt6.QtWidgets import QMessageBox
+from gui_widgets.inputForm import InputForm
+from gui_widgets.resultView import ResultView
 from app_control import forward
-import numpy as np
 
-## hier muss das entsprechende modul importiert werden, 
-# welches die input parameter verarbeitet
-# from HelmholtzModel import HelmholtzModel
 
 # --- Controller ---
 class GUIController:
-    def __init__(self, input_form, result_view):
+    """
+    Controller class connecting the InputForm and ResultView components.
+
+    It handles the coordination between GUI inputs and backend simulation logic,
+    and updates the result view based on calculated data.
+    """
+
+    def __init__(self, input_form: InputForm, result_view: ResultView) -> None:
+        """
+        Initialize the GUIController.
+
+        Args:
+            input_form (InputForm): Widget for collecting user inputs.
+            result_view (ResultView): Widget for displaying calculated results.
+        
+        Returns:
+            None
+        """
+
         self.input_form = input_form; self.result_view = result_view
-    def calculate_and_show(self):
+
+
+    def calculate_and_show(self) -> None:
+        """
+        Run the simulation using input parameters and update the result view.
+
+        This method:
+        - Retrieves parameters from the input form
+        - Runs the simulation via the `forward()` function
+        - Extracts results (resonance frequency, Q-factor, absorption area)
+        - Passes result data to the result view for plotting and display
+
+        On failure, a critical QMessageBox is shown.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+
         try:
-            # get simulation parameters from input form
             params = self.input_form.get_inputs()
 
             # create simulation
             sim = forward(params)
-            # get data to display
+            self.simulation = sim
+            
+            # Extract results
             f_res = sim.f_resonance                     # Peak
             q_factor = sim.q_factor                     # Q-Factor
             a_max = sim.peak_absorbtion_area            # Max Absorption Area
@@ -31,13 +66,8 @@ class GUIController:
                     "Impedance Radiation" : sim.z_radiation,
                     "Impedance Stiff Mass" : sim.z_stiff_mass}
 
-
-
-            # hier wird auf die Rückgabeparameter der Berechnung zugegriffen um diese dann ans ResultView zu schicken
-            # 
-            #f0, data = model.results()
+            # Update the GUI with simulation results
             self.result_view.show_results(f_res, data, q_factor, a_max)
-            
             
         
         except Exception as e:
