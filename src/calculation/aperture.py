@@ -1,4 +1,4 @@
-from traits.api import HasTraits, Enum, Range, Float, Bool, TraitError
+from traits.api import HasTraits, Enum, Range, Float, Bool, TraitError, Union
 from traitsui.api import View, Item, Group
 import numpy as np
 from numpy import pi
@@ -33,7 +33,7 @@ class Aperture(HasTraits):
     inner_ending = Enum('open', 'flange')
     outer_ending = Enum('flange', 'open')
     additional_dampening = Bool(False)
-    xi = Float(None, allow_none=True)
+    xi = Union(None, Float)
 
     area = Float
     inner_end_correction = Float

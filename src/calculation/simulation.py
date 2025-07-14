@@ -228,7 +228,7 @@ class Simulation():
         Args:
             plot (bool): Whether to plot the curve.
         """
-        self.max_absorbtion_area = self.sim_params._lambda**2 / (2 * np.pi)
+        self.max_absorbtion_area = self.sim_params.wavelength**2 / (2 * np.pi)
         if plot:
             plt.semilogx(self.sim_params.frequencies, self.max_absorbtion_area, linestyle=':')
             plt.grid()

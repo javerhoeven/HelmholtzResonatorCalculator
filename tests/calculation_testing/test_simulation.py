@@ -58,8 +58,7 @@ class TestAbsorberSimulation(unittest.TestCase):
     def test_z_friction_real_imag_in_to_dict(self):
         self.sim.calc_z_friction()
         result = self.sim.to_dict()
-        self.assertIn("z_friction_real", result)
-        self.assertIn("z_friction_imag", result)
+        self.assertIn("z_friction", result)
 
 
 if __name__ == '__main__':

@@ -13,12 +13,12 @@ class TestApertureEdgeCases(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.length_min = Aperture.class_traits()['length'].low
-        cls.length_max = Aperture.class_traits()['length'].high
-        cls.radius_min = Aperture.class_traits()['radius'].low
-        cls.radius_max = Aperture.class_traits()['radius'].high
-        cls.amount_min = Aperture.class_traits()['amount'].low
-        cls.amount_max = Aperture.class_traits()['amount'].high
+        cls.length_min = Aperture.class_traits()['length'].handler._low
+        cls.length_max = Aperture.class_traits()['length'].handler._high
+        cls.radius_min = Aperture.class_traits()['radius'].handler._low
+        cls.radius_max = Aperture.class_traits()['radius'].handler._high
+        cls.amount_min = Aperture.class_traits()['amount'].handler._low
+        cls.amount_max = Aperture.class_traits()['amount'].handler._high
 
         cls.length_mid = (cls.length_min + cls.length_max) / 2
         cls.radius_mid = (cls.radius_min + cls.radius_max) / 2
