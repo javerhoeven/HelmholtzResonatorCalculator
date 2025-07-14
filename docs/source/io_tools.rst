@@ -1,10 +1,8 @@
 io\_tools package
 =================
 
-Submodules
-----------
 
-io\_tools.examples module
+io\_tools.examples
 -------------------------
 
 .. automodule:: io_tools.examples
@@ -12,7 +10,15 @@ io\_tools.examples module
    :show-inheritance:
    :undoc-members:
 
-io\_tools.load\_from\_json module
+io\_tools.expot\_cad
+-------------------------
+
+.. automodule:: io_tools.export_cad
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+io\_tools.load\_from\_json
 ---------------------------------
 
 .. automodule:: io_tools.load_from_json
@@ -20,7 +26,7 @@ io\_tools.load\_from\_json module
    :show-inheritance:
    :undoc-members:
 
-io\_tools.save\_to\_json module
+io\_tools.save\_to\_json 
 -------------------------------
 
 .. automodule:: io_tools.save_to_json

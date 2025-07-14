@@ -34,3 +34,6 @@ dist/
 # Logs or temporary files
 *.log
 *.tmp
+
+# build docs
+docs/build/

@@ -1,4 +1,4 @@
-calculation package
+calculation
 ===================
 
 Dieses Paket enthält die zentralen Berechnungsfunktionen für den Helmholtz-Resonator.  
@@ -15,7 +15,7 @@ Inhalte:
 
 ---
 
-calculation.geometry module
+calculation.geometry 
 ---------------------------
 
 .. automodule:: calculation.geometry
@@ -32,10 +32,44 @@ calculation.geometry module
 
 ---
 
-calculation.medium module
+calculation.medium 
 -------------------------
 
 .. automodule:: calculation.medium
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+**Klasse: Medium**
+
+.. autoclass:: calculation.medium.Medium
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+---
+
+calculation.aperture module
+---------------------------
+
+.. automodule:: calculation.aperture
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+**Klasse: Aperture**
+
+.. autoclass:: calculation.aperture.Aperture
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+---
+
+calculation.optimizer 
+-------------------------
+
+.. automodule:: calculation.optimizer
    :members:
    :undoc-members:
    :show-inheritance:
@@ -83,7 +117,7 @@ calculation.resonator module
 
 ---
 
-calculation.simulation module
+calculation.simulation 
 -----------------------------
 
 .. automodule:: calculation.simulation
