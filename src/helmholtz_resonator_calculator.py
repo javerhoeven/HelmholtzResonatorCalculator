@@ -34,7 +34,7 @@ def optimize(freq, q_factor, save):
         warnings.simplefilter("ignore", category=RuntimeWarning)
         click.echo("Running optimizer...")
         best_sim = optimizer(freq, q_factor)
-        
+
     # check string
     if save:
         if save.endswith(".json"):
@@ -42,6 +42,9 @@ def optimize(freq, q_factor, save):
         else:
             print("Please make sure the file extension '.json' is part of your output path. ")
         save_to_json(best_sim, save)
+
+    print(f"Successfully saved simulation object to {save}!")
+    print("="*50)
 
     
 

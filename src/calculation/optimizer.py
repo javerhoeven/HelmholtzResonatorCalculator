@@ -154,7 +154,6 @@ class Optimizer:
 
         """
 
-        # TODO: adjust according to Tobis 
         # Bounds: [(min, max), ...] per parameter
         self.bounds = [
             (0.1, 1.0),  # x
@@ -167,10 +166,10 @@ class Optimizer:
 
 
         results = []
-        # TODO
-        num_trials = 200
+        
+        num_trials = 400
         # create initial guesses, half informed, half random     
-        # initial_guesses = [self.generate_initial_set() for _ in range(num_trials//2)] # generate estimations for good results
+        initial_guesses = [self.generate_initial_set() for _ in range(num_trials//2)] # generate estimations for good results
         initial_guesses = []
         initial_guesses.extend([list([np.random.uniform(low, high) for (low, high) in self.bounds]) for _ in range(num_trials-len(initial_guesses))]) # append completely random guesses
 

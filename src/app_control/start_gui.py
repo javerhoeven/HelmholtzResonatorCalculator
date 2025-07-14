@@ -1,4 +1,3 @@
-import sys
 from PyQt6.QtWidgets import  QApplication
 from gui_widgets.mainWindow import MainWindow
 
