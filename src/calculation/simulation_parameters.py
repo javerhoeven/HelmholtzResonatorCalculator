@@ -1,4 +1,4 @@
-from traits.api import HasTraits, Instance, Tuple, Int, Float, Bool, Array
+from traits.api import HasTraits, Instance, Tuple, Int, Float, Bool, Array, Range
 from traitsui.api import View, Item, Group
 import numpy as np
 from .medium import Medium  
@@ -23,8 +23,10 @@ class SimulationParameters(HasTraits):
     """
 
     medium = Instance(Medium)
-    freq_range = Tuple(Float(0.01), Float(500.0))
-    values_per_octave = Int(100)
+    freq_range = Tuple(Range(0.01, 10_000.), Range(100., 10_000.))
+    # freq_range = Range(0.01, 10000)
+    # values_per_octave = Int(100)
+    values_per_octave = Range(1, 10_000)
     angle_of_incidence = Float(0.0)
     assume_diffuse = Bool(True)
 

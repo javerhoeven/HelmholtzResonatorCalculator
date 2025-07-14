@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 from traits.api import TraitError
 
-from src.calculation import Medium
+from calculation import Medium
 
 
 class TestMedium(unittest.TestCase):

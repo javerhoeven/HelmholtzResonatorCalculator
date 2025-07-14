@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [tool.poetry.scripts]
-hrcalc = "src.helmholtz_resonator_calculator:cli"
+hrcalc = "helmholtz_resonator_calculator:cli"
 
 [tool.poetry.group.dev.dependencies]
 sphinx-rtd-theme = "^3.0.2"

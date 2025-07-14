@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
 from traits.api import TraitError
-from src.calculation import SimulationParameters
-from src.calculation import Medium
+from calculation import SimulationParameters
+from calculation import Medium
 
 
 class TestSimulationParameters(unittest.TestCase):
@@ -52,7 +52,7 @@ class TestSimulationParameters(unittest.TestCase):
 
     def test_freq_range_too_low_trait_error(self):
         """
-        Test that defining a frequency range with a minimum below 1.0 Hz raises a TraitError.
+        Test that defining a frequency range with a minimum below 0.01 Hz raises a TraitError.
         The lower bound for freq_range is set to 1.0 Hz in the class definition.
         """
         with self.assertRaises(TraitError):

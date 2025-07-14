@@ -2,7 +2,7 @@ import unittest
 from traits.api import TraitError
 from traits.trait_types import Float as CheckFloat
 
-from src.calculation import Geometry
+from calculation import Geometry
 import numpy as np
 
 class TestGeometry(unittest.TestCase):

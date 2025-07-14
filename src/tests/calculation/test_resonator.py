@@ -1,8 +1,8 @@
 
 import unittest
-from src.calculation.geometry import Geometry
-from src.calculation.aperture import Aperture
-from src.calculation.resonator import Resonator
+from calculation import Geometry
+from calculation import Aperture
+from calculation import Resonator
 
 class TestResonator(unittest.TestCase):
     """

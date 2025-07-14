@@ -1,4 +1,4 @@
-from src.calculation import Simulation, SimulationParameters, Aperture, Geometry, Resonator, Medium
+from calculation import Simulation, SimulationParameters, Aperture, Geometry, Resonator, Medium
 from scipy.optimize import minimize
 import threading
 import click

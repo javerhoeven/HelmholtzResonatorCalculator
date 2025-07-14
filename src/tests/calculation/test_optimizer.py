@@ -1,6 +1,6 @@
 import unittest
 
-from src.calculation import Optimizer
+from calculation import Optimizer
 from scipy.optimize import minimize
 import click
 import matplotlib.pyplot as plt
