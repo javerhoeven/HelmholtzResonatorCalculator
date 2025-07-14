@@ -4,44 +4,59 @@ import numpy as np
 from numpy import pi
 
 class Aperture(HasTraits):
+    """
+    Models the aperture of a Helmholtz resonator, either as a tube or a slit.
+
+    Attributes:
+        form (str): Shape of the aperture ('tube' or 'slit').
+        length (float): Length of the aperture.
+        radius (float): Radius for 'tube' form.
+        width (float): Width for 'slit' form.
+        height (float): Height for 'slit' form.
+        amount (int): Number of apertures.
+        inner_ending (str): Boundary condition inside ('open' or 'flange').
+        outer_ending (str): Boundary condition outside ('open' or 'flange').
+        additional_dampening (bool): Whether porous damping is used.
+        xi (float): Damping coefficient (required if damping enabled).
+
+        area (float): Computed cross-sectional area.
+        inner_end_correction (float): End correction at inner boundary.
+        outer_end_correction (float): End correction at outer boundary.
+    """
+
     form = Enum('tube', 'slit')
-
-    length = Range(0.001, 0.5)  # must be positive
-    radius = Range(0.005, 1.0, value=None, allow_none=True)  # only for 'tube'
-    width = Range(0.001, 0.5, value=None, allow_none=True)  # only for 'slit'
-    height = Range(0.001, 0.5, value=None, allow_none=True)  # only for 'slit'
+    length = Range(0.001, 0.5)
+    radius = Range(0.005, 1.0, value=None, allow_none=True)
+    width = Range(0.001, 0.5, value=None, allow_none=True)
+    height = Range(0.001, 0.5, value=None, allow_none=True)
     amount = Range(1, 100, 1)
-
-    inner_ending = Enum('open', 'flange') # default = 'open'
-    outer_ending = Enum('flange', 'open') # default = 'flange' because it is on the outer wall
-
+    inner_ending = Enum('open', 'flange')
+    outer_ending = Enum('flange', 'open')
     additional_dampening = Bool(False)
-    xi = Float(None, allow_none=True)  # required, if additional_dampening=True
+    xi = Float(None, allow_none=True)
 
-    # --- Berechnete Attribute ---
     area = Float
     inner_end_correction = Float
     outer_end_correction = Float
 
     def __init__(self, **kwargs):
+        """Initialize and validate aperture configuration."""
         super().__init__(**kwargs)
         self._validate_logical_dependencies()
         self._compute_area_and_corrections()
 
     def _validate_logical_dependencies(self):
-        # Formabhängige Pflichtfelder
-        if self.form == 'tube':
-            if self.radius is None:
-                raise TraitError("Radius required if form='tube'.")
-        elif self.form == 'slit':
-            if self.width is None or self.height is None:
-                raise TraitError("form='slit' requires width and height.")
+        """Validates consistency of traits based on form and dampening."""
+        if self.form == 'tube' and self.radius is None:
+            raise TraitError("Radius required if form='tube'.")
+        elif self.form == 'slit' and (self.width is None or self.height is None):
+            raise TraitError("form='slit' requires width and height.")
 
-        # damping vs. xi
         if self.additional_dampening and self.xi is None:
             raise TraitError("xi required if additional_dampening=True.")
 
     def _compute_area_and_corrections(self):
+        """Computes the aperture area and end corrections."""
         if self.form == 'tube':
             self.area = pi * self.radius**2 * self.amount
             self.inner_end_correction = self.get_tube_correction(self.inner_ending)
@@ -53,10 +68,17 @@ class Aperture(HasTraits):
             correction = self.get_slit_end_correction(self.width, self.height)
             self.inner_end_correction = correction
             self.outer_end_correction = correction
-            # Optional: set radius as "virtual circle radius"
             self.radius = 0.5 * self.width
-            
+
     def get_tube_correction(self, ending):
+        """Returns the empirical end correction for a tube end.
+
+        Args:
+            ending (str): 'open' or 'flange'.
+
+        Returns:
+            float: End correction length.
+        """
         if ending == 'open':
             return 0.6 * self.radius
         elif ending == 'flange':
@@ -64,29 +86,26 @@ class Aperture(HasTraits):
         else:
             raise ValueError("Invalid ending. Choose 'open' or 'flange'. ")
 
-    
-    def get_slit_end_correction(self, x : float, y : float) -> float:
+    def get_slit_end_correction(self, x: float, y: float) -> float:
         """
-        Calculates the end correction after the 
-        equation given in Mechel's "Formulas of Acoustics", p. 319 
+        Calculates end correction for slits using Mechel's formulation.
 
         Args:
-            x (float): width of slit
-            y (float): height of slit
+            x (float): Width of slit.
+            y (float): Height of slit.
+
+        Returns:
+            float: End correction length.
         """
-        # lower value needs to be a
         if x < y:
-            a = 0.5 * x
-            b = 0.5 * y
+            a, b = 0.5 * x, 0.5 * y
         else:
-            a = 0.5 * y
-            b = 0.5 * x
+            a, b = 0.5 * y, 0.5 * x
 
-        beta = a/b
-        delta_l_a =  2/(3*pi) * (beta + (1- (1+beta**2)**(3/2)) / beta**2 ) + (2/pi) * (1/beta * np.log(beta+np.sqrt(1+beta**2)) + np.log(1/beta*(1+np.sqrt(1+beta**2))))
-        delta_l = delta_l_a * a
-        return delta_l
-
+        beta = a / b
+        delta_l_a = 2 / (3 * pi) * (beta + (1 - (1 + beta**2)**(3/2)) / beta**2)
+        delta_l_a += (2 / pi) * (1 / beta * np.log(beta + np.sqrt(1 + beta**2)) + np.log(1 / beta * (1 + np.sqrt(1 + beta**2))))
+        return delta_l_a * a
 
     def to_dict(self):
         """Returns the aperture as a dictionary, including only relevant fields based on form."""
@@ -104,34 +123,29 @@ class Aperture(HasTraits):
         }
 
         if self.form == 'tube':
-            base.update({
-                'radius': self.radius
-            })
+            base.update({'radius': self.radius})
         elif self.form == 'slit':
-            base.update({
-                'width': self.width,
-                'height': self.height
-            })
+            base.update({'width': self.width, 'height': self.height})
 
         return base
 
-    
     @classmethod
     def from_dict(cls, data):
-        """Creates an Aperture instance from a dictionary"""
+        """Creates an Aperture instance from a dictionary."""
         return cls(
             form=data['form'],
             length=data['length'],
-            radius=data['radius'],
+            radius=data.get('radius'),
             inner_ending=data.get('inner_ending', 'open'),
             outer_ending=data.get('outer_ending', 'flange'),
             additional_dampening=data.get('additional_dampening', False),
-            xi=data.get('xi', None),
+            xi=data.get('xi'),
             amount=data.get('amount', 1),
-            width=data.get('width', None),
-            height=data.get('height', None)
+            width=data.get('width'),
+            height=data.get('height')
         )
-# TraitsUI View
+
+    # TraitsUI View
     traits_view = View(
         Group(
             Item('form', label="Form der Öffnung"),

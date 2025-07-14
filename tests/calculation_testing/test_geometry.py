@@ -1,6 +1,6 @@
 import unittest
 from traits.api import TraitError
-from src.calculation.geometry import Geometry
+from src.calculation import Geometry
 import numpy as np
 
 class TestGeometry(unittest.TestCase):

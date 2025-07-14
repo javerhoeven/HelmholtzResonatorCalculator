@@ -1,38 +1,61 @@
-import unittest
 
+import unittest
 from src.calculation.geometry import Geometry
 from src.calculation.aperture import Aperture
-from src.calculation.medium import Medium
+from src.calculation.resonator import Resonator
 
 class TestResonator(unittest.TestCase):
+    """
+    Unit tests for the Resonator class which combines a Geometry and an Aperture.
+    """
 
-    def setup(self):
-        self.medium=Medium()
-        self.arperture=Aperture()
+    def setUp(self):
+        """
+        Creates a sample Resonator instance using a cuboid geometry and tube aperture.
+        
+        """
+        self.geometry = Geometry(form='cuboid', x=0.5, y=0.5, z=0.5)
+        self.aperture = Aperture(form='tube', radius=0.01, length=0.05)
+        self.resonator = Resonator(geometry=self.geometry, aperture=self.aperture)
 
-    # length = Range(0.001, 0.5)  # must be positivev
-    # radius = Range(0.005, 1.0, value=None, allow_none=True)  # only for 'tube'
-    # width = Range(0.001, 0.5, value=None, allow_none=True)  # only for 'slit'
-    # height = Range(0.001, 0.5, value=None, allow_none=True)  # only for 'slit'
-    # amount = Range(1, 100, 1)
+    def test_initialization(self):
+        """
+        Tests if the Resonator initializes correctly with given Geometry and Aperture instances.
+        """
+        self.assertIsInstance(self.resonator.geometry, Geometry)
+        self.assertIsInstance(self.resonator.aperture, Aperture)
 
-    # inner_ending = Enum('open', 'flange') # default = 'open'
-    # outer_ending = Enum('flange', 'open') # default = 'flange' because it is on the outer wall
+    def test_to_dict_structure_and_values(self):
+        """
+        Tests whether `to_dict()` returns a dictionary with the correct structure
+        and expected values for form and radius of apperture.
+        """
+        result = self.resonator.to_dict()
+        self.assertIn('geometry', result)
+        self.assertIn('aperture', result)
+        self.assertEqual(result['aperture']['form'], 'tube')
+        self.assertAlmostEqual(result['aperture']['radius'], 0.01)
 
-    # additional_dampening = Bool(False)
-    # xi = Float(None, allow_none=True)  # required, if additional_dampening=True
+    def test_from_dict_reconstruction(self):
+        """
+        Tests whether a Resonator can be correctly restructured from its representation in the dictionary.
+        """
+        reconstructed = Resonator.from_dict(self.resonator.to_dict())
+        self.assertAlmostEqual(reconstructed.aperture.radius, self.aperture.radius)
+        self.assertAlmostEqual(reconstructed.geometry.volume, self.geometry.volume)
 
-    # # --- Berechnete Attribute ---
-    # area = Float
-    # inner_end_correction = Float
-    # outer_end_correction = Float
-
-
-
-
-
-
-
-
-if _name_ == '_main_':
+if __name__ == '__main__':
     unittest.main()
+
+
+
+
+
+
+
+
+
+
+
+
+

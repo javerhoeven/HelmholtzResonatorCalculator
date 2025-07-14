@@ -1,23 +1,45 @@
-# Entire code with proper indentation
-code = """
 import matplotlib.pyplot as plt
 import numpy as np
-# from .simulation_parameters import SimulationParameters
-# from .resonator import Resonator
+from .simulation_parameters import SimulationParameters
+from .resonator import Resonator
 
-class Simulation:
-    \"\"\"
-    A class to simulate the acoustic behavior of a Helmholtz resonator.
+class Simulation():
+    
+ 
 
-    This class models all relevant physical impedances (porous damping, 
-    radiation, stiffness/mass, friction) and computes the resulting 
-    absorption area, resonance frequency, and quality factor.
-    \"\"\"
 
-    def __init__(self, resonator, sim_params):
-        \"\"\"
-        Initializes the simulation with a resonator and simulation parameters.
-        \"\"\"
+    """
+    Represents a full simulation of a Helmholtz resonator.
+
+    This class performs acoustic simulations in relationship to geometric and physical properties, 
+    including calculation of impedances, absorption behavior, resonance frequency, and Q-factor.
+
+    Attributes:
+        resonator (Resonator): The Helmholtz resonator configuration.
+        sim_params (SimulationParameters): Frequency and medium parameters.
+        z_porous (float): Additional impedance from porous damping.
+        z_radiation (np.array): Radiation impedance across frequency range.
+        z_stiff_mass (np.array): Stiffness and mass impedance.
+        z_friction (np.array): Viscous (friction) impedance.
+        k (np.array): Wavenumber.
+        absorbtion_area (np.array): Resulting absorption area vs. frequency.
+        absorbtion_area_diffuse (np.array): Not used currently.
+        max_absorbtion_area (np.array): Theoretical maximum absorption area.
+        q_factor (float): Calculated Q-factor.
+        f_q_low (float): Lower -3 dB frequency point.
+        f_q_high (float): Upper -3 dB frequency point.
+        f_resonance (float): Calculated resonance frequency.
+        peak_absorbtion_area (float): Max absorption at resonance.
+    """
+
+    def __init__(self, resonator: Resonator, sim_params: SimulationParameters):
+        """
+        Initialize a Simulation instance.
+
+        Args:
+            resonator (Resonator): The Helmholtz resonator object.
+            sim_params (SimulationParameters): Frequency & medium configuration.
+        """
         self.resonator = resonator
         self.sim_params = sim_params
 
@@ -36,11 +58,20 @@ class Simulation:
         self.peak_absorbtion_area = None
 
     def calc_all(self):
+        """
+        Convenience method to calculate absorption area, resonance frequency, and Q-factor in one step.
+        """
         self.calc_absorbtion_area()
         self.calc_resonance_frequency_and_peak_area()
         self.calc_q_factor()
 
-    def calc_z_porous(self):
+    def calc_z_porous(self) -> float:
+        """
+        Calculates the real-valued porous impedance for additional dampening.
+
+        Returns:
+            float: Porous impedance if enabled; 0 otherwise.
+        """
         ap = self.resonator.aperture
         if ap.additional_dampening:
             S = ap.area
@@ -51,28 +82,57 @@ class Simulation:
             self.z_porous = 0
         return self.z_porous
 
-    def calc_z_radiation(self):
+    def calc_z_radiation(self) -> np.array:
+        """
+        Calculates the complex radiation impedance over frequency.
+
+        Returns:
+            np.array: Radiation impedance vector.
+        """
         ap = self.resonator.aperture
         med = self.sim_params.medium
         rho = med.density
         c = med.c
         r = ap.radius
         k = self.sim_params.k
-        f = self.sim_params.frequencies
         delta_l_out = ap.outer_end_correction
 
-        limit = np.argwhere(k * r < 0.5)[-1]
         if ap.outer_ending == 'open':
-            self.z_radiation = rho * c * (k**2 * r**2 / (4 * np.pi) + 1j * k * delta_l_out)
+            self.z_radiation = rho * c * (k**2 * r**2 / (4*np.pi) + 1j * k * delta_l_out)
         elif ap.outer_ending == 'flange':
-            self.z_radiation = rho * c * (k**2 * r**2 / (2 * np.pi) + 1j * k * delta_l_out)
+            self.z_radiation = rho * c * (k**2 * r**2 / (2*np.pi) + 1j * k * delta_l_out)
         else:
             raise ValueError("Invalid outer ending. Choose 'open' or 'flange'.")
         return self.z_radiation
 
-    def calc_z_friction(self):
+    def calc_z_stiff_mass(self) -> np.array:
+        """
+        Calculates the impedance contribution from stiffness and mass.
+
+        Returns:
+            np.array: Complex impedance vector.
+        """
         ap = self.resonator.aperture
-        k = self.k 
+        rho = self.sim_params.medium.density
+        c = self.sim_params.medium.c
+        S = ap.area
+        omega = self.sim_params.omega
+        volume = self.resonator.geometry.volume
+        l_ap = ap.length
+        delta_l_total = ap.inner_end_correction + ap.outer_end_correction
+
+        self.z_stiff_mass = rho * c**2 / (1j*omega*volume) + 1j*omega*rho*(l_ap + delta_l_total) / S
+        return self.z_stiff_mass
+
+    def calc_z_friction(self) -> np.array:
+        """
+        Calculates the real-valued friction impedance from viscosity.
+
+        Returns:
+            np.array: Friction impedance vector.
+        """
+        ap = self.resonator.aperture
+        k = self.k
         r = ap.radius
         rho = self.sim_params.medium.density
         v = self.sim_params.medium.kinematic_viscosity
@@ -81,42 +141,59 @@ class Simulation:
         S = ap.area
 
         limit = np.argwhere(k * r < 0.2)[-1, -1]
-        z_friction = 8 * v * rho / r**2 * l_ap / S
-        z_friction_arr = np.full_like(f, z_friction)
-        z_friction_arr[limit + 1:] = 0
-        self.z_friction = z_friction_arr
-        return z_friction_arr
+        z_friction_val = 8 * v * rho / r**2 * l_ap / S
+        self.z_friction = np.full_like(f, z_friction_val)
+        self.z_friction[limit+1:] = 0
+        return self.z_friction
 
-    def calc_absorbtion_area(self):
+    def calc_absorbtion_area(self) -> np.array:
+        """
+        Computes the absorption area as a function of frequency.
+
+        Returns:
+            np.array: Absorption area vector.
+        """
         self.calc_z_porous()
         self.calc_z_radiation()
         self.calc_z_stiff_mass()
         self.calc_z_friction()
 
-        z_reso = self.z_friction + self.z_porous + self.z_stiff_mass
+        z_total = self.z_friction + self.z_porous + self.z_stiff_mass
         z_rad = self.z_radiation
 
         rho = self.sim_params.medium.density
         c = self.sim_params.medium.c
         theta = self.sim_params.angle_of_incidence
-        diffuse = self.sim_params.assume_diffuse
 
-        if not diffuse:
-            self.absorbtion_area = np.real(z_reso) / (np.abs(z_reso + z_rad)**2) * (2 * rho * c / np.cos(theta))
+        if self.sim_params.assume_diffuse:
+            self.absorbtion_area = 2 * (np.real(z_total) / np.abs(z_total + z_rad)**2) * (2 * rho * c)
         else:
-            self.absorbtion_area = 2 * (np.real(z_reso) / (np.abs(z_reso + z_rad)**2) * (2 * rho * c / np.cos(0)))
+            self.absorbtion_area = np.real(z_total) / np.abs(z_total + z_rad)**2 * (2 * rho * c / np.cos(theta))
+
         return self.absorbtion_area
 
-    def calc_resonance_frequency_and_peak_area(self):
+    def calc_resonance_frequency_and_peak_area(self) -> float:
+        """
+        Determines the resonance frequency and peak absorption value.
+
+        Returns:
+            float: Resonance frequency.
+        """
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
+
         peak_idx = np.argmax(self.absorbtion_area)
         self.peak_absorbtion_area = self.absorbtion_area[peak_idx]
-        f_res = self.sim_params.frequencies[peak_idx]
-        self.f_resonance = f_res
-        return f_res, self.peak_absorbtion_area
+        self.f_resonance = self.sim_params.frequencies[peak_idx]
+        return (self.f_resonance, self.peak_absorbtion_area)
 
-    def calc_q_factor(self):
+    def calc_q_factor(self) -> float:
+        """
+        Calculates the Q factor from the -3 dB bandwidth.
+
+        Returns:
+            float: Quality factor (Q).
+        """
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
 
@@ -125,136 +202,114 @@ class Simulation:
         peak_idx = np.argmax(curve)
         f_res = freqs[peak_idx]
         peak = curve[peak_idx]
-
         half_peak = peak / 2
+
         diff = curve - half_peak
-        sign_change_idc = np.where(np.diff(np.sign(diff)))[0]
+        idx = np.where(np.diff(np.sign(diff)))[0]
+
         try:
-            i1 = sign_change_idc[0]
-            i2 = sign_change_idc[1]
+            i1, i2 = idx[0], idx[1]
         except IndexError:
             return None
 
-        x0, x1 = freqs[i1], freqs[i1 + 1]
-        y0, y1 = diff[i1], diff[i1 + 1]
-        f1 = x0 - y0 * (x1 - x0) / (y1 - y0)
-
-        x0, x1 = freqs[i2], freqs[i2 + 1]
-        y0, y1 = diff[i2], diff[i2 + 1]
-        f2 = x0 - y0 * (x1 - x0) / (y1 - y0)
-
-        bandwidth = f2 - f1
-        q_factor = f_res / bandwidth
+        # Linear interpolation to find -3dB points
+        f1 = freqs[i1] - diff[i1] * (freqs[i1+1] - freqs[i1]) / (diff[i1+1] - diff[i1])
+        f2 = freqs[i2] - diff[i2] * (freqs[i2+1] - freqs[i2]) / (diff[i2+1] - diff[i2])
 
         self.f_q_low = f1
         self.f_q_high = f2
-        self.q_factor = q_factor
-        return q_factor
+        self.q_factor = f_res / (f2 - f1)
+        return self.q_factor
 
-    def calc_max_absorbtion_area(self, plot=True):
-        max_absorbtion_area = self.sim_params._lambda**2 / (2 * np.pi)
-        self.max_absorbtion_area = max_absorbtion_area
+    def calc_max_absorbtion_area(self, plot: bool = True):
+        """
+        Calculates the theoretical maximum absorption area.
+
+        Args:
+            plot (bool): Whether to plot the curve.
+        """
+        self.max_absorbtion_area = self.sim_params._lambda**2 / (2 * np.pi)
         if plot:
-            plt.semilogx(self.sim_params.frequencies, max_absorbtion_area, linestyle=':')
+            plt.semilogx(self.sim_params.frequencies, self.max_absorbtion_area, linestyle=':')
             plt.grid()
-            plt.title("maximum absorbtion area")
+            plt.title("Maximum Absorption Area")
             plt.show()
 
-    def plot_absorbtion_area(self):
-        from matplotlib.ticker import MultipleLocator
+    def plot_absorbtion_area(self, ion: bool = False):
+        """
+        Plots the absorption area across the frequency range.
+
+        Args:
+            ion (bool): Whether to enable interactive plotting.
+        """
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
-        if self.q_factor is None or self.f_q_low is None or self.f_q_high is None:
+        if self.q_factor is None:
             self.calc_q_factor()
+
+        if ion:
+            plt.ion()
+
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.semilogx(self.sim_params.frequencies, self.absorbtion_area)
         ax.axvline(self.f_q_low, linestyle=':')
         ax.axvline(self.f_q_high, linestyle=':')
-        custom_ticks = list(range(20, 101, 10)) + list(range(200, 501, 100))
-        ax.set_xticks(custom_ticks)
+        ax.set_title("Absorption Area of Helmholtz Resonator")
+        ax.set_xlabel("Frequency (Hz)")
+        ax.set_ylabel("Absorption Area (m²)")
         ax.grid(True, which='both', linestyle='--')
-        ax.set_ylabel("Absorbtion area / m$^2$")
-        ax.set_xlabel("Frequency / Hz")
-        plt.title("Absorbtion area of Helmholtz Resonator")
-        return ax
+        plt.show()
 
     def to_dict(self):
+        """
+        Serializes the simulation and results into a dictionary.
+
+        Returns:
+            dict: Serialized simulation data.
+        """
         return {
             "resonator": self.resonator.to_dict(),
             "simulation_parameters": self.sim_params.to_dict(),
             "z_porous": self.z_porous,
             "z_radiation_real": np.real(self.z_radiation).tolist() if self.z_radiation is not None else None,
-            "z_radiation_imag": np.imag(self.z_radiation).tolist() if self.z_radiation is not None else None, 
+            "z_radiation_imag": np.imag(self.z_radiation).tolist() if self.z_radiation is not None else None,
             "z_stiff_mass_real": np.real(self.z_stiff_mass).tolist() if self.z_stiff_mass is not None else None,
-            "z_stiff_mass_imag": np.imag(self.z_stiff_mass).tolist() if self.z_stiff_mass is not None else None, 
-            "z_friction": self.z_friction.tolist() if self.z_friction is not None else None, 
+            "z_stiff_mass_imag": np.imag(self.z_stiff_mass).tolist() if self.z_stiff_mass is not None else None,
+            "z_friction": self.z_friction.tolist() if self.z_friction is not None else None,
             "absorbtion_area": self.absorbtion_area.tolist() if self.absorbtion_area is not None else None,
             "max_absorbtion_area": self.max_absorbtion_area.tolist() if self.max_absorbtion_area is not None else None,
-            "q_factor": self.q_factor,
+            "q_factor": self.q_factor
         }
 
     @classmethod
     def from_dict(cls, data):
+        """
+        Reconstructs a Simulation instance from dictionary data.
+
+        Args:
+            data (dict): Serialized simulation data.
+
+        Returns:
+            Simulation: Restored simulation instance.
+        """
         resonator = Resonator.from_dict(data['resonator'])
         sim_params = SimulationParameters.from_dict(data['simulation_parameters'])
+
         sim = cls(resonator=resonator, sim_params=sim_params)
-        sim.z_porous = data.get('z_porous', 0.0) 
-        if data['z_radiation_real'] is None or data['z_radiation_imag'] is None:
-            sim.z_radiation = None
-        else:
-            sim.z_radiation = np.array(data['z_radiation_real']) + 1j * np.array(data['z_radiation_imag'])
-        if data['z_stiff_mass_real'] is None or data['z_stiff_mass_imag'] is None:
-            sim.z_stiff_mass = None
-        else:
-            sim.z_stiff_mass = np.array(data['z_stiff_mass_real']) + 1j * np.array(data['z_stiff_mass_imag'])
-        sim.z_friction = np.array(data.get('z_friction')) if data.get('z_friction') is not None else None
-        sim.absorbtion_area = np.array(data.get('absorbtion_area')) if data['absorbtion_area'] is not None else None
-        sim.max_absorbtion_area = np.array(data.get('max_absorbtion_area')) if data['max_absorbtion_area'] is not None else None
-        sim.q_factor = data.get('q_factor', None)
+        sim.z_porous = data.get('z_porous')
+
+        zr_real = data.get('z_radiation_real')
+        zr_imag = data.get('z_radiation_imag')
+        if zr_real and zr_imag:
+            sim.z_radiation = np.array(zr_real) + 1j * np.array(zr_imag)
+
+        zs_real = data.get('z_stiff_mass_real')
+        zs_imag = data.get('z_stiff_mass_imag')
+        if zs_real and zs_imag:
+            sim.z_stiff_mass = np.array(zs_real) + 1j * np.array(zs_imag)
+
+        sim.z_friction = np.array(data.get('z_friction')) if data.get('z_friction') else None
+        sim.absorbtion_area = np.array(data.get('absorbtion_area')) if data.get('absorbtion_area') else None
+        sim.max_absorbtion_area = np.array(data.get('max_absorbtion_area')) if data.get('max_absorbtion_area') else None
+        sim.q_factor = data.get('q_factor')
         return sim
-
-    def plot_volume(self, center=(0, 0, 0), color='cyan', alpha=0.6, edge_color='black'):
-        from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-        form = self.resonator.geometry.form
-        fig = plt.figure(figsize=(8, 8))
-        ax = fig.add_subplot(111, projection='3d')
-
-        if form == 'cylinder':
-            print("printing cylinders is not yet available!")
-        elif form == 'cuboid':
-            geom = self.resonator.geometry
-            hx = geom.x / 2
-            hy = geom.y / 2
-            hz = geom.z / 2
-            x_c, y_c, z_c = center
-            vertices = np.array([
-                [x_c - hx, y_c - hy, z_c - hz],
-                [x_c + hx, y_c - hy, z_c - hz],
-                [x_c + hx, y_c + hy, z_c - hz],
-                [x_c - hx, y_c + hy, z_c - hz],
-                [x_c - hx, y_c - hy, z_c + hz],
-                [x_c + hx, y_c - hy, z_c + hz],
-                [x_c + hx, y_c + hy, z_c + hz],
-                [x_c - hx, y_c + hy, z_c + hz]
-            ])
-            faces = [
-                [vertices[0], vertices[1], vertices[2], vertices[3]],
-                [vertices[4], vertices[5], vertices[6], vertices[7]],
-                [vertices[0], vertices[1], vertices[5], vertices[4]],
-                [vertices[2], vertices[3], vertices[7], vertices[6]],
-                [vertices[0], vertices[3], vertices[7], vertices[4]],
-                [vertices[1], vertices[2], vertices[6], vertices[5]]
-            ]
-            ax.add_collection3d(Poly3DCollection(faces, facecolors=color, linewidths=1, edgecolors=edge_color, alpha=alpha))
-            ax.set_xlim([x_c - geom.x, x_c + geom.x])
-            ax.set_ylim([y_c - geom.y, y_c + geom.y])
-            ax.set_zlim([z_c - geom.z, z_c + geom.z])
-            ax.set_xlabel('X-axis')
-            ax.set_ylabel('Y-axis')
-            ax.set_zlabel('Z-axis')
-            plt.show()
-"""
-
-from ace_tools import display_dataframe_to_user
-code[:1000]  # just a preview of the code content
-

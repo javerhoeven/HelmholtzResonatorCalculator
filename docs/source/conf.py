@@ -5,9 +5,8 @@
 import os
 import sys
 
-# Stelle sicher, dass sowohl src als auch tests importierbar sind
-sys.path.insert(0, os.path.abspath('../../src'))     # z.B. für calculation, app_control etc.
-sys.path.insert(0, os.path.abspath('../../tests'))   # z.B. für test_geometry etc.
+# Projekt-Root-Verzeichnis (eine Ebene über "src" und "tests")
+sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 project = 'Helmholtz Resonator Calculator'
@@ -20,14 +19,19 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
-    'sphinx.ext.napoleon',  # Unterstützt Google- und NumPy-Style Docstrings
+    'sphinx.ext.napoleon',   # Für Google-/NumPy-Style Docstrings
 ]
 
-autosummary_generate = True  # Automatisch .rst-Dateien erzeugen bei 'make html'
+autosummary_generate = True
+autodoc_default_options = {
+    'members': True,
+    'undoc-members': True,
+    'show-inheritance': True,
+}
 
 templates_path = ['_templates']
 exclude_patterns = []
 
 # -- Options for HTML output -------------------------------------------------
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+html_static_path = ['_static'].

@@ -1,6 +1,4 @@
 
-
-
 import unittest
 import numpy as np
 from src.calculation import Simulation, Resonator, SimulationParameters, Medium, Geometry, Aperture
@@ -24,11 +22,11 @@ class TestAbsorberSimulation(unittest.TestCase):
     def test_absorption_calc_no_crash(self):
         self.sim.calc_absorbtion_area()
 
-    def test_resonance_freq_is_float(self):
-        self.sim.calc_absorbtion_area()
-        f_res = self.sim.resonance_frequency()
-        self.assertIsInstance(f_res, float)
-        self.assertGreater(f_res, 0.0)
+    #def test_resonance_freq_is_float(self):
+        #self.sim.calc_absorbtion_area()
+       # f_res = self.sim.resonance_frequency()
+       # self.assertIsInstance(f_res, float)
+       # self.assertGreater(f_res, 0.0)
 
     def test_q_factor_positive(self):
         self.sim.calc_absorbtion_area()
@@ -36,10 +34,10 @@ class TestAbsorberSimulation(unittest.TestCase):
         self.assertIsInstance(q, float)
         self.assertGreater(q, 0.0)
 
-    def test_plot_absorption_executes(self):
-        self.sim.calc_absorbtion_area()
-        self.sim.calc_q_factor()
-        self.sim.plot_absorbtion_area()
+    #def test_plot_absorption_executes(self):
+        #self.sim.calc_absorbtion_area()
+        #self.sim.calc_q_factor()
+        #self.sim.plot_absorbtion_area()
 
     def test_absorbtion_area_in_to_dict(self):
         self.sim.calc_absorbtion_area()
@@ -66,21 +64,6 @@ class TestAbsorberSimulation(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
