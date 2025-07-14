@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>calculation.geometry &mdash; Helmholtz Resonator Calculator 0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -69,13 +69,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for calculation.geometry</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">traits.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">TraitError</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">traitsui.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">Group</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">TraitError</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="kn">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">Group</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <div class="viewcode-block" id="Geometry">
 <a class="viewcode-back" href="../../calculation.html#calculation.geometry.Geometry">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Geometry</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Geometry</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s1">&#39;cylinder&#39;</span><span class="p">,</span> <span class="s1">&#39;cuboid&#39;</span><span class="p">)</span>  <span class="c1"># Muss entweder &#39;cylinder&#39; oder &#39;cuboid&#39; sein</span>
 
     <span class="c1"># Optional je nach Form</span>
@@ -90,13 +90,13 @@
 
     <span class="n">volume</span> <span class="o">=</span> <span class="n">Float</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validate_and_calculate</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Geometry.validate_and_calculate">
 <a class="viewcode-back" href="../../calculation.html#calculation.geometry.Geometry.validate_and_calculate">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">validate_and_calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">validate_and_calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span> <span class="o">==</span> <span class="s1">&#39;cylinder&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="s2">&quot;Cylinder requires &#39;radius&#39; and &#39;height&#39; parameters.&quot;</span><span class="p">)</span>
@@ -118,7 +118,7 @@
 
 <div class="viewcode-block" id="Geometry.to_dict">
 <a class="viewcode-back" href="../../calculation.html#calculation.geometry.Geometry.to_dict">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the geometry to a dictionary representation.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="p">,</span>
@@ -136,7 +136,7 @@
 <div class="viewcode-block" id="Geometry.from_dict">
 <a class="viewcode-back" href="../../calculation.html#calculation.geometry.Geometry.from_dict">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a Geometry instance from a dictionary&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">form</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;form&#39;</span><span class="p">],</span>

@@ -3,25 +3,48 @@ from traitsui.api import View, Item, Group
 import numpy as np
 
 class Geometry(HasTraits):
-    form = Enum('cylinder', 'cuboid')  # Muss entweder 'cylinder' oder 'cuboid' sein
+    """
+    Represents the geometry of a Helmholtz resonator, wich function a acoustic cavity.
+    Forms of cylinder and cuboid ar both possible. Calculates and stores the
+    volume based on specified shape and dimensions.
 
-    # Optional je nach Form
+    Attributes:
+        form (str): Shape of the resonator. Must be either 'cylinder' or 'cuboid'.
+        x, y, z (float or None): Dimensions of the cuboid in meters.
+        radius, height (float or None): Dimensions of the cylinder in meters.
+        volume (float): Calculated volume of the geometry in cubic meters.
+    """
 
+    form = Enum('cylinder', 'cuboid')
+
+    # Dimensions for cuboid
     x = Union(None, Float(min=0.001, max=2.0), value=None)
     y = Union(None, Float(min=0.001, max=2.0), value=None)
     z = Union(None, Float(min=0.001, max=2.0), value=None)
 
-    # Für Zylinder
+    # Dimensions for cylinder
     radius = Union(None, Float(min=0.001, max=1.0), value=None)
     height = Union(None, Float(min=0.001, max=1.0), value=None)
 
     volume = Float
 
     def __init__(self, **kwargs):
+        """
+        Initialize a Geometry instance and compute volume immediately.
+
+        Raises:
+            TraitError: If required dimensions are missing or invalid.
+        """
         super().__init__(**kwargs)
         self.validate_and_calculate()
 
     def validate_and_calculate(self):
+        """
+        Validates input dimensions based on geometry type and calculates volume.
+
+        Raises:
+            TraitError: If required parameters are missing or non-positive.
+        """
         if self.form == 'cylinder':
             if self.radius is None or self.height is None:
                 raise TraitError("Cylinder requires 'radius' and 'height' parameters.")
@@ -38,25 +61,35 @@ class Geometry(HasTraits):
 
         else:
             raise TraitError("Invalid form, use 'cylinder' or 'cuboid'.")
-        
 
     def to_dict(self):
-        """Convert the geometry to a dictionary representation."""
+        """
+        Converts the geometry instance to a dictionary.
+
+        Returns:
+            dict: Serialized geometry data including form, dimensions, and volume.
+        """
         return {
             "form": self.form,
             "volume": self.volume,
-            
             "radius": getattr(self, "radius", None),
             "height": getattr(self, "height", None),
             "x": getattr(self, "x", None),
             "y": getattr(self, "y", None),
             "z": getattr(self, "z", None)
-            
         }
-    
+
     @classmethod
     def from_dict(cls, data):
-        """Creates a Geometry instance from a dictionary"""
+        """
+        Creates a Geometry instance from a dictionary.
+
+        Args:
+            data (dict): Dictionary containing form and dimension fields.
+
+        Returns:
+            Geometry: A new Geometry instance.
+        """
         return cls(
             form=data['form'],
             radius=data.get('radius'),
@@ -65,7 +98,8 @@ class Geometry(HasTraits):
             y=data.get('y'),
             z=data.get('z')
         )
-        # TraitsUI View
+
+    # TraitsUI View
     traits_view = View(
         Group(
             Item('form', label="Form"),

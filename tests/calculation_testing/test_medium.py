@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 from traits.api import TraitError
 
-from calculation.medium import Medium
+from src.calculation import Medium
 
 
 class TestMedium(unittest.TestCase):
@@ -135,9 +135,12 @@ class TestMedium(unittest.TestCase):
         expected_c = self.expected_speed_of_sound(self.temp_default, self.humidity_max)
         self.assertAlmostEqual(m.c, expected_c, places=3)
 
-    # ------------------------------------
-    # Out-of-range tests: Temperature
-    # ------------------------------------
+   
+        """ 
+    fals-value-test
+    
+    following test check, if values that deviate slightly from min/ max values, trigger trait errors."""
+    
     def test_temp_minimally_too_small(self):
         """Should raise TraitError if temperature is minimally below min."""
         with self.assertRaises(TraitError):
@@ -154,9 +157,7 @@ class TestMedium(unittest.TestCase):
                 rel_humidity=self.humidity_default
             )
 
-    # ------------------------------------
-    # Out-of-range tests: Humidity
-    # ------------------------------------
+#for humidity
     def test_humidity_minimally_too_small(self):
         """Should raise TraitError if RH is minimally below min."""
         with self.assertRaises(TraitError):
@@ -175,5 +176,5 @@ class TestMedium(unittest.TestCase):
 
 
 
-if __name__ == "__main__":
-    unittest.main()
+if _name_ == "_main_":
+    unittest.main() <<-test medium
