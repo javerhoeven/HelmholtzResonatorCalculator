@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
 from traits.api import TraitError
-from calculation import SimulationParameters
-from calculation import Medium
+from src.calculation import SimulationParameters
+from src.calculation import Medium
 
 
 class TestSimulationParameters(unittest.TestCase):
@@ -80,5 +80,5 @@ class TestSimulationParameters(unittest.TestCase):
         self.assertEqual(self.sim.angle_of_incidence, 0.0)
 
 
-if __name__ == '__main__':
-    unittest.main()
+if _name_ == '_main_':
+    

@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>calculation.simulation &mdash; Helmholtz Resonator Calculator 0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -69,15 +69,15 @@
            <div itemprop="articleBody">
              
   <h1>Source code for calculation.simulation</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.simulation_parameters</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimulationParameters</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.resonator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Resonator</span>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.simulation_parameters</span> <span class="kn">import</span> <span class="n">SimulationParameters</span>
+<span class="kn">from</span> <span class="nn">.resonator</span> <span class="kn">import</span> <span class="n">Resonator</span>
 
 <div class="viewcode-block" id="Simulation">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Simulation</span><span class="p">():</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<span class="k">class</span> <span class="nc">Simulation</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">resonator</span> <span class="p">:</span> <span class="n">Resonator</span><span class="p">,</span>
                  <span class="n">sim_params</span> <span class="p">:</span> <span class="n">SimulationParameters</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resonator</span> <span class="o">=</span> <span class="n">resonator</span>
@@ -99,7 +99,7 @@
 
 <div class="viewcode-block" id="Simulation.calc_all">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.calc_all">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">calc_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calc_absorbtion_area</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calc_resonance_frequency_and_peak_area</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calc_q_factor</span><span class="p">()</span></div>
@@ -109,7 +109,7 @@
         
 <div class="viewcode-block" id="Simulation.calc_z_porous">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.calc_z_porous">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_z_porous</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">calc_z_porous</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        calculates the real, frequency-invariant porous absorbtion </span>
 <span class="sd">        in case additional dampening material is used</span>
@@ -129,7 +129,7 @@
 
 <div class="viewcode-block" id="Simulation.calc_z_radiation">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.calc_z_radiation">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_z_radiation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">calc_z_radiation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        calculates complex, frequency-dependant acoustic radiation impedance (&quot;Schallstrahlungsimpedanz&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -160,7 +160,7 @@
         
 <div class="viewcode-block" id="Simulation.calc_z_stiff_mass">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.calc_z_stiff_mass">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_z_stiff_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">calc_z_stiff_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        calculates impedance based on acoustic stiffness and mass.</span>
 <span class="sd">        becomes zero at resonance frequency</span>
@@ -183,7 +183,7 @@
 
 <div class="viewcode-block" id="Simulation.calc_z_friction">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.calc_z_friction">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_z_friction</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">calc_z_friction</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        calculate the real-valued viscosity loss</span>
 <span class="sd">        &quot;&quot;&quot;</span>   
@@ -210,7 +210,7 @@
 
 <div class="viewcode-block" id="Simulation.calc_absorbtion_area">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.calc_absorbtion_area">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_absorbtion_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">calc_absorbtion_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        calculates the absorbtion area over a frequency vector</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -243,7 +243,7 @@
 
 <div class="viewcode-block" id="Simulation.calc_resonance_frequency_and_peak_area">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.calc_resonance_frequency_and_peak_area">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_resonance_frequency_and_peak_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">calc_resonance_frequency_and_peak_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the resonance frequency</span>
 <span class="sd">        calculated as maximum of the absorbtion area</span>
 
@@ -264,7 +264,7 @@
     
 <div class="viewcode-block" id="Simulation.calc_q_factor">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.calc_q_factor">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_q_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">calc_q_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        calculates absorbtion area&#39;s Q factor</span>
 
@@ -315,7 +315,7 @@
     
 <div class="viewcode-block" id="Simulation.calc_max_absorbtion_area">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.calc_max_absorbtion_area">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">calc_max_absorbtion_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot</span> <span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">calc_max_absorbtion_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot</span> <span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        calculates to theoretically maximum possible absorbtion area</span>
 
@@ -333,11 +333,11 @@
 
 <div class="viewcode-block" id="Simulation.plot_absorbtion_area">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.plot_absorbtion_area">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">plot_absorbtion_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">plot_absorbtion_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots the absorbtion area over the frequency</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.ticker</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultipleLocator</span>
+        <span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="kn">import</span> <span class="n">MultipleLocator</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">absorbtion_area</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">calc_absorbtion_area</span><span class="p">()</span>
@@ -370,7 +370,7 @@
 
 <div class="viewcode-block" id="Simulation.to_dict">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.to_dict">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the simulation results to a dictionary representation.&quot;&quot;&quot;</span>
    
         <span class="c1"># self.calc_all()</span>
@@ -395,7 +395,7 @@
 <div class="viewcode-block" id="Simulation.from_dict">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.from_dict">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a Simulation instance from a dictionary&quot;&quot;&quot;</span>
         <span class="n">resonator</span> <span class="o">=</span> <span class="n">Resonator</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;resonator&#39;</span><span class="p">])</span>
         <span class="n">sim_params</span> <span class="o">=</span> <span class="n">SimulationParameters</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;simulation_parameters&#39;</span><span class="p">])</span>
@@ -425,8 +425,8 @@
 
 <div class="viewcode-block" id="Simulation.plot_volume">
 <a class="viewcode-back" href="../../calculation.html#calculation.simulation.Simulation.plot_volume">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">plot_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">edge_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">):</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.mplot3d.art3d</span><span class="w"> </span><span class="kn">import</span> <span class="n">Poly3DCollection</span>
+    <span class="k">def</span> <span class="nf">plot_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">edge_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d.art3d</span> <span class="kn">import</span> <span class="n">Poly3DCollection</span>
 
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        plots the volume and the front face with the aperture</span>

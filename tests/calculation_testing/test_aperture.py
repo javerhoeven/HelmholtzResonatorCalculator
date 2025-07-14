@@ -1,8 +1,15 @@
 import unittest
 import numpy as np
-from calculation import Aperture
+from src.calculation.aperture import Aperture
 
 class TestApertureEdgeCases(unittest.TestCase):
+
+    """
+    Testet die Aperture-Klasse mit verschiedenen Rand- und Kombinationseinstellungen
+    von radius, amount und end correction types (open/flange).
+    """
+
+
 
     @classmethod
     def setUpClass(cls):

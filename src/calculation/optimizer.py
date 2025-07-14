@@ -1,4 +1,4 @@
-from calculation import Simulation, SimulationParameters, Aperture, Geometry, Resonator, Medium
+from src.calculation import Simulation, SimulationParameters, Aperture, Geometry, Resonator, Medium
 from scipy.optimize import minimize
 import click
 import matplotlib.pyplot as plt

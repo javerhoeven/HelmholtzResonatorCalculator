@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>calculation.aperture &mdash; Helmholtz Resonator Calculator 0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -69,14 +69,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for calculation.aperture</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">traits.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">TraitError</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">traitsui.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">Group</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">pi</span>
+<span></span><span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">TraitError</span>
+<span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="kn">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">Group</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span>
 
 <div class="viewcode-block" id="Aperture">
 <a class="viewcode-back" href="../../calculation.html#calculation.aperture.Aperture">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Aperture</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Aperture</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s1">&#39;tube&#39;</span><span class="p">,</span> <span class="s1">&#39;slit&#39;</span><span class="p">)</span>
 
     <span class="n">length</span> <span class="o">=</span> <span class="n">Range</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># must be positive</span>
@@ -96,12 +96,12 @@
     <span class="n">inner_end_correction</span> <span class="o">=</span> <span class="n">Float</span>
     <span class="n">outer_end_correction</span> <span class="o">=</span> <span class="n">Float</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_logical_dependencies</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_compute_area_and_corrections</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_logical_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_validate_logical_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Formabhängige Pflichtfelder</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span> <span class="o">==</span> <span class="s1">&#39;tube&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -114,7 +114,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_dampening</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TraitError</span><span class="p">(</span><span class="s2">&quot;xi required if additional_dampening=True.&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_area_and_corrections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_compute_area_and_corrections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span> <span class="o">==</span> <span class="s1">&#39;tube&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inner_end_correction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tube_correction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner_ending</span><span class="p">)</span>
@@ -131,7 +131,7 @@
             
 <div class="viewcode-block" id="Aperture.get_tube_correction">
 <a class="viewcode-back" href="../../calculation.html#calculation.aperture.Aperture.get_tube_correction">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_tube_correction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ending</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_tube_correction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ending</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">ending</span> <span class="o">==</span> <span class="s1">&#39;open&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
         <span class="k">elif</span> <span class="n">ending</span> <span class="o">==</span> <span class="s1">&#39;flange&#39;</span><span class="p">:</span>
@@ -143,7 +143,7 @@
     
 <div class="viewcode-block" id="Aperture.get_slit_end_correction">
 <a class="viewcode-back" href="../../calculation.html#calculation.aperture.Aperture.get_slit_end_correction">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_slit_end_correction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span> <span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_slit_end_correction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span> <span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates the end correction after the </span>
 <span class="sd">        equation given in Mechel&#39;s &quot;Formulas of Acoustics&quot;, p. 319 </span>
@@ -169,7 +169,7 @@
 
 <div class="viewcode-block" id="Aperture.to_dict">
 <a class="viewcode-back" href="../../calculation.html#calculation.aperture.Aperture.to_dict">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the aperture as a dictionary, including only relevant fields based on form.&quot;&quot;&quot;</span>
         <span class="n">base</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="p">,</span>
@@ -201,7 +201,7 @@
 <div class="viewcode-block" id="Aperture.from_dict">
 <a class="viewcode-back" href="../../calculation.html#calculation.aperture.Aperture.from_dict">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates an Aperture instance from a dictionary&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">form</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;form&#39;</span><span class="p">],</span>

@@ -1,18 +1,11 @@
-tests package
+
+Tests Package
 =============
 
-Subpackages
------------
+Testmodule für das Projekt.
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
+   :caption: Test-Module:
 
-   tests.calcuation
-
-Module contents
----------------
-
-.. automodule:: tests
-   :members:
-   :show-inheritance:
-   :undoc-members:
+   tests.calculation

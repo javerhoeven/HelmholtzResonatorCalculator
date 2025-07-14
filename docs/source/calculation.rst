@@ -1,61 +1,127 @@
 calculation package
 ===================
 
-Submodules
-----------
+Dieses Paket enthält die zentralen Berechnungsfunktionen für den Helmholtz-Resonator.  
+Es umfasst Geometriebeschreibungen, Mediumeigenschaften, akustische Simulationen sowie Parameterverwaltung.
 
-calculation.aperture module
----------------------------
+Inhalte:
+--------
 
-.. automodule:: calculation.aperture
-   :members:
-   :show-inheritance:
-   :undoc-members:
+- `geometry`: Volumenberechnung und Formvalidierung
+- `medium`: Luftdichte, Viskosität, Schallgeschwindigkeit
+- `resonator`: Kombination aus Geometrie und Öffnung
+- `simulation`: Berechnung von Impedanzen, Absorption, Q-Faktor
+- `simulation_parameters`: Frequenz, Wellenzahl, etc.
+
+---
 
 calculation.geometry module
 ---------------------------
 
 .. automodule:: calculation.geometry
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
+
+**Klasse: Geometry**
+
+.. autoclass:: calculation.geometry.Geometry
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+---
 
 calculation.medium module
 -------------------------
 
 .. automodule:: calculation.medium
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
+
+**Klasse: Medium**
+
+.. autoclass:: calculation.medium.Medium
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+---
+
+calculation.aperture module
+---------------------------
+
+.. automodule:: calculation.aperture
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+**Klasse: Aperture**
+
+.. autoclass:: calculation.aperture.Aperture
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+---
 
 calculation.resonator module
 ----------------------------
 
 .. automodule:: calculation.resonator
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
+
+**Klasse: Resonator**
+
+.. autoclass:: calculation.resonator.Resonator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+---
 
 calculation.simulation module
 -----------------------------
 
 .. automodule:: calculation.simulation
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
-calculation.simulation\_parameters module
------------------------------------------
+**Klasse: Simulation**
+
+.. autoclass:: calculation.simulation.Simulation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+---
+
+calculation.simulation_parameters module
+----------------------------------------
 
 .. automodule:: calculation.simulation_parameters
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
+
+**Klasse: SimulationParameters**
+
+.. autoclass:: calculation.simulation_parameters.SimulationParameters
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+---
 
 Module contents
 ---------------
 
 .. automodule:: calculation
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
+
