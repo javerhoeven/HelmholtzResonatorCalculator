@@ -1,10 +1,10 @@
-tests.calculation package
+tests.calculation
 =========================
 
 Submodules
 ----------
 
-tests.calculation.test_aperture module
+tests.calculation.test_aperture 
 --------------------------------------
 
 .. automodule:: tests.calculation.test_aperture
@@ -12,7 +12,7 @@ tests.calculation.test_aperture module
    :undoc-members:
    :show-inheritance:
 
-tests.calculation.test_geometry module
+tests.calculation.test_geometry 
 --------------------------------------
 
 .. automodule:: tests.calculation.test_geometry
@@ -20,7 +20,7 @@ tests.calculation.test_geometry module
    :undoc-members:
    :show-inheritance:
 
-tests.calculation.test_medium module
+tests.calculation.test_medium 
 ------------------------------------
 
 .. automodule:: tests.calculation.test_medium
@@ -28,7 +28,7 @@ tests.calculation.test_medium module
    :undoc-members:
    :show-inheritance:
 
-tests.calculation.test_resonator module
+tests.calculation.test_resonator 
 ---------------------------------------
 
 .. automodule:: tests.calculation.test_resonator
@@ -36,19 +36,10 @@ tests.calculation.test_resonator module
    :undoc-members:
    :show-inheritance:
 
-tests.calculation.test_simulation_parameters module
+tests.calculation.test_simulation_parameters 
 ---------------------------------------------------
 
 .. automodule:: tests.calculation.test_simulation_parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: tests.calculation
    :members:
    :undoc-members:
    :show-inheritance:

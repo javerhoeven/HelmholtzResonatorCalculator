@@ -176,5 +176,5 @@ class TestMedium(unittest.TestCase):
 
 
 
-if _name_ == "_main_":
-    unittest.main() <<-test medium
+if __name__ == "__main__":
+    unittest.main()

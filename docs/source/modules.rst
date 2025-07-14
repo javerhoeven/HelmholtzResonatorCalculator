@@ -8,4 +8,5 @@ src
    calculation
    gui_widgets
    io_tools
-   main
+   tests
+   

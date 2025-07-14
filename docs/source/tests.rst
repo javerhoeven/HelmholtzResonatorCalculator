@@ -9,3 +9,14 @@ Testmodule für das Projekt.
    :caption: Test-Module:
 
    tests.calculation
+
+
+
+
+Module contents
+---------------
+
+.. automodule:: tests.calculation
+   :members:
+   :undoc-members:
+   :show-inheritance:

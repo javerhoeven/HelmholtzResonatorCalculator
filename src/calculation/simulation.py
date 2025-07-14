@@ -5,9 +5,6 @@ from .resonator import Resonator
 
 class Simulation():
     
- 
-
-
     """
     Represents a full simulation of a Helmholtz resonator.
 

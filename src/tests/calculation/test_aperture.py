@@ -339,3 +339,7 @@ class TestApertureEdgeCases(unittest.TestCase):
         self.assertAlmostEqual(a.area, np.pi * self.radius_min**2 * self.amount_max, places=5)
         self.assertAlmostEqual(a.inner_end_correction, 0.6 * self.radius_min, places=5)
         self.assertAlmostEqual(a.outer_end_correction, 0.85 * self.radius_min, places=5)
+
+
+if __name__ == '__main__':
+    unittest.main()

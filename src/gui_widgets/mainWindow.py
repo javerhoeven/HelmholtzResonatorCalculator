@@ -3,7 +3,6 @@ from math import pi
 
 from gui_widgets.inputForm import InputForm
 from gui_widgets.resultView import ResultView
-from gui_widgets.GUIController import GUIController
 
 from io_tools.save_to_json import save_to_json
 
@@ -32,6 +31,9 @@ class MainWindow(QMainWindow):
         Returns:
             None
         """
+
+        from gui_widgets.GUIController import GUIController
+
          
         super().__init__()
         self.setWindowTitle("Helmholtz-Resonator Tool")

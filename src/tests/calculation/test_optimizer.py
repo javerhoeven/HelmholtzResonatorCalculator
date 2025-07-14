@@ -64,3 +64,5 @@ class TestOptimizer(unittest.TestCase):
         self.assertTrue(hasattr(res, 'x'))
         self.assertTrue(hasattr(res, 'fun'))
 
+if __name__ == '__main__':
+    unittest.main()

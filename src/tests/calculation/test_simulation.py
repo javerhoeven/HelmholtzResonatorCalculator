@@ -88,3 +88,6 @@ def test_z_friction_real_imag_in_to_dict(self):
     result = self.sim.to_dict()
     self.assertIn("z_friction_real", result)
     self.assertIn("z_friction_imag", result)
+
+if __name__ == '__main__':
+    unittest.main()
