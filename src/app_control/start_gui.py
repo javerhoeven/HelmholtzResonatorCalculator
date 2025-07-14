@@ -1,10 +1,10 @@
 import sys
 from PyQt6.QtWidgets import  QApplication
-# from gui_widgets.main_window import MainWindow
+from gui_widgets.mainWindow import MainWindow
 
 def start_gui():
-    app = QApplication(sys.argv)
-    # TODO: fix
-    # win = MainWindow()
-    # win.show()
+    import sys 
+    app = QApplication(sys.argv) 
+    win = MainWindow()
+    win.show()
     sys.exit(app.exec())
