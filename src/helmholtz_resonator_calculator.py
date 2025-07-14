@@ -43,8 +43,8 @@ def optimize(freq, q_factor, save):
             print("Please make sure the file extension '.json' is part of your output path. ")
         save_to_json(best_sim, save)
 
-    print(f"Successfully saved simulation object to {save}!")
-    print("="*50)
+        print(f"Successfully saved simulation object to {save}!")
+        print("="*50)
 
     
 
