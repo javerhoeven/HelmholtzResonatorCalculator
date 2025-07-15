@@ -76,8 +76,8 @@ class MainWindow(QMainWindow):
         Returns:
             None
         """
-
-        self.data = self.controller.calculate_and_show()
+        
+        self.controller.calculate_and_show()
 
 
     def on_export_json(self) -> None:
@@ -98,8 +98,8 @@ class MainWindow(QMainWindow):
             return
 
         try:
-            # Stelle sicher, dass du auf ein gültiges Simulation-Objekt zugreifst
-            simulation = getattr(self.controller, "simulation", None)  # oder self.data, falls dort gespeichert
+            # access simulation object
+            simulation = getattr(self.controller, "simulation", None)
             if simulation is None:
                 QMessageBox.warning(self, "Export Error", "No simulation data available.")
                 return

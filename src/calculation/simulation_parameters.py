@@ -131,3 +131,30 @@ class SimulationParameters(HasTraits):
         Returns:
             SimulationParameters: A con
 """
+        medium = Medium.from_dict(data['medium'])
+        if 'frequencies' in data:
+            frequencies = np.array(data['frequencies'])
+        else:
+            # calculate the frequency vector
+            f_min = data.get('freq_range', (20.0, 500.0))[0]
+            f_max = data.get('freq_range', (20.0, 500.0))[1]
+            values_per_octave = data.get('values_per_octave', 100)
+            n_octaves = np.log2(f_max / f_min)
+            n_freq_values = int(n_octaves * values_per_octave)
+            frequencies = np.logspace(np.log10(f_min), np.log10(f_max), num=n_freq_values)
+        
+        angle_of_incidence = data.get('angle_of_incidence', None)
+        assume_diffuse = data.get('assume_diffuse', True)
+
+        params = cls(medium=medium, angle_of_incidence=angle_of_incidence)
+        params.frequencies = frequencies
+        # recalculate omega, k, and lambda based on the frequencies
+        params.omega = params.calc_omega(frequencies)
+        params.k = params.calc_k(params.omega, medium.c)
+        params._lambda = params.calc_lambda(params.omega, medium.c)
+     
+        params.assume_diffuse = assume_diffuse
+        
+        return params
+        
+

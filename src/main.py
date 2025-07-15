@@ -6,5 +6,5 @@ from io_tools.examples import load_example, examples
 # --- Hauptprogramm ---
 if __name__ == '__main__':
 
-    # start_gui()
-    optimizer(300, 10)
+    start_gui()
+    #optimizer(300, 5)
