@@ -248,4 +248,4 @@ class Optimizer:
         print("="*50 + "\n")
 
         # plotting the result
-        sim.plot_absorbtion_area(ion=True)
+        sim.plot_absorbtion_area()
