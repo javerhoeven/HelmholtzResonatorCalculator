@@ -3,6 +3,7 @@ from math import pi
 
 from gui_widgets.inputForm import InputForm
 from gui_widgets.resultView import ResultView
+from gui_widgets.GUIController import GUIController
 
 from io_tools.save_to_json import save_to_json
 
@@ -32,7 +33,7 @@ class MainWindow(QMainWindow):
             None
         """
 
-        from gui_widgets.GUIController import GUIController
+        
 
          
         super().__init__()
@@ -40,8 +41,10 @@ class MainWindow(QMainWindow):
 
         self.input_form = InputForm()
         self.result_view = ResultView()
-        self.input_form.result_view = self.result_view  # <--- Direkter Zugriff
+        self.input_form.result_view = self.result_view  
         self.controller = GUIController(self.input_form, self.result_view)
+        self.input_form.controller = self.controller
+
         
         self.button_calc = QPushButton("Calculate")
         self.button_calc.clicked.connect(self.on_calculate)

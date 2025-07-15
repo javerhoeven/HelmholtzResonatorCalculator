@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QFileDialog, QPushButton, QDoubleSpinBox, QComboBox, QGroupBox, QFormLayout, QMessageBox, QCheckBox
 )
+
 from traits.api import TraitError
 from calculation.aperture import Aperture
 from io_tools.load_from_json import load_from_json
@@ -33,6 +34,8 @@ class InputForm(QWidget):
         """
 
         super().__init__()
+        self.controller = None
+
         self.main_layout = QVBoxLayout()
 
         # === 1. GEOMETRY ===
@@ -344,7 +347,8 @@ class InputForm(QWidget):
             self.spin_T.setValue(medium.temperature_celsius)
             self.spin_H.setValue(medium.rel_humidity * 100)
             
-           
+            if self.controller:
+                self.controller.calculate_and_show()
 
             QMessageBox.information(self, "Success", "Settings loaded successfully.")
 

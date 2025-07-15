@@ -130,7 +130,8 @@ class SimulationParameters(HasTraits):
 
         Returns:
             SimulationParameters: A con
-"""
+        """
+
         medium = Medium.from_dict(data['medium'])
         if 'frequencies' in data:
             frequencies = np.array(data['frequencies'])
@@ -156,5 +157,3 @@ class SimulationParameters(HasTraits):
         params.assume_diffuse = assume_diffuse
         
         return params
-        
-

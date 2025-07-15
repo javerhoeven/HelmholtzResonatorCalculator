@@ -122,11 +122,20 @@ class ResultView(QWidget):
         else:
             self.ax.plot(x, y, label=f"{self.combo_y.currentText()} vs {self.combo_x.currentText()}")
         
+        # Optional: Achsenbereich zentrieren, damit f0 mittig liegt
+        if x is not None and len(x) > 1 and f0 is not None:
+            x_min, x_max = min(x), max(x)
+            half_width = (x_max - x_min) / 4  # Zoom-Level anpassbar
+            self.ax.set_xlim(f0 - half_width, f0 + half_width)
+        
         self.ax.set_xlabel(self.combo_x.currentText())
         self.ax.set_ylabel(self.combo_y.currentText())
         self.ax.grid()
         self.ax.legend()
         self.canvas.draw()
+
+        
+
 
         # Save state for dynamic updates
         self._data = data
