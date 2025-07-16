@@ -10,7 +10,6 @@ class TestApertureEdgeCases(unittest.TestCase):
     """
 
 
-
     @classmethod
     def setUpClass(cls):
         cls.length_min = Aperture.class_traits()['length'].handler._low

@@ -3,18 +3,14 @@ from io_tools import save_to_json
 
 def forward(parameters : dict):
     """    
-    calculates the absorbtion area and resonance frequency based on given parameters
+    calculates the absorbtion area and resonance frequency based on parameters provided by the GUI
 
 
     Args:
         parameters (dict): all required parameters. can be handed over from GUI or CLI
     """
 
-    
-    # TODO: replace all dummy / example values with GUI data, as soo as it's here
-
     # Geometry parameters
-
     form = parameters['geometry']['shape']
     
     # for cuboid
@@ -36,20 +32,9 @@ def forward(parameters : dict):
     rel_humidity = parameters['conditions']['humidity']
 
     medium = Medium(temperature_celsius=temp, rel_humidity=rel_humidity)
-    # TODO: add 3 resolutions: low (50), medium (500) and high (5000) values per octave
     sim_params = SimulationParameters(medium=medium, values_per_octave=500)
 
     # run simulation 
     simulation = Simulation(resonator=resonator, sim_params=sim_params)
     simulation.calc_all()
     return simulation
-
-
-    # simulation.calc_absorbtion_area()
-    # simulation.resonance_frequency()
-    # simulation.calc_q_factor()
-
-    # print(simulation.resonance_frequency())
-    # simulation.calc_max_absorbtion_area(plot=True)
-    # save_to_json(simulation, 'simulation_result.json')
-    

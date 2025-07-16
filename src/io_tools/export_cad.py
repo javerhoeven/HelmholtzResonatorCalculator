@@ -2,6 +2,13 @@ import cadquery as cq
 from calculation.simulation import Simulation
 
 def export_cad(sim : Simulation, path : str):
+    """This function is still in BETA state. It exports the resonator geometry and aperture to a CAD file.
+
+    Args:
+        sim (Simulation): Simulation object containing the resonator geometry and aperture.
+        path (str): path to save the CAD file.
+
+    """
     # TODO: add n_apertures with even distribution
 
     # create basic cad model of the resonator geometry

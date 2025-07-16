@@ -3,6 +3,9 @@ import warnings
 from app_control import optimizer, start_gui
 from io_tools import save_to_json
 
+"""
+This is the entry point for the command line interface (CLI) of the Helmholtz Resonator Calculator project. 
+"""
 
 @click.group()
 def cli():
@@ -28,8 +31,6 @@ def optimize(freq, q_factor, save):
     Run optimization
     """
 
-    
-        
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=RuntimeWarning)
         click.echo("Running optimizer...")
