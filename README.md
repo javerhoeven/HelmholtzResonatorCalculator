@@ -85,6 +85,17 @@ example usage for an ideal Helmholtz Resonator with resonance at 200 Hz and a Q-
 poetry run hrcalc optimizer 200 10
 ```
 
+The optional `--save` flag lets you save your simulation object, so you can further edit / oberserve / refine it in the GUI application:
+```bash
+poetry run hrcalc optimizer 300 5 --save 'example.json'
+```
+The optimizer currently does not support all parameters. The following assumptions are made:
+- Cuboid shape
+- Standard Conditions: 20° Celsius, 50 % humidity, c = 344  m/s
+- tube-shaped aperture
+- aperture is filled with porous material
+
+
 ### Reference
 A detailed reference for the project is available [here](https://python-and-akustik-2025-helmholtz-4aufhübschung-pages.tu-berlin.de). 
 
