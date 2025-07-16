@@ -23,7 +23,7 @@ class SimulationParameters(HasTraits):
     """
 
     medium = Instance(Medium)
-    freq_range = Tuple(Range(0.01, 10_000.), Range(100., 10_000.))
+    freq_range = Tuple(Range(0.01, 10_000., value=20), Range(100., 10_000., value=1000))
     # freq_range = Range(0.01, 10000)
     # values_per_octave = Int(100)
     values_per_octave = Range(1, 10_000)

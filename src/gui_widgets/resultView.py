@@ -89,6 +89,7 @@ class ResultView(QWidget):
 
 
     def show_results(self, f0: float, data: dict, q_factor: float = None, a_max: float = None) -> None:
+        
         """Update the plot and display numerical results.
 
         Args:
@@ -100,6 +101,8 @@ class ResultView(QWidget):
         Returns:
             None
         """
+        from matplotlib.ticker import LogLocator, FuncFormatter
+
         # Update labels
         self.label_f0.setText(f"Resonance Frequency: {f0:.2f} Hz")
         self.label_q.setText(f"Q Factor: {q_factor:.2f}" if q_factor is not None else "Q Factor: -")
@@ -123,20 +126,27 @@ class ResultView(QWidget):
             self.ax.plot(x, y, label=f"{self.combo_y.currentText()} vs {self.combo_x.currentText()}")
         
         # Optional: Achsenbereich zentrieren, damit f0 mittig liegt
-        if x is not None and len(x) > 1 and f0 is not None:
-            x_min, x_max = min(x), max(x)
-            half_width = (x_max - x_min) / 4  # Zoom-Level anpassbar
-            self.ax.set_xlim(f0 - half_width, f0 + half_width)
-        
+        # if x is not None and len(x) > 1 and f0 is not None:
+        #     x_min, x_max = min(x), max(x)
+        #     half_width = (x_max - x_min) / 4  # Zoom-Level anpassbar
+        self.ax.set_xlim(f0 /5, f0 *5)
+        self.ax.set_xscale('log')
+
+        # make pretty labels
         self.ax.set_xlabel(self.combo_x.currentText())
         self.ax.set_ylabel(self.combo_y.currentText())
-        self.ax.grid()
+        self.ax.xaxis.set_major_locator(LogLocator(base=10, subs=(1, 2, 5))) # 1, 2, 5
+        self.ax.xaxis.set_minor_locator(LogLocator(base=10, subs=range(1, 10)))
+        self.ax.xaxis.set_major_formatter(
+            FuncFormatter(lambda x, _:
+                        f'{x/1000:.0f} k' if x >= 1000 else f'{x:.0f}'))
+        
+        self.ax.grid(which='major', ls='--', lw=.6)
+        self.ax.grid(which='minor', ls=':',  lw=.3)
         self.ax.legend()
         self.canvas.draw()
 
         
-
-
         # Save state for dynamic updates
         self._data = data
         self._f0 = f0
