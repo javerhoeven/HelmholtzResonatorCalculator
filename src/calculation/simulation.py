@@ -64,10 +64,25 @@ class Simulation():
 
     def calc_z_porous(self) -> float:
         """
-        Calculates the real-valued porous impedance for additional dampening.
+        Calculates the real-valued porous impedance for additional damping.
+
+        The impedance is given by:
+
+        .. math::
+
+            Z_{\\text{porous}} = \\begin{cases}
+                \\dfrac{\\xi \\; L}{S}, & \\text{if additional damping is enabled}, \\\\
+                0, & \\text{otherwise}.
+            \\end{cases}
+
+        where:
+
+        - :math:`\\xi` is the damping coefficient  
+        - :math:`L` is the aperture length  
+        - :math:`S` is the cross-sectional area  
 
         Returns:
-            float: Porous impedance if enabled; 0 otherwise.
+            float: Porous impedance (Pa·s/m) if enabled; otherwise 0.
         """
         ap = self.resonator.aperture
         if ap.additional_dampening:
@@ -81,10 +96,27 @@ class Simulation():
 
     def calc_z_radiation(self) -> np.array:
         """
-        Calculates the complex radiation impedance over frequency.
+        Calculates the complex radiation impedance over frequency using:
+
+        .. math::
+
+            Z_\\text{rad}(f) = \\rho \\; c \\; \\Bigl(\\alpha \\, k^2 r^2 + i \\; k \\, \\delta \\Bigr)
+
+        where:
+
+        - :math:`\\rho` is the air density (kg/m³)  
+        - :math:`c` is the speed of sound (m/s)  
+        - :math:`k` is the wave number (1/m)  
+        - :math:`r` is the aperture radius (m)  
+        - :math:`\\delta` is the outer end correction (m)  
+        - :math:`\\alpha = \\begin{cases}
+            \\tfrac{1}{4\\pi}, & \\text{if open},\\\\
+            \\tfrac{1}{2\\pi}, & \\text{if flanged}
+        \\end{cases}`  
+        - :math:`i` is the imaginary unit
 
         Returns:
-            np.array: Radiation impedance vector.
+            np.ndarray: Radiation impedance vector (Pa·s/m).
         """
         ap = self.resonator.aperture
         med = self.sim_params.medium
@@ -104,10 +136,27 @@ class Simulation():
 
     def calc_z_stiff_mass(self) -> np.array:
         """
-        Calculates the impedance contribution from stiffness and mass.
+        Calculates the impedance contribution from stiffness and mass using:
+
+        .. math::
+
+            Z_{\text{stiff\_mass}}(\\omega) =
+            \\frac{\\rho \\; c^2}{i\\,\\omega\\,V}
+            + i\\,\\omega\\,\\rho\\,\\frac{L + \\Delta L}{S}
+
+     where:
+
+        - :math:`\\rho` is the air density (kg/m³)  
+        - :math:`c` is the speed of sound (m/s)  
+        - :math:`\\omega` is the angular frequency (rad/s)  
+        - :math:`V` is the cavity volume (m³)  
+        - :math:`L` is the effective aperture length (m)  
+        - :math:`\\Delta L` is the total end correction (inner + outer) (m)  
+        - :math:`S` is the cross-sectional area (m²)  
+        - :math:`i` is the imaginary unit  
 
         Returns:
-            np.array: Complex impedance vector.
+            np.ndarray: Complex impedance vector (Pa·s/m).
         """
         ap = self.resonator.aperture
         rho = self.sim_params.medium.density
@@ -123,11 +172,36 @@ class Simulation():
 
     def calc_z_friction(self) -> np.array:
         """
-        Calculates the real-valued friction impedance from viscosity.
+        Calculates the real-valued friction impedance from viscosity using:
+
+        .. math::
+
+            Z_{\\text{friction}} =
+            8 \\; \\nu \\; \\rho \\; \\frac{L}{r^2 \\; S}
+
+        with a cutoff for high frequencies where k r ≥ 0.2:
+
+        .. math::
+
+            Z_{\\text{friction}}(f) = 
+            \\begin{cases}
+            8 \\; \\nu \\; \\rho \\; \\dfrac{L}{r^2 \\; S}, & k r < 0.2, \\\\
+            0, & k r \\ge 0.2.
+            \\end{cases}
+
+        where:
+
+        - :math:`\\nu` is the kinematic viscosity (m²/s)  
+        - :math:`\\rho` is the air density (kg/m³)  
+        - :math:`L` is the aperture length (m)  
+        - :math:`r` is the aperture radius (m)  
+        - :math:`S` is the cross-sectional area (m²)  
+        - :math:`k` is the wave number (1/m)  
 
         Returns:
-            np.array: Friction impedance vector.
+            np.ndarray: Friction impedance vector (Pa·s/m).
         """
+    
         ap = self.resonator.aperture
         k = self.k
         r = ap.radius
@@ -147,8 +221,31 @@ class Simulation():
         """
         Computes the absorption area as a function of frequency.
 
+        The absorption area A is calculated from the total impedance Z_total and radiation impedance Z_rad
+        in a diffuse field as:
+
+        .. math::
+
+            A(f) = 2 \\; \\frac{\\Re\\{Z_{\\text{total}}(f)\\}}{\\lvert Z_{\\text{total}}(f) + Z_{\\text{rad}}(f)\\rvert^2}
+                \\; (2 \\rho c)
+
+        If not assuming diffuse field, includes angle of incidence \\(\\theta\\):
+
+        .. math::
+
+            A(f) = \\frac{\\Re\\{Z_{\\text{total}}(f)\\}}{\\lvert Z_{\\text{total}}(f) + Z_{\\text{rad}}(f)\\rvert^2}
+                 \\; \\frac{2 \\rho c}{\\cos(\\theta)}
+
+        where:
+
+        - :math:`Z_{\\text{total}} = Z_{\\text{friction}} + Z_{\\text{porous}} + Z_{\\text{stiff\_mass}}`  
+        - :math:`Z_{\\text{rad}}` is the radiation impedance  
+        - :math:`\\rho` is the air density (kg/m³)  
+        - :math:`c` is the speed of sound (m/s)  
+        - :math:`\\theta` is the angle of incidence (rad)
+
         Returns:
-            np.array: Absorption area vector.
+            np.ndarray: Absorption area vector (m²).
         """
         self.calc_z_porous()
         self.calc_z_radiation()
@@ -173,8 +270,20 @@ class Simulation():
         """
         Determines the resonance frequency and peak absorption value.
 
+        The resonance frequency f_res is the frequency at which the absorption area A(f) is maximal:
+
+        .. math::
+
+            f_{\\mathrm{res}} = \\operatorname*{arg\\,max}_{f}\\; A(f)
+    
+        and the peak absorption area is:
+
+        .. math::
+
+            A_{\\mathrm{peak}} = \\max_{f} \\; A(f)
+
         Returns:
-            float: Resonance frequency.
+            tuple[float, float]: (f_resonance in Hz, peak_absorption_area in m²)
         """
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
@@ -188,8 +297,19 @@ class Simulation():
         """
         Calculates the Q factor from the -3 dB bandwidth.
 
+        The quality factor Q is defined as:
+
+        .. math::
+
+            Q = \\frac{f_{\\mathrm{res}}}{f_2 - f_1}
+
+        where:
+
+        - :math:`f_{\\mathrm{res}}` is the resonance frequency (Hz)
+        - :math:`f_1` and :math:`f_2` are the lower and upper -3 dB frequencies, respectively
+
         Returns:
-            float: Quality factor (Q).
+            float: Quality factor (Q), or None if the -3 dB points cannot be determined.
         """
         if self.absorbtion_area is None:
             self.calc_absorbtion_area()
@@ -222,8 +342,19 @@ class Simulation():
         """
         Calculates the theoretical maximum absorption area.
 
+        The maximum absorption area A_max as a function of wavelength λ is given by:
+
+        .. math::
+
+            A_{\\mathrm{max}}(\\lambda) = \\frac{\\lambda^2}{2\\pi}
+
+        where:
+
+        - :math:`\\lambda` is the wavelength (m)
+        - :math:`A_{\\mathrm{max}}` is the maximum absorption area (m²)
+
         Args:
-            plot (bool): Whether to plot the curve.
+            plot (bool): Whether to plot the curve using a semilogarithmic frequency axis.
         """
         self.max_absorbtion_area = self.sim_params.wavelength**2 / (2 * np.pi)
         if plot:

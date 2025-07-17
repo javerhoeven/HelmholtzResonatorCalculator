@@ -61,11 +61,25 @@ class Medium(HasTraits):
         """
         Calculates air density using the Magnus equation.
 
-        Considers temperature and relative humidity.
+        The density is calculated as:
+
+        .. math::
+
+            \\rho = \\frac{p - p_v}{R_d \\, T} + \\frac{p_v}{R_v \\, T}
+
+        where:
+
+        - :math:`p` is the atmospheric pressure (Pa)  
+        - :math:`p_v = \\phi \\; p_{\\mathrm{sat}}` is the partial vapor pressure (Pa)  
+        - :math:`p_{\\mathrm{sat}} = 6.112 \\, \\exp\\biggl(\\frac{17.62 \\, T}{243.12 + T}\\biggr) \\times 100` (Pa)  
+        - :math:`\\phi` is the relative humidity (0…1)  
+        - :math:`T` is the absolute temperature in Kelvin  
+        - :math:`R_d = 287.05 \\; \\mathrm{J/(kg \\cdot K)}` gas constant for dry air  
+        - :math:`R_v = 461.5 \\; \\mathrm{J/(kg \\cdot K)}` gas constant for water vapor  
 
         Raises:
-            TraitError: If the result is non-positive.
-        """
+        TraitError: If the result is non-positive.
+         """
         p = 1013.15 * 100  # Atmospheric pressure in Pa
         T = self.temperature_kelvin
         phi = self.rel_humidity
@@ -86,14 +100,48 @@ class Medium(HasTraits):
         """
         Approximates the speed of sound based on DIN ISO 9613-1:1993.
 
-        Depends on temperature and relative humidity.
+        The formula used is:
+
+        .. math::
+
+            c = 331.3 + 0.606 \\,T + 0.0124 \\,\phi
+
+        where:
+
+        - :math:`T` ambient temperature in °C  
+        - :math:`\phi` relative humidity (0…1)  
+        - :math:`c` speed of sound in m/s
         """
         self.c = 331.3 + 0.606 * self.temperature_celsius + 0.0124 * self.rel_humidity
+
+ 
+   
 
     def calc_kinematic_viscosity(self):
         """
         Calculates the kinematic viscosity of air using Sutherland's formula.
-        """
+
+        The dynamic viscosity :math:\\mu is calculated using:
+
+        .. math::
+
+        \\mu = \\mu_0 \\left( \\frac{T}{T_0} \\right)^{3/2} \\cdot \\frac{T_0 + C}{T + C}
+
+        where:
+            - :math:\\mu_0 = 1.716 \\times 10^{-5}\\ \\text{Pa·s} (reference viscosity),
+            - :math:T_0 = 273.15\\ \\text{K} (reference temperature),
+            - :math:C = 111\\ \\text{K} (Sutherland's constant),
+            - :math:T temperature in Kelvin.
+
+        The kinematic viscosity :math:\\nu is then:
+
+        .. math::
+
+            \\nu = \\frac{\\mu}{\\rho}
+
+        where :math:\\rho is the air density in kg/m³.
+        """
+
         T = self.temperature_kelvin
         mu0 = 1.716e-5  # Reference dynamic viscosity (Pa·s)
         T0 = 273.15     # Reference temperature (K)

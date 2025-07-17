@@ -19,7 +19,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
-    'sphinx.ext.napoleon',   # Für Google-/NumPy-Style Docstrings
+    'sphinx.ext.napoleon',
+    'sphinx.ext.mathjax'
 ]
 
 autosummary_generate = True

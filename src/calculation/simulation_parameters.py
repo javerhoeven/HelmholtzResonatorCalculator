@@ -61,6 +61,20 @@ class SimulationParameters(HasTraits):
     def calculate_frequencies(self):
         """
         Compute the logarithmic frequency vector based on the frequency range and values per octave.
+
+        The frequency vector is calculated as:
+
+        .. math::
+
+        f_i = 10^{\\log_{10}(f_{\\min}) + \\tfrac{i}{N-1}(\\log_{10}(f_{\\max}) - \\log_{10}(f_{\\min}))},\\quad
+        i = 0,1,\\dots,N-1
+
+        where:
+
+            - :math:`f_{\\min}` and :math:`f_{\\max}` are the frequency range limits  
+            - :math:`N = \\lceil\\log_2(\\tfrac{f_{\\max}}{f_{\\min}}) \\times \\text{values\_per\_octave}\\rceil`  
+            - :math:`f_i` logarithmically spaced frequencies  
+
         """
         f_min, f_max = self.freq_range
         n_octaves = np.log2(f_max / f_min)
@@ -69,39 +83,51 @@ class SimulationParameters(HasTraits):
 
     def calc_omega(self, frequencies):
         """
-        Calculate angular frequency vector ω = 2πf.
+        Calculate angular frequency vector based on:
+
+        .. math::
+
+            \\omega = 2\\pi f
 
         Args:
-            frequencies (np.ndarray): Frequency vector.
+            frequencies (np.ndarray): Frequency vector (Hz)
 
         Returns:
-            np.ndarray: Angular frequency vector (rad/s).
+            np.ndarray: Angular frequency vector (rad/s)
         """
         return 2 * np.pi * frequencies
     
     def calc_k(self, omega, c):
         """
-        Calculate wave number vector k = ω / c.
+        Calculate the wave number vector based on:
+
+        .. math::
+
+        k = \\frac{\\omega}{c}
 
         Args:
-            omega (np.ndarray): Angular frequency.
-            c (float): Speed of sound in the medium.
+            omega (np.ndarray): Angular frequency (rad/s)
+            c (float): Speed of sound in the medium (m/s)
 
         Returns:
-            np.ndarray: Wave number (1/m).
+            np.ndarray: Wave number vector (1/m)
         """
         return omega / c
     
     def calc_lambda(self, omega, c):
         """
-        Calculate wavelength λ = c / f = 2πc / ω.
+        Calculate wavelength based on:
+
+        .. math::
+
+            \\lambda = \\frac{c}{f} = \\frac{2\\pi\\,c}{\\omega}
 
         Args:
-            omega (np.ndarray): Angular frequency.
-            c (float): Speed of sound in the medium.
+            omega (np.ndarray): Angular frequency vector (rad/s)
+            c (float): Speed of sound in the medium (m/s)
 
         Returns:
-            np.ndarray: Wavelength (m).
+            np.ndarray: Wavelength vector (m)
         """
         return c / (omega / (2 * np.pi))
     
