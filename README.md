@@ -93,7 +93,7 @@ The optimizer currently does not support all parameters. The following assumptio
 - Cuboid shape
 - Standard Conditions: 20° Celsius, 50 % humidity, c = 344  m/s
 - tube-shaped aperture
-- aperture is filled with porous material
+- aperture is filled with porous material that is returned with xi parameter
 
 
 ### Reference
