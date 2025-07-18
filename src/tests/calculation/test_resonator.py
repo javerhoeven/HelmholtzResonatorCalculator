@@ -6,7 +6,7 @@ from calculation import Resonator
 
 class TestResonator(unittest.TestCase):
     """
-    Unit tests for the Resonator class which combines a Geometry and an Aperture.
+    Unit tests for the Resonator class which works as a container for aperture and geometry.
     """
 
     def setUp(self):
@@ -20,7 +20,7 @@ class TestResonator(unittest.TestCase):
 
     def test_initialization(self):
         """
-        Tests if the Resonator initializes correctly with given Geometry and Aperture instances.
+        Tests if Resonator initializes correctly with given Geometry and Aperture instances.
         """
         self.assertIsInstance(self.resonator.geometry, Geometry)
         self.assertIsInstance(self.resonator.aperture, Aperture)

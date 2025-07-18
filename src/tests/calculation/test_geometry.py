@@ -6,6 +6,7 @@ from calculation import Geometry
 import numpy as np
 
 class TestGeometry(unittest.TestCase):
+    """Tests formulas for volume calculation with different false/ edge and usaual input"""
 
     @classmethod
     def setUpClass(cls):
@@ -44,6 +45,7 @@ class TestGeometry(unittest.TestCase):
 
     # ---------- Cuboid Tests ----------
     def test_cuboid_mid_values(self):
+        """Test cuboid volume with midpoint dimensions"""
         self.assertAlmostEqual(
             Geometry(form="cuboid", x=self.x_mid, y=self.y_mid, z=self.z_mid).volume,
             self.x_mid * self.y_mid * self.z_mid,
@@ -51,6 +53,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cuboid_min_values(self):
+        """Test cuboid volume with minimum allowed dimensions"""
         self.assertAlmostEqual(
             Geometry(form="cuboid", x=self.x_min, y=self.y_min, z=self.z_min).volume,
             self.x_min * self.y_min * self.z_min,
@@ -58,6 +61,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cuboid_max_values(self):
+        """Test cuboid volume with maximum allowed dimensions"""
         self.assertAlmostEqual(
             Geometry(form="cuboid", x=self.x_max, y=self.y_max, z=self.z_max).volume,
             self.x_max * self.y_max * self.z_max,
@@ -65,6 +69,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cuboid_x_min(self):
+        
         self.assertAlmostEqual(
             Geometry(form="cuboid", x=self.x_min, y=self.y_mid, z=self.z_mid).volume,
             self.x_min * self.y_mid * self.z_mid,
@@ -72,6 +77,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cuboid_x_max(self):
+        """Test cuboid volume with max x dimension"""
         self.assertAlmostEqual(
             Geometry(form="cuboid", x=self.x_max, y=self.y_mid, z=self.z_mid).volume,
             self.x_max * self.y_mid * self.z_mid,
@@ -79,6 +85,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cuboid_y_min(self):
+        """Test cuboid volume with min y dimension"""
         self.assertAlmostEqual(
             Geometry(form="cuboid", x=self.x_mid, y=self.y_min, z=self.z_mid).volume,
             self.x_mid * self.y_min * self.z_mid,
@@ -86,6 +93,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cuboid_y_max(self):
+        """Test cuboid volume with max y dimension"""
         self.assertAlmostEqual(
             Geometry(form="cuboid", x=self.x_mid, y=self.y_max, z=self.z_mid).volume,
             self.x_mid * self.y_max * self.z_mid,
@@ -93,6 +101,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cuboid_z_min(self):
+        """Test cuboid volume with min z dimension"""
         self.assertAlmostEqual(
             Geometry(form="cuboid", x=self.x_mid, y=self.y_mid, z=self.z_min).volume,
             self.x_mid * self.y_mid * self.z_min,
@@ -100,6 +109,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cuboid_z_max(self):
+        """Test cuboid volume with max z dimension"""
         self.assertAlmostEqual(
             Geometry(form="cuboid", x=self.x_mid, y=self.y_mid, z=self.z_max).volume,
             self.x_mid * self.y_mid * self.z_max,
@@ -108,6 +118,7 @@ class TestGeometry(unittest.TestCase):
 
     # ---------- Cylinder Tests ----------
     def test_cylinder_mid_values(self):
+        """Test cylinder volume with midpoint dimensions"""
         self.assertAlmostEqual(
             Geometry(form="cylinder", radius=self.r_mid, height=self.h_mid).volume,
             np.pi * self.r_mid**2 * self.h_mid,
@@ -115,6 +126,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cylinder_min_values(self):
+        """Test cylinder volume with minimum allowed dimensions"""
         self.assertAlmostEqual(
             Geometry(form="cylinder", radius=self.r_min, height=self.h_min).volume,
             np.pi * self.r_min**2 * self.h_min,
@@ -122,6 +134,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cylinder_max_values(self):
+        """Test cylinder volume with max allowed dimensions"""
         self.assertAlmostEqual(
             Geometry(form="cylinder", radius=self.r_max, height=self.h_max).volume,
             np.pi * self.r_max**2 * self.h_max,
@@ -129,6 +142,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cylinder_radius_min(self):
+        """Test cuboid volume with min x dimension""""
         self.assertAlmostEqual(
             Geometry(form="cylinder", radius=self.r_min, height=self.h_mid).volume,
             np.pi * self.r_min**2 * self.h_mid,
@@ -136,6 +150,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cylinder_radius_max(self):
+        """Test cuboid volume with max radius dimension"""
         self.assertAlmostEqual(
             Geometry(form="cylinder", radius=self.r_max, height=self.h_mid).volume,
             np.pi * self.r_max**2 * self.h_mid,
@@ -143,6 +158,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cylinder_height_min(self):
+        """Test cuboid volume with min height dimension"""
         self.assertAlmostEqual(
             Geometry(form="cylinder", radius=self.r_mid, height=self.h_min).volume,
             np.pi * self.r_mid**2 * self.h_min,
@@ -150,84 +166,78 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cylinder_height_max(self):
+        """Test cuboid volume with max height dimension"""
         self.assertAlmostEqual(
             Geometry(form="cylinder", radius=self.r_mid, height=self.h_max).volume,
             np.pi * self.r_mid**2 * self.h_max,
             places=5
         )
 
-    # ---------- Trait Error Tests ----------
     def test_x_toosmall(self):
+        """Expect TraitError when x is below minimum"""
         with self.assertRaises(TraitError):
-            Geometry(form='cuboid', x=self.x_min - 0.001, y=self.y_min, z=self.z_min)
-
-    # def test_x_too_large_raises(self):
-    #     with self.assertRaises(TraitError):
-    #         Geometry(form='cuboid', x=self.x_max + 0.001, y=self.y_min, z=self.z_min)
+            Geometry(form='cuboid', x=self.x_min - 0.001, y=self.y_mid, z=self.z_mid)
 
     def test_y_toosmall(self):
+        """Expect TraitError when y is below minimum"""
         with self.assertRaises(TraitError):
-            Geometry(form='cuboid', x=self.x_min, y=self.y_min - 0.001, z=self.z_min)
-
-    # def test_y_too_large_raises(self):
-    #     with self.assertRaises(TraitError):
-    #         Geometry(form='cuboid', x=self.x_min, y=self.y_max + 0.001, z=self.z_min)
+            Geometry(form='cuboid', x=self.x_mid, y=self.y_min - 0.001, z=self.z_mid)
 
     def test_z_toosmall(self):
+        """Expect TraitError when z is below minimum"""
         with self.assertRaises(TraitError):
-            Geometry(form='cuboid', x=self.x_min, y=self.y_min, z=self.z_min - 0.001)
-
-    # def test_z_too_large_trait_error(self):
-    #     with self.assertRaises(TraitError):
-    #         Geometry(form='cuboid', x=self.x_max, y=self.y_max, z=self.z_max + 0.001)
+            Geometry(form='cuboid', x=self.x_mid, y=self.y_mid, z=self.z_min - 0.001)
 
     def test_radius_toosmall(self):
+        """Expect TraitError when radius is below minimum"""
         with self.assertRaises(TraitError):
             Geometry(form='cylinder', radius=self.r_min - 0.001, height=self.h_mid)
 
-    # def test_radius_toolarge(self):
-    #     with self.assertRaises(TraitError):
-    #         Geometry(form='cylinder', radius=self.r_max + 0.001, height=self.h_mid)
-
     def test_height_toosmall(self):
+        """Expect TraitError when height is below minimum"""
         with self.assertRaises(TraitError):
             Geometry(form='cylinder', radius=self.r_mid, height=self.h_min - 0.001)
 
-    # def test_height_toolarge(self):
-    #     with self.assertRaises(TraitError):
-    #         Geometry(form='cylinder', radius=self.r_mid, height=self.h_max + 0.001)
-
     def test_false_datatype_trait_error(self):
+        """Expect TraitError when form parameter is not a string"""
         with self.assertRaises(TraitError):
             Geometry(form=False, x=self.x_min, y=self.y_max, z=self.z_min)
 
     def test_cuboid_x_zero(self):
+        """Expect TraitError when x dimension is zero"""
         with self.assertRaises(TraitError):
             Geometry(form='cuboid', x=0, y=self.y_mid, z=self.z_mid)
 
     def test_cuboid_y_zero(self):
+        """Expect TraitError when y dimension is zero"""
         with self.assertRaises(TraitError):
             Geometry(form='cuboid', x=self.x_mid, y=0, z=self.z_mid)
 
     def test_cuboid_z_zero(self):
+        """Expect TraitError when z dimension is zero"""
         with self.assertRaises(TraitError):
             Geometry(form='cuboid', x=self.x_mid, y=self.y_mid, z=0)
 
     def test_cylinder_radius_zero(self):
+        """Expect TraitError when radius is zero"""
         with self.assertRaises(TraitError):
             Geometry(form='cylinder', radius=0, height=self.h_mid)
 
     def test_cylinder_height_zero(self):
+        """Expect TraitError when height is zero"""
         with self.assertRaises(TraitError):
             Geometry(form='cylinder', radius=self.r_mid, height=0)
 
     def test_cylinder_with_xyz_parameters(self):
+        """Expect TraitError when cylinder given parameters for cuboid calculation"""
         with self.assertRaises(TraitError):
             Geometry(form="cylinder", x=self.x_mid, y=self.y_mid, z=self.z_mid)
 
     def test_cuboid_with_radius_height(self):
+        """Expect TraitError when cuboid given parameters for cylinder calculation"""
         with self.assertRaises(TraitError):
             Geometry(form="cuboid", radius=self.r_mid, height=self.h_mid)
+
 
 if __name__ == '__main__':
     unittest.main()

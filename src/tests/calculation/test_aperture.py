@@ -5,8 +5,8 @@ from calculation import Aperture
 class TestApertureEdgeCases(unittest.TestCase):
 
     """
-    Testet die Aperture-Klasse mit verschiedenen Rand- und Kombinationseinstellungen
-    von radius, amount und end correction types (open/flange).
+    tests aperture-class with different edge/false and usual input
+    for different radius, amount and end correction types (open/flange).
     """
 
 
