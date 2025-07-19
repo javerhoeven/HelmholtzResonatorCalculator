@@ -7,11 +7,12 @@ Es umfasst Geometriebeschreibungen, Mediumeigenschaften, akustische Simulationen
 Inhalte:
 --------
 
-- `geometry`: Volumenberechnung und Formvalidierung
-- `medium`: Luftdichte, Viskosität, Schallgeschwindigkeit
-- `resonator`: Kombination aus Geometrie und Öffnung
-- `simulation`: Berechnung von Impedanzen, Absorption, Q-Faktor
+- `geometry`: Calculation of Volume and validation of the form
+- `medium`: density, ciscosity and speed of sound
+- `resonator`: container for geometry and aperture class
+- `simulation`: Calculation of impedances, absorbtion and q-Factor
 - `simulation_parameters`: Frequenz, Wellenzahl, etc.
+- `soptimizer`:Optimization for target resonance frequency and q-factor
 
 ---
 

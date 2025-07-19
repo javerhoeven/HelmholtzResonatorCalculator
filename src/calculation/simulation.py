@@ -77,9 +77,9 @@ class Simulation():
 
         where:
 
-        - :math:`\\xi` is the damping coefficient  
-        - :math:`L` is the aperture length  
-        - :math:`S` is the cross-sectional area  
+        - :math:`\\xi`damping coefficient  
+        - :math:`L` aperture length  
+        - :math:`S` cross-sectional area  
 
         Returns:
             float: Porous impedance (Pa·s/m) if enabled; otherwise 0.
@@ -104,16 +104,15 @@ class Simulation():
 
         where:
 
-        - :math:`\\rho` is the air density (kg/m³)  
-        - :math:`c` is the speed of sound (m/s)  
-        - :math:`k` is the wave number (1/m)  
-        - :math:`r` is the aperture radius (m)  
-        - :math:`\\delta` is the outer end correction (m)  
+        - :math:`\\rho` air density (kg/m³)  
+        - :math:`c` speed of sound (m/s)  
+        - :math:`k` wave number (1/m)  
+        - :math:`r` aperture radius (m)  
+        - :math:`\\delta` outer end correction (m)  
         - :math:`\\alpha = \\begin{cases}
             \\tfrac{1}{4\\pi}, & \\text{if open},\\\\
             \\tfrac{1}{2\\pi}, & \\text{if flanged}
         \\end{cases}`  
-        - :math:`i` is the imaginary unit
 
         Returns:
             np.ndarray: Radiation impedance vector (Pa·s/m).
@@ -146,14 +145,14 @@ class Simulation():
 
      where:
 
-        - :math:`\\rho` is the air density (kg/m³)  
-        - :math:`c` is the speed of sound (m/s)  
-        - :math:`\\omega` is the angular frequency (rad/s)  
-        - :math:`V` is the cavity volume (m³)  
-        - :math:`L` is the effective aperture length (m)  
-        - :math:`\\Delta L` is the total end correction (inner + outer) (m)  
+        - :math:`\\rho` air density (kg/m³)  
+        - :math:`c` speed of sound (m/s)  
+        - :math:`\\omega` angular frequency (rad/s)  
+        - :math:`V` cavity volume (m³)  
+        - :math:`L` effective aperture length (m)  
+        - :math:`\\Delta L` total end correction (inner + outer) (m)  
         - :math:`S` is the cross-sectional area (m²)  
-        - :math:`i` is the imaginary unit  
+         
 
         Returns:
             np.ndarray: Complex impedance vector (Pa·s/m).
@@ -191,12 +190,12 @@ class Simulation():
 
         where:
 
-        - :math:`\\nu` is the kinematic viscosity (m²/s)  
-        - :math:`\\rho` is the air density (kg/m³)  
-        - :math:`L` is the aperture length (m)  
-        - :math:`r` is the aperture radius (m)  
-        - :math:`S` is the cross-sectional area (m²)  
-        - :math:`k` is the wave number (1/m)  
+        - :math:`\\nu` kinematic viscosity (m²/s)  
+        - :math:`\\rho` air density (kg/m³)  
+        - :math:`L` aperture length (m)  
+        - :math:`r` aperture radius (m)  
+        - :math:`S` cross-sectional area (m²)  
+        - :math:`k` wave number (1/m)  
 
         Returns:
             np.ndarray: Friction impedance vector (Pa·s/m).
@@ -239,10 +238,10 @@ class Simulation():
         where:
 
         - :math:`Z_{\\text{total}} = Z_{\\text{friction}} + Z_{\\text{porous}} + Z_{\\text{stiff\_mass}}`  
-        - :math:`Z_{\\text{rad}}` is the radiation impedance  
-        - :math:`\\rho` is the air density (kg/m³)  
-        - :math:`c` is the speed of sound (m/s)  
-        - :math:`\\theta` is the angle of incidence (rad)
+        - :math:`Z_{\\text{rad}}` radiation impedance  
+        - :math:`\\rho` air density (kg/m³)  
+        - :math:`c` speed of sound (m/s)  
+        - :math:`\\theta` angle of incidence (rad)
 
         Returns:
             np.ndarray: Absorption area vector (m²).
@@ -305,8 +304,8 @@ class Simulation():
 
         where:
 
-        - :math:`f_{\\mathrm{res}}` is the resonance frequency (Hz)
-        - :math:`f_1` and :math:`f_2` are the lower and upper -3 dB frequencies, respectively
+        - :math:`f_{\\mathrm{res}}` resonance frequency (Hz)
+        - :math:`f_1` and :math:`f_2` lower and upper -3 dB frequencies, respectively
 
         Returns:
             float: Quality factor (Q), or None if the -3 dB points cannot be determined.

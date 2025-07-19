@@ -11,18 +11,18 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 class TestOptimizer(unittest.TestCase):
 
     def setUp(self):
-        """Initialisiert einen Optimizer mit realistischen Zielwerten."""
+        """Initializes an Optimizer with usual target values."""
         self.f_target = 300.0
         self.q_target = 5.0
         self.optimizer = Optimizer(f_target=self.f_target, q_target=self.q_target)
 
     def test_initialization(self):
-        """Testet, ob die Initialisierung korrekt ist."""
+        """Checks that the initialization assigns target values properly."""
         self.assertEqual(self.optimizer.f_target, self.f_target)
         self.assertEqual(self.optimizer.q_target, self.q_target)
 
     def test_generate_initial_set_valid(self):
-        """Testet, ob gültige Startwerte generiert werden können."""
+        """Verifies that valid starting values can be generated within bounds."""
         self.optimizer.bounds = [
             (0.1, 1.0),  # x
             (0.1, 1.0),  # y
@@ -39,7 +39,7 @@ class TestOptimizer(unittest.TestCase):
             self.assertLessEqual(val, high)
 
     def test_objective_output_validity(self):
-        """Testet, ob die objective-Funktion einen float-Wert zurückgibt."""
+        """Ensures the objective function returns a float value."""
         self.optimizer.bounds = [
             (0.5, 0.6),  # x
             (0.5, 0.6),  # y
@@ -53,7 +53,7 @@ class TestOptimizer(unittest.TestCase):
         self.assertIsInstance(result, float)
 
     def test_run_single_optimization_returns_result(self):
-        """Testet, ob die Optimierung mit fixen Startwerten funktioniert."""
+        """Checks that a single optimization run returns a result object with expected attributes."""
         self.optimizer.bounds = [
             (0.5, 0.6), (0.5, 0.6), (0.5, 0.6),
             (0.05, 0.06), (0.05, 0.06), (100, 200)

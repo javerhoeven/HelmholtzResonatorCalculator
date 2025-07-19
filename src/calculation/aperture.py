@@ -119,8 +119,7 @@ class Aperture(HasTraits):
             'xi': self.xi if self.additional_dampening else None,
             'area': self.area,
             'inner_end_correction': self.inner_end_correction,
-            'outer_end_correction': self.outer_end_correction
-        }
+            'outer_end_correction': self.outer_end_correction}
 
         if self.form == 'tube':
             base.update({'radius': self.radius})

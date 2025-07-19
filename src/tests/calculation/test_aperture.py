@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from calculation import Aperture
+from .src.calculation import Aperture
 
 class TestApertureEdgeCases(unittest.TestCase):
 

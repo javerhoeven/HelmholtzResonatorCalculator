@@ -69,7 +69,7 @@ class Medium(HasTraits):
 
         where:
 
-        - :math:`p` is the atmospheric pressure (Pa)  
+        - :math:`p` atmospheric pressure (Pa)  
         - :math:`p_v = \\phi \\; p_{\\mathrm{sat}}` partial vapor pressure (Pa)  
         - :math:`p_{\\mathrm{sat}} = 6.112 \\, \\exp\\biggl(\\frac{17.62 \\, T}{243.12 + T}\\biggr) \\times 100` (Pa)  
         - :math:`\\phi` relative humidity (0…1)  
@@ -117,39 +117,39 @@ class Medium(HasTraits):
  
    
 
-def calc_kinematic_viscosity(self):
-    r"""
-    Calculates the kinematic viscosity of air using Sutherland's formula.
+    def calc_kinematic_viscosity(self):
+        r"""
+        Calculates the kinematic viscosity of air using Sutherland's formula.
 
-    The dynamic viscosity :math:\mu is calculated using:
+        The dynamic viscosity :math:\mu is calculated using:
 
-    .. math::
+        .. math::
 
-    \mu = \mu_0 \left( \frac{T}{T_0} \right)^{3/2} \cdot \frac{T_0 + C}{T + C}
+        \mu = \mu_0 \left( \frac{T}{T_0} \right)^{3/2} \cdot \frac{T_0 + C}{T + C}
 
-    where:
-        - :math:\mu_0 = 1.716 \times 10^{-5}\ \text{Pa·s} (reference viscosity),
-        - :math:T_0 = 273.15\ \text{K} (reference temperature),
-        - :math:C = 111\ \text{K} (Sutherland's constant),
-        - :math:T temperature in Kelvin.
+        where:
+            - :math:\mu_0 = 1.716 \times 10^{-5}\ \text{Pa·s} (reference viscosity),
+            - :math:T_0 = 273.15\ \text{K} (reference temperature),
+            - :math:C = 111\ \text{K} (Sutherland's constant),
+            - :math:T temperature in Kelvin.
 
-    The kinematic viscosity :math:\nu is then:
+        The kinematic viscosity :math:\nu is then:
 
-    .. math::
+        .. math::
 
-        \nu = \frac{\mu}{\rho}
+            \nu = \frac{\mu}{\rho}
 
-    where :math:\rho air density in kg/m³.
-    """
+        where :math:\rho air density in kg/m³.
+        """
 
 
-    T = self.temperature_kelvin
-    mu0 = 1.716e-5  # Reference dynamic viscosity (Pa·s)
-    T0 = 273.15     # Reference temperature (K)
-    C = 111         # Sutherland's constant for air
+        T = self.temperature_kelvin
+        mu0 = 1.716e-5  # Reference dynamic viscosity (Pa·s)
+        T0 = 273.15     # Reference temperature (K)
+        C = 111         # Sutherland's constant for air
 
-    mu = mu0 * ((T / T0) ** 1.5) * ((T0 + C) / (T + C))
-    self.kinematic_viscosity = mu / self.density
+        mu = mu0 * ((T / T0) ** 1.5) * ((T0 + C) / (T + C))
+        self.kinematic_viscosity = mu / self.density
 
     def to_dict(self):
         """
@@ -182,8 +182,7 @@ def calc_kinematic_viscosity(self):
             temperature_celsius=data['temperature_celsius'],
             rel_humidity=data['rel_humidity'],
             density=data.get('density'),
-            speed_of_sound=data.get('speed_of_sound')
-        )
+            speed_of_sound=data.get('speed_of_sound'))
 
     # TraitsUI View
     traits_view = View(

@@ -5,7 +5,7 @@ from .medium import Medium
 
 class SimulationParameters(HasTraits):
     """
-    Contains all frequency- and medium-related parameters required for Helmholtz simulations.
+    Contains all parameters related to frequency and medium parameters required for the simulation
 
     This class manages the frequency range, discretization (values per octave), and 
     calculates all dependent physical quantities (angular frequency, wave number, wavelength).
@@ -71,7 +71,7 @@ class SimulationParameters(HasTraits):
 
         where:
 
-            - :math:`f_{\\min}` and :math:`f_{\\max}` are the frequency range limits  
+            - :math:`f_{\\min}` and :math:`f_{\\max}` frequency range limits  
             - :math:`N = \\lceil\\log_2(\\tfrac{f_{\\max}}{f_{\\min}}) \\times \\text{values\_per\_octave}\\rceil`  
             - :math:`f_i` logarithmically spaced frequencies  
 

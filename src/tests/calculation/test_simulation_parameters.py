@@ -26,9 +26,9 @@ class TestSimulationParameters(unittest.TestCase):
 
     def test_dependent_arrays(self):
         """
-        Test that the arrays omega, k, and wavelength are computed correctly.
-        Verifies physical relationships:
-        omega = 2πf, k = omega / c, λ = c / f.
+        Test that the arrays omega, k, and wavelength are calculated correctly.
+        
+
         """
         self.assertTrue(np.allclose(self.sim.omega, 2 * np.pi * self.sim.frequencies))
         self.assertTrue(np.allclose(self.sim.k, self.sim.omega / self.medium.c))
@@ -36,8 +36,7 @@ class TestSimulationParameters(unittest.TestCase):
 
     def test_zero_values_per_octave_raises(self):
         """
-        Test that setting values_per_octave to zero raises a TraitError.
-        Zero would lead to invalid frequency vector size.
+        Test zero values_per_octave raises a TraitError.
         """
         with self.assertRaises(TraitError):
             self.sim.values_per_octave = 0
