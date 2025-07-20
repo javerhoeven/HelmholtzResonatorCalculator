@@ -142,7 +142,7 @@ class TestGeometry(unittest.TestCase):
         )
 
     def test_cylinder_radius_min(self):
-        """Test cuboid volume with min x dimension""""
+        """Test cuboid volume with min x dimension"""
         self.assertAlmostEqual(
             Geometry(form="cylinder", radius=self.r_min, height=self.h_mid).volume,
             np.pi * self.r_min**2 * self.h_mid,

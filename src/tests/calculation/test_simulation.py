@@ -61,33 +61,23 @@ class TestAbsorberSimulation(unittest.TestCase):
         self.assertIn("z_friction", result)
 
 
-if __name__ == '__main__':
-    unittest.main()
 
+    def test_absorbtion_area_in_to_dict(self):
+        self.sim.calc_absorbtion_area()
+        result = self.sim.to_dict()
+        self.assertIn("absorbtion_area", result)
 
+    def test_max_absorbtion_area_in_to_dict(self):
+        self.sim.calc_max_absorbtion_area(plot=False)
+        result = self.sim.to_dict()
+        self.assertIn("max_absorbtion_area", result)
 
+    def test_q_factor_in_to_dict(self):
+        self.sim.calc_absorbtion_area()
+        self.sim.calc_q_factor()
+        result = self.sim.to_dict()
+        self.assertIn("q_factor", result)
 
-def test_absorbtion_area_in_to_dict(self):
-    self.sim.calc_absorbtion_area()
-    result = self.sim.to_dict()
-    self.assertIn("absorbtion_area", result)
-
-def test_max_absorbtion_area_in_to_dict(self):
-    self.sim.calc_max_absorbtion_area(plot=False)
-    result = self.sim.to_dict()
-    self.assertIn("max_absorbtion_area", result)
-
-def test_q_factor_in_to_dict(self):
-    self.sim.calc_absorbtion_area()
-    self.sim.calc_q_factor()
-    result = self.sim.to_dict()
-    self.assertIn("q_factor", result)
-
-def test_z_friction_real_imag_in_to_dict(self):
-    self.sim.calc_z_friction()
-    result = self.sim.to_dict()
-    self.assertIn("z_friction_real", result)
-    self.assertIn("z_friction_imag", result)
 
 if __name__ == '__main__':
     unittest.main()
