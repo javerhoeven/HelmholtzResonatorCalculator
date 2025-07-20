@@ -58,8 +58,8 @@ class ResultView(QWidget):
         self.label_f0 = QLabel("Resonance Frequency: - Hz")
         self.label_q = QLabel("Q Factor: -")
         self.label_amax = QLabel("Max Absorption Area: - m²")
-        self.label_friction = QLabel("Friction: - Pa s / m")
-        self.label_porous = QLabel("Porous: - Pa s / m")
+        self.label_friction = QLabel("Friction: - Pa·s/m")
+        self.label_porous = QLabel("Porous: - Pa·s/m")
 
         self.label_f0.setToolTip("Frequency at which resonance occurs (Hz).")
         self.label_q.setToolTip("Quality factor – sharpness of the resonance peak.")
@@ -107,8 +107,8 @@ class ResultView(QWidget):
         self.label_f0.setText(f"Resonance Frequency: {f0:.2f} Hz")
         self.label_q.setText(f"Q Factor: {q_factor:.2f}" if q_factor is not None else "Q Factor: -")
         self.label_amax.setText(f"Peak Absorption Area: {a_max:.4f} m²" if a_max is not None else "Peak Absorption Area: - m²")
-        self.label_friction.setText(f"Friction: {max(data.get('Impedance Friction')):.2f} Pa s / m")
-        self.label_porous.setText(f"Porous: {data.get('Impedance Porous'):.2f} Pa s / m")
+        self.label_friction.setText(f"Friction: {max(data.get('Impedance Friction')):.2f} [Pa·s/m]")
+        self.label_porous.setText(f"Porous: {data.get('Impedance Porous'):.2f} [Pa·s/m]")
 
         # Plot
         x = data.get(self.combo_x.currentText(), [])
@@ -125,10 +125,6 @@ class ResultView(QWidget):
         else:
             self.ax.plot(x, y, label=f"{self.combo_y.currentText()} vs {self.combo_x.currentText()}")
         
-        # Optional: Achsenbereich zentrieren, damit f0 mittig liegt
-        # if x is not None and len(x) > 1 and f0 is not None:
-        #     x_min, x_max = min(x), max(x)
-        #     half_width = (x_max - x_min) / 4  # Zoom-Level anpassbar
         self.ax.set_xlim(f0 /5, f0 *5)
         self.ax.set_xscale('log')
 
