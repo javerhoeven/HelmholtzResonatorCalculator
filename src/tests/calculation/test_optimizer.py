@@ -13,7 +13,7 @@ class TestOptimizer(unittest.TestCase):
     def setUp(self):
         """Initializes an Optimizer with usual target values."""
         self.f_target = 300.0
-        self.q_target = 5.0
+        self.q_target = 4.0
         self.optimizer = Optimizer(f_target=self.f_target, q_target=self.q_target)
 
     def test_initialization(self):
@@ -28,8 +28,8 @@ class TestOptimizer(unittest.TestCase):
             (0.1, 1.0),  # y
             (0.1, 1.0),  # z
             (0.01, 0.1),  # radius
-            (0.01, 0.3),  # length
-            (1, 5000),    # xi
+            (0.01, 0.3),  # l
+            (1, 5000),
         ]
         values = self.optimizer.generate_initial_set()
         self.assertIsNotNone(values)

@@ -1,8 +1,8 @@
 calculation
 ===================
 
-Dieses Paket enthält die zentralen Berechnungsfunktionen für den Helmholtz-Resonator.  
-Es umfasst Geometriebeschreibungen, Mediumeigenschaften, akustische Simulationen sowie Parameterverwaltung.
+This package includes central calculation packages for the Helmholtz-Resonator.  
+Includes geometrical descriptions, medium characteristics, acoustic Simulations and parameter management.
 
 Inhalte:
 --------
@@ -24,7 +24,7 @@ calculation.geometry
    :undoc-members:
    :show-inheritance:
 
-**Klasse: Geometry**
+**Class: Geometry**
 
 .. autoclass:: calculation.geometry.Geometry
    :members:
@@ -41,7 +41,7 @@ calculation.medium
    :undoc-members:
    :show-inheritance:
 
-**Klasse: Medium**
+**Class: Medium**
 
 .. autoclass:: calculation.medium.Medium
    :members:
@@ -58,7 +58,7 @@ calculation.aperture module
    :undoc-members:
    :show-inheritance:
 
-**Klasse: Aperture**
+**Class: Aperture**
 
 .. autoclass:: calculation.aperture.Aperture
    :members:
@@ -75,7 +75,7 @@ calculation.optimizer
    :undoc-members:
    :show-inheritance:
 
-**Klasse: Medium**
+**Class: Medium**
 
 .. autoclass:: calculation.medium.Medium
    :members:
@@ -92,7 +92,7 @@ calculation.aperture module
    :undoc-members:
    :show-inheritance:
 
-**Klasse: Aperture**
+**Class: Aperture**
 
 .. autoclass:: calculation.aperture.Aperture
    :members:
@@ -109,7 +109,7 @@ calculation.resonator module
    :undoc-members:
    :show-inheritance:
 
-**Klasse: Resonator**
+**Class: Resonator**
 
 .. autoclass:: calculation.resonator.Resonator
    :members:
@@ -126,7 +126,7 @@ calculation.simulation
    :undoc-members:
    :show-inheritance:
 
-**Klasse: Simulation**
+**Class: Simulation**
 
 .. autoclass:: calculation.simulation.Simulation
    :members:
@@ -143,7 +143,7 @@ calculation.simulation_parameters module
    :undoc-members:
    :show-inheritance:
 
-**Klasse: SimulationParameters**
+**Class: SimulationParameters**
 
 .. autoclass:: calculation.simulation_parameters.SimulationParameters
    :members:
