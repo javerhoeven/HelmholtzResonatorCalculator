@@ -32,6 +32,7 @@ autodoc_default_options = {
 
 templates_path = ['_templates']
 exclude_patterns = []
+language = 'en'
 
 # -- Options for HTML output -------------------------------------------------
 html_theme = 'sphinx_rtd_theme'

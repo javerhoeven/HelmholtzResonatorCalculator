@@ -1,22 +1,22 @@
 calculation
 ===================
 
-This package includes central calculation packages for the Helmholtz-Resonator.  
+This package includes central calculation packages for the Helmholtz-Resonator.
 Includes geometrical descriptions, medium characteristics, acoustic Simulations and parameter management.
 
-Inhalte:
+Contents:
 --------
 
 - `geometry`: Calculation of Volume and validation of the form
-- `medium`: density, ciscosity and speed of sound
+- `medium`: density, viscosity and speed of sound
 - `resonator`: container for geometry and aperture class
-- `simulation`: Calculation of impedances, absorbtion and q-Factor
-- `simulation_parameters`: Frequenz, Wellenzahl, etc.
-- `soptimizer`:Optimization for target resonance frequency and q-factor
+- `simulation`: Calculation of impedances, absorption and q-Factor
+- `simulation_parameters`: Frequency, Wavenumber, etc.
+- `optimizer`: Optimization for target resonance frequency and q-factor
 
 ---
 
-calculation.geometry 
+calculation.geometry module
 ---------------------------
 
 .. automodule:: calculation.geometry
@@ -24,16 +24,9 @@ calculation.geometry
    :undoc-members:
    :show-inheritance:
 
-**Class: Geometry**
-
-.. autoclass:: calculation.geometry.Geometry
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 ---
 
-calculation.medium 
+calculation.medium module
 -------------------------
 
 .. automodule:: calculation.medium
@@ -41,13 +34,6 @@ calculation.medium
    :undoc-members:
    :show-inheritance:
 
-**Class: Medium**
-
-.. autoclass:: calculation.medium.Medium
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 ---
 
 calculation.aperture module
@@ -58,43 +44,12 @@ calculation.aperture module
    :undoc-members:
    :show-inheritance:
 
-**Class: Aperture**
-
-.. autoclass:: calculation.aperture.Aperture
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 ---
 
-calculation.optimizer 
--------------------------
+calculation.optimizer module
+----------------------------
 
 .. automodule:: calculation.optimizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-**Class: Medium**
-
-.. autoclass:: calculation.medium.Medium
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
----
-
-calculation.aperture module
----------------------------
-
-.. automodule:: calculation.aperture
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-**Class: Aperture**
-
-.. autoclass:: calculation.aperture.Aperture
    :members:
    :undoc-members:
    :show-inheritance:
@@ -109,26 +64,12 @@ calculation.resonator module
    :undoc-members:
    :show-inheritance:
 
-**Class: Resonator**
-
-.. autoclass:: calculation.resonator.Resonator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 ---
 
-calculation.simulation 
+calculation.simulation module
 -----------------------------
 
 .. automodule:: calculation.simulation
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-**Class: Simulation**
-
-.. autoclass:: calculation.simulation.Simulation
    :members:
    :undoc-members:
    :show-inheritance:
@@ -139,13 +80,6 @@ calculation.simulation_parameters module
 ----------------------------------------
 
 .. automodule:: calculation.simulation_parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-**Class: SimulationParameters**
-
-.. autoclass:: calculation.simulation_parameters.SimulationParameters
    :members:
    :undoc-members:
    :show-inheritance:
