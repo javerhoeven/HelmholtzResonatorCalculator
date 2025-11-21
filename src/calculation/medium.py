@@ -121,25 +121,26 @@ class Medium(HasTraits):
         r"""
         Calculates the kinematic viscosity of air using Sutherland's formula.
 
-        The dynamic viscosity :math:\mu is calculated using:
+        The dynamic viscosity :math:`\mu` is calculated using:
 
         .. math::
 
-        \mu = \mu_0 \left( \frac{T}{T_0} \right)^{3/2} \cdot \frac{T_0 + C}{T + C}
+            \mu = \mu_0 \left( \frac{T}{T_0} \right)^{3/2} \cdot \frac{T_0 + C}{T + C}
 
         where:
-            - :math:\mu_0 = 1.716 \times 10^{-5}\ \text{Pa·s} (reference viscosity),
-            - :math:T_0 = 273.15\ \text{K} (reference temperature),
-            - :math:C = 111\ \text{K} (Sutherland's constant),
-            - :math:T temperature in Kelvin.
 
-        The kinematic viscosity :math:\nu is then:
+        - :math:`\mu_0 = 1.716 \times 10^{-5}\ \text{Pa·s}` (reference viscosity)
+        - :math:`T_0 = 273.15\ \text{K}` (reference temperature)
+        - :math:`C = 111\ \text{K}` (Sutherland's constant)
+        - :math:`T` temperature in Kelvin
+
+        The kinematic viscosity :math:`\nu` is then:
 
         .. math::
 
             \nu = \frac{\mu}{\rho}
 
-        where :math:\rho air density in kg/m³.
+        where :math:`\rho` is the air density in kg/m³.
         """
 
 

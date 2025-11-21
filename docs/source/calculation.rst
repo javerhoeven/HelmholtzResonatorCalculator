@@ -16,7 +16,7 @@ Contents:
 
 ---
 
-calculation.geometry module
+calculation.geometry
 ---------------------------
 
 .. automodule:: calculation.geometry
@@ -26,7 +26,7 @@ calculation.geometry module
 
 ---
 
-calculation.medium module
+calculation.medium
 -------------------------
 
 .. automodule:: calculation.medium
@@ -36,7 +36,7 @@ calculation.medium module
 
 ---
 
-calculation.aperture module
+calculation.aperture
 ---------------------------
 
 .. automodule:: calculation.aperture
@@ -46,7 +46,7 @@ calculation.aperture module
 
 ---
 
-calculation.optimizer module
+calculation.optimizer
 ----------------------------
 
 .. automodule:: calculation.optimizer
@@ -56,7 +56,7 @@ calculation.optimizer module
 
 ---
 
-calculation.resonator module
+calculation.resonator
 ----------------------------
 
 .. automodule:: calculation.resonator
@@ -66,7 +66,7 @@ calculation.resonator module
 
 ---
 
-calculation.simulation module
+calculation.simulation
 -----------------------------
 
 .. automodule:: calculation.simulation
@@ -76,7 +76,7 @@ calculation.simulation module
 
 ---
 
-calculation.simulation_parameters module
+calculation.simulation_parameters
 ----------------------------------------
 
 .. automodule:: calculation.simulation_parameters
