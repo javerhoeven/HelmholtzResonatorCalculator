@@ -12,8 +12,8 @@ Make sure to have Python and pip installed on your system.
 
 ### 0. Easy install (skip to step 5):
 ```bash
-git clone https://git.tu-berlin.de/tobiast/python-and-akustik-2025-helmholtz.git
-cd python-and-akustik-2025-helmholtz
+git clone https://github.com/javerhoeven/HelmholtzResonatorCalculator.git
+cd HelmholtzResonatorCalculator
 pip install poetry
 poetry install
 ```
@@ -23,7 +23,7 @@ If this does not work, use steps 1. - 4.
 
 ### 1. Download and Extract the Code
 
-- [Download the ZIP](https://git.tu-berlin.de/tobiast/python-and-akustik-2025-helmholtz) of this repository.
+- [Download the ZIP](https://github.com/javerhoeven/HelmholtzResonatorCalculator.git) of this repository.
 - Extract the contents to any folder on your computer.
 
 
@@ -53,7 +53,7 @@ poetry install
 This creates the virtual environment and installs all dependencies. 
 
 ### 5. Run the Calculator
-Running the calculator for the first time might take a few seconds. 
+Running the calculator for the first time might take up to a minute. 
 ```bash
 poetry run hrcalc
 ```
@@ -97,7 +97,7 @@ The optimizer currently does not support all parameters. The following assumptio
 
 
 ### Reference
-A detailed reference for the project is available [here](https://python-and-akustik-2025-helmholtz-4aufhübschung-pages.tu-berlin.de). 
+A detailed reference for the project is available [here](https://javerhoeven.github.io/HelmholtzResonatorCalculator/). 
 
 
 ## Authors and acknowledgment
