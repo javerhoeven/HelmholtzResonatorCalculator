@@ -34,7 +34,7 @@ jobs:
           cp -r build/html/* ../public
 
       - name: Run unit tests
-        run: poetry run python -m unittest
+        run: poetry run python -m unittest discover -s src/tests -t .
 
       - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
