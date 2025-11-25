@@ -14,7 +14,8 @@ poetry.lock.bak
 *.pyc
 *.pyo
 
-
+.vscode/
+builds/
 # macOS system files
 .DS_Store
 
